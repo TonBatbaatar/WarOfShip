@@ -2,8 +2,11 @@ package com.overwatch.warofship.EndlessMode;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.overwatch.warofship.R;
 
 import GameLogic.GameLoop;
 
@@ -47,4 +50,16 @@ public class EndlessModeGameView extends SurfaceView {
                     }
                 });
     }
+
+    private void init(){
+//        backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.background);
+//        myPlane= BitmapFactory.decodeResource(getResources(),R.mipmap.myplane);
+//        enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemy);
+//        bullet= BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
+        preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
+
+//        gameImages.add(new BackGroundImage(backGround));
+//        gameImages.add(new MyPlaneImage(myPlane));
+    }
+
 }

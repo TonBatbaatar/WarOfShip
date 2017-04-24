@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 
 public class GameLoop extends Thread {
+
     private EndlessModeGameView view;
     private boolean runningState = false;
 
