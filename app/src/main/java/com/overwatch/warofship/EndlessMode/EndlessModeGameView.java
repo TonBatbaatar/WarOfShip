@@ -2,13 +2,8 @@ package com.overwatch.warofship.EndlessMode;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import com.overwatch.warofship.R;
-
-import GameLogic.GameLoop;
 
 public class EndlessModeGameView extends SurfaceView {
     private GameLoop gameLoop;
