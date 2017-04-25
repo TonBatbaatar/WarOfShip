@@ -6,10 +6,6 @@ import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 
 import java.util.Random;
 
-/**
- * Created by Administrator on 2017/4/24.
- */
-
 public class EnemyShip implements GameImageInterface {
 
     private Bitmap enemyShip1Image;

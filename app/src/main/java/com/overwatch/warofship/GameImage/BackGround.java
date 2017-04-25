@@ -1,8 +1,5 @@
 package com.overwatch.warofship.GameImage;
 
-/**
- * Created by Administrator on 2017/4/24.
- */
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
