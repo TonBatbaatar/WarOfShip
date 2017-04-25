@@ -48,6 +48,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
         super(context);
         gameLoop = new GameLoop(this);
+        this.setOnTouchListener(this);
         holder=getHolder();
         holder.addCallback(
                 new SurfaceHolder.Callback(){

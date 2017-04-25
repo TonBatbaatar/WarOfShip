@@ -28,8 +28,11 @@ public class GameLoop extends Thread {
                 canvas = view.getHolder().lockCanvas();
                 synchronized (view.getHolder()){
                     view.draw(canvas);
+                    Thread.sleep(500);
                 }
-            }finally {
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
                 if (canvas!=null){
                     view.getHolder().unlockCanvasAndPost(canvas);
                 }
