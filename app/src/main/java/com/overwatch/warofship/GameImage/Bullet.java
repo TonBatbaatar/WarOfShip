@@ -13,12 +13,12 @@ public class Bullet implements GameImageInterface {
 
     private Bitmap myBulletImage;
 
-    private MyPlaneImage myPlaneImage;
+    private MyPlane myPlaneImage;
 
     private float x;
     private float y;
 
-    public Bullet(Bitmap myBulletImage, MyPlaneImage myPlaneImage) {
+    public Bullet(Bitmap myBulletImage, MyPlane myPlaneImage) {
 
         this.myBulletImage = myBulletImage;
         this.myPlaneImage= myPlaneImage;
