@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
@@ -19,13 +21,15 @@ import com.overwatch.warofship.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EndlessModeGameView extends SurfaceView {
+public class EndlessModeGameView extends SurfaceView implements View.OnTouchListener {
+
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
 
     private Paint p=new Paint();
 
     private static int count;
+    private MyPlane selectedPlane;
 
     public static int SCREEN_WIDTH;
     public static int SCREEN_HEIGHT;
@@ -41,12 +45,12 @@ public class EndlessModeGameView extends SurfaceView {
     private List<Bullet> bulletImages = new ArrayList();
 
     public EndlessModeGameView(Context context){
+
         super(context);
         gameLoop = new GameLoop(this);
         holder=getHolder();
         holder.addCallback(
                 new SurfaceHolder.Callback(){
-
                     @Override
                     public void surfaceCreated(SurfaceHolder holder) {
                         gameLoop.setRunning(true);
@@ -57,6 +61,7 @@ public class EndlessModeGameView extends SurfaceView {
                     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
                         EndlessModeGameView.SCREEN_WIDTH = width;
                         EndlessModeGameView.SCREEN_HEIGHT = height;
+                        init();
                     }
 
                     @Override
@@ -64,19 +69,19 @@ public class EndlessModeGameView extends SurfaceView {
                         gameLoop.setRunning(false);
                     }
                 });
-
-        this.init();// initialize the images.
-        count=0;
+        this.count=0;
     }
 
     ////Method for initialize the game images:
     //initialize the bitmaps with the images.
     private void init(){
+
+        preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
+
         backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.background);
         myPlane= BitmapFactory.decodeResource(getResources(),R.mipmap.myplane);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemy);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
         gameImages.add(new BackGround(backGround));
         gameImages.add(new MyPlane(myPlane));
@@ -84,6 +89,7 @@ public class EndlessModeGameView extends SurfaceView {
 
     @Override
     public void draw(Canvas canvas) {
+
         if(canvas!=null){
 
             Canvas c=new Canvas(preparation);
@@ -161,9 +167,45 @@ public class EndlessModeGameView extends SurfaceView {
             }
 
             canvas.drawBitmap(preparation,0,0,p);
-            Log.i("THREAD","Speed test!");//testing the speed of the thread
-
         }
     }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        if (event.getAction()==MotionEvent.ACTION_DOWN){
+
+            for (GameImageInterface image: gameImages){
+
+                if (image instanceof MyPlane){
+
+                    if (((MyPlane) image).ifPlaneSelected(event.getX(),event.getY())){
+                        selectedPlane=(MyPlane)image;
+                    }else {
+                        selectedPlane = null;
+                    }
+                    break;
+                }
+            }
+
+        } else if (event.getAction()==MotionEvent.ACTION_MOVE){
+
+            if (selectedPlane!=null){
+                float newX=event.getX()-(selectedPlane.getWidth()/2);
+                float newY=event.getY()-(selectedPlane.getHeight()/2);
+                selectedPlane.setX(newX);
+                selectedPlane.setY(newY);
+            }
+
+        } else if (event.getAction()==MotionEvent.ACTION_UP){
+
+            selectedPlane=null;
+
+        }
+
+        return true;
+    }
+
+
 
 }

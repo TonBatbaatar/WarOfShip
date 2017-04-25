@@ -29,12 +29,12 @@ public class BackGround implements GameImageInterface, View.OnTouchListener {
 
         canvas.drawBitmap(backGround,
                 new Rect(0,0,backGround.getWidth(),backGround.getHeight()),
-                new Rect(0,height,EndlessModeGameView.SCREEN_WIDTH,EndlessModeGameView.SCREEN_HEIGHT),
+                new Rect(0,height,EndlessModeGameView.SCREEN_WIDTH,EndlessModeGameView.SCREEN_HEIGHT+height),
                 p);
 
         canvas.drawBitmap(backGround,
                 new Rect(0,0,backGround.getWidth(),backGround.getHeight()),
-                new Rect(0,(-EndlessModeGameView.SCREEN_WIDTH)+height,EndlessModeGameView.SCREEN_HEIGHT,height),
+                new Rect(0,-(EndlessModeGameView.SCREEN_HEIGHT)+height,EndlessModeGameView.SCREEN_WIDTH,height),
                 p);
 
         height+=10;
