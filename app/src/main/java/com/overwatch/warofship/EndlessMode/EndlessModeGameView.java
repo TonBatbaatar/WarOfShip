@@ -2,13 +2,19 @@ package com.overwatch.warofship.EndlessMode;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.overwatch.warofship.GameImage.BackGround;
+import com.overwatch.warofship.GameImage.Bullet;
+import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
+import com.overwatch.warofship.GameImage.MyPlane;
+import com.overwatch.warofship.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +38,7 @@ public class EndlessModeGameView extends SurfaceView {
     private Bitmap bullet;
     private Bitmap preparation;
     private List<GameImageInterface> gameImages = new ArrayList();
-    private List<MyBulletImage> bulletImages = new ArrayList();
+    private List<Bullet> bulletImages = new ArrayList();
 
     public EndlessModeGameView(Context context){
         super(context);
@@ -66,19 +72,21 @@ public class EndlessModeGameView extends SurfaceView {
     ////Method for initialize the game images:
     //initialize the bitmaps with the images.
     private void init(){
-//        backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.background);
-//        myPlane= BitmapFactory.decodeResource(getResources(),R.mipmap.myplane);
-//        enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemy);
-//        bullet= BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
+        backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.background);
+        myPlane= BitmapFactory.decodeResource(getResources(),R.mipmap.myplane);
+        enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemy);
+        bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
         preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
-//        gameImages.add(new BackGroundImage(backGround));
-//        gameImages.add(new MyPlaneImage(myPlane));
+        gameImages.add(new BackGround(backGround));
+        gameImages.add(new MyPlane(myPlane));
     }
 
     @Override
     public void draw(Canvas canvas) {
         if(canvas!=null){
+
+            Canvas c=new Canvas(preparation);
             count++;
 
             //// add enemy ship ramdomly
@@ -86,21 +94,21 @@ public class EndlessModeGameView extends SurfaceView {
             //every five time add an enemy ship
             //can change it to control the speed of add new enemy ship
             if (count%5==0){
-                gameImages.add(new EnemyShip1Image(enemy));
+                gameImages.add(new EnemyShip(enemy));
             }
 
             ////draw the picture to the screen except bullet
-            for (GameImage image : gameImages){
+            for (GameImageInterface image : gameImages){
                 c.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
-                if (image instanceof MyPlaneImage && count%2==0){
-                    bulletImages.add(new MyBulletImage(bullet,(MyPlaneImage)image));
+                if (image instanceof MyPlane && count%2==0){
+                    bulletImages.add(new Bullet(bullet,(MyPlane)image));
                 }
 
             }
 
             ////draw the bullet image to the screen
-            for (MyBulletImage bullet : bulletImages){
+            for (Bullet bullet : bulletImages){
                 c.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
             }
 
@@ -108,10 +116,10 @@ public class EndlessModeGameView extends SurfaceView {
             //some problem with that:
             //may because i use so many for loop
             //some bullet can not destroy the ship
-            for (GameImage image : gameImages){
-                if (image instanceof EnemyShip1Image){
+            for (GameImageInterface image : gameImages){
+                if (image instanceof EnemyShip){
 
-                    EnemyShip1Image selectedEnemyShip=(EnemyShip1Image)image;
+                    EnemyShip selectedEnemyShip=(EnemyShip)image;
                     if (selectedEnemyShip.isBeat(bulletImages)){
                         gameImages.remove(image);
                         Log.i("REMOVE","Destroied the enemy ship!");
@@ -126,10 +134,10 @@ public class EndlessModeGameView extends SurfaceView {
             // but there is still one problem to deal with:
             // I can't remove multible bullet in one loop
             // so i use break to remove one at one time;
-            for (GameImage image : gameImages){
-                if (image instanceof EnemyShip1Image){
+            for (GameImageInterface image : gameImages){
+                if (image instanceof EnemyShip){
 
-                    EnemyShip1Image selectedEnemyShip=(EnemyShip1Image)image;
+                    EnemyShip selectedEnemyShip=(EnemyShip)image;
                     if (selectedEnemyShip.ifOutOfScreen()){
                         gameImages.remove(image);
                         Log.i("REMOVE","Removed the enemy ship!");
@@ -144,7 +152,7 @@ public class EndlessModeGameView extends SurfaceView {
             // but there is still one problem to deal with:
             // I can't remove multible bullet in one loop
             // so i use break to remove one at one time;
-            for (MyBulletImage bullet : bulletImages){
+            for (Bullet bullet : bulletImages){
                 if (bullet.ifOutOfScreen()){
                     bulletImages.remove(bullet);
                     Log.i("REMOVE","Removed the bullet!");

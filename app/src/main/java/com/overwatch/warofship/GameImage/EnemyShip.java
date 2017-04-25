@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 
+import java.util.List;
 import java.util.Random;
 
 public class EnemyShip implements GameImageInterface {
@@ -44,18 +45,18 @@ public class EnemyShip implements GameImageInterface {
         }
     }
 
-//    public boolean isBeat(List<MyBulletImage> bulletImages){
-//
-//        for (MyBulletImage selectedBullet : bulletImages){
-//            if (selectedBullet.getX()>this.getX()
-//                    &&selectedBullet.getY()>this.getY()
-//                    &&selectedBullet.getX()<this.getX()+this.enemyShip1Image.getWidth()
-//                    &&selectedBullet.getY()<this.getY()+this.enemyShip1Image.getHeight()){
-//                bulletImages.remove(selectedBullet);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    public boolean isBeat(List<Bullet> bulletImages){
+
+        for (Bullet selectedBullet : bulletImages){
+            if (selectedBullet.getX()>this.getX()
+                    &&selectedBullet.getY()>this.getY()
+                    &&selectedBullet.getX()<this.getX()+this.enemyShip1Image.getWidth()
+                    &&selectedBullet.getY()<this.getY()+this.enemyShip1Image.getHeight()){
+                bulletImages.remove(selectedBullet);
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
