@@ -40,9 +40,10 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Bitmap myPlane;
     private Bitmap enemy;
     private Bitmap bullet;
+    private Bitmap boom;
     private Bitmap preparation;
-    private List<GameImageInterface> gameImages = new ArrayList();
-    private List<Bullet> bulletImages = new ArrayList();
+    public static ArrayList<GameImageInterface> gameImages = new ArrayList();
+    private ArrayList<Bullet> bulletImages = new ArrayList();
 
     public EndlessModeGameView(Context context){
 
@@ -83,6 +84,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         myPlane= BitmapFactory.decodeResource(getResources(),R.mipmap.myplane);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemy);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
         gameImages.add(new BackGround(backGround));
         gameImages.add(new MyPlane(myPlane));
@@ -101,11 +103,16 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //every five time add an enemy ship
             //can change it to control the speed of add new enemy ship
             if (count%5==0){
-                gameImages.add(new EnemyShip(enemy));
+                gameImages.add(new EnemyShip(enemy,boom));
             }
 
             ////draw the picture to the screen except bullet
-            for (GameImageInterface image : gameImages){
+            for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
+                if (image instanceof EnemyShip){
+                    ((EnemyShip) image).isBeat(bulletImages);
+                    Log.i("REMOVE","Destroied the enemy ship!");
+
+                }
                 c.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
                 if (image instanceof MyPlane && count%2==0){
@@ -123,37 +130,30 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //some problem with that:
             //may because i use so many for loop
             //some bullet can not destroy the ship
-            for (GameImageInterface image : gameImages){
-                if (image instanceof EnemyShip){
-
-                    EnemyShip selectedEnemyShip=(EnemyShip)image;
-                    if (selectedEnemyShip.isBeat(bulletImages)){
-                        gameImages.remove(image);
-                        Log.i("REMOVE","Destroied the enemy ship!");
-                        break;
-                    }
-
-                }
-
-            }
+//            for (GameImageInterface image : gameImages){
+//
+//
+//
+//
+//            }
 
             ////remove the enemy ship already out of the screen
             // but there is still one problem to deal with:
             // I can't remove multible bullet in one loop
             // so i use break to remove one at one time;
-            for (GameImageInterface image : gameImages){
-                if (image instanceof EnemyShip){
-
-                    EnemyShip selectedEnemyShip=(EnemyShip)image;
-                    if (selectedEnemyShip.ifOutOfScreen()){
-                        gameImages.remove(image);
-                        Log.i("REMOVE","Removed the enemy ship!");
-                        break;
-                    }
-
-                }
-
-            }
+//            for (GameImageInterface image : gameImages){
+//                if (image instanceof EnemyShip){
+//
+//                    EnemyShip selectedEnemyShip=(EnemyShip)image;
+//                    if (selectedEnemyShip.ifOutOfScreen()){
+//                        gameImages.remove(image);
+//                        Log.i("REMOVE","Removed the enemy ship!");
+//                        break;
+//                    }
+//
+//                }
+//
+//            }
 
             ////remove the bullet already out of the screen
             // but there is still one problem to deal with:

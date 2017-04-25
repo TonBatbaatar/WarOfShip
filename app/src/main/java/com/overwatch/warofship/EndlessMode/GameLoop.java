@@ -3,8 +3,6 @@ package com.overwatch.warofship.EndlessMode;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
-
 public class GameLoop extends Thread {
 
     private EndlessModeGameView view;
@@ -28,7 +26,7 @@ public class GameLoop extends Thread {
                 canvas = view.getHolder().lockCanvas();
                 synchronized (view.getHolder()){
                     view.draw(canvas);
-                    Thread.sleep(500);
+                    Thread.sleep(50);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
