@@ -87,7 +87,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
         gameImages.add(new BackGround(backGround));
-        gameImages.add(new MyPlane(myPlane));
+        gameImages.add(new MyPlane(myPlane,boom));
     }
 
     @Override
@@ -117,6 +117,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
                 if (image instanceof MyPlane && count%2==0){
                     bulletImages.add(new Bullet(bullet,(MyPlane)image));
+                    ((MyPlane) image).isBeat(gameImages,bulletImages);
                 }
 
             }

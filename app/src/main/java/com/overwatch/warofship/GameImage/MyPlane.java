@@ -5,29 +5,39 @@ package com.overwatch.warofship.GameImage;
  */
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 
-public class MyPlane implements GameImageInterface {
+import java.util.ArrayList;
+import java.util.List;
+
+public class
+MyPlane implements GameImageInterface {
 
     private Bitmap myPlaneImage;
     private Bitmap newBitmap = null;
+    private List<Bitmap> booms=new ArrayList<>();
+    private List<Bitmap> myplane=new ArrayList<>();
+    private int index=0;
+    private boolean isDestroyed=false;
 
     private float x;
     private float y;
     private float width;
     private float height;
 
-    public MyPlane(Bitmap mp){
+    public MyPlane(Bitmap mp,Bitmap boom){
         this.myPlaneImage=mp;
-        newBitmap=Bitmap.createBitmap(EndlessModeGameView.SCREEN_HEIGHT,EndlessModeGameView.SCREEN_WIDTH,
-                Bitmap.Config.ARGB_8888);
+        myplane.add(myPlaneImage);
+//        newBitmap=Bitmap.createBitmap(EndlessModeGameView.SCREEN_HEIGHT,EndlessModeGameView.SCREEN_WIDTH,
+//                Bitmap.Config.ARGB_8888);
+        booms.add(Bitmap.createBitmap(boom,0,0,boom.getWidth()/7,boom.getHeight()));
+        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*1,0,boom.getWidth()/7,boom.getHeight()));
+        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*2,0,boom.getWidth()/7,boom.getHeight()));
+        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*3,0,boom.getWidth()/7,boom.getHeight()));
+        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*4,0,boom.getWidth()/7,boom.getHeight()));
+        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*5,0,boom.getWidth()/7,boom.getHeight()));
+        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*6,0,boom.getWidth()/7,boom.getHeight()));
 
         width=myPlaneImage.getWidth();
         height=myPlaneImage.getHeight();
@@ -38,16 +48,25 @@ public class MyPlane implements GameImageInterface {
 
     @Override
     public Bitmap getBitmap() {
+        Bitmap bitmaps=myplane.get(index);
+        index++;
+        if(index==7&&isDestroyed){
+            EndlessModeGameView.gameImages.remove(this);
+        }
 
-        Canvas canvas=new Canvas(newBitmap);
-        Paint paint=new Paint();
+        if(index==myplane.size()){
+            index=0;
+        }
 
-        canvas.drawBitmap(this.myPlaneImage,
-                new Rect(0,0,this.myPlaneImage.getWidth(),this.myPlaneImage.getHeight()),
-                new Rect(0,0,this.myPlaneImage.getWidth(),this.myPlaneImage.getHeight()),
-                paint);
+//        Canvas canvas=new Canvas(newBitmap);
+//        Paint paint=new Paint();
+//
+//        canvas.drawBitmap(this.myPlaneImage,
+//                new Rect(0,0,this.myPlaneImage.getWidth(),this.myPlaneImage.getHeight()),
+//                new Rect(0,0,this.myPlaneImage.getWidth(),this.myPlaneImage.getHeight()),
+//                paint);
 
-        return newBitmap;
+        return bitmaps;
     }
 
     @Override
@@ -85,6 +104,25 @@ public class MyPlane implements GameImageInterface {
 
     public float getHeight() {
         return height;
+    }
+    public void isBeat(List<GameImageInterface> EnemyImages,List<Bullet> bulletImages){
+        if(!isDestroyed){
+            for (GameImageInterface enemyship :EnemyImages){
+                if(enemyship instanceof EnemyShip){
+                    if (enemyship.getX()>this.getX()
+                            &&enemyship.getY()>this.getY()
+                            &&enemyship.getX()<this.getX()+this.myPlaneImage.getWidth()
+                            &&enemyship.getY()<this.getY()+this.myPlaneImage.getHeight()){
+                       ((EnemyShip) enemyship).isBeat(bulletImages);
+                        myplane=booms;
+                        isDestroyed= true;
+                        break;
+                    }
+                }
+
+            }
+
+        }
     }
 
 }
