@@ -7,7 +7,7 @@ public class EndlessModeActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EndlessModeGameView view = new EndlessModeGameView(this);
+        EndlessModeGameView view = new EndlessModeGameView(this);//create the Activity for the game
         setContentView(view);
     }
 }
