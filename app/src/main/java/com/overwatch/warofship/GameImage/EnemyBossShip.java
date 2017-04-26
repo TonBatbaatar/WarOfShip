@@ -14,11 +14,14 @@ public class EnemyBossShip implements GameImageInterface {
     private List<Bitmap> booms=new ArrayList<>();
     private List<Bitmap> enemyship=new ArrayList<>();
     private int index=0;
+    private int HP=0;
     private boolean isDestroied=false;
     private boolean moveDirection=true;
 
     private float x;
     private float y;
+    private float width;
+    private float height;
 
     public EnemyBossShip(Bitmap enemyBossShipImage, Bitmap boom) {
         this.enemyBossShipImage=enemyBossShipImage;
@@ -35,6 +38,8 @@ public class EnemyBossShip implements GameImageInterface {
         //x=(EndlessModeGameView.SCREEN_WIDTH+this.enemyBossShipImage.getWidth())/2;
         x=0;
         y=-enemyBossShipImage.getHeight();
+        width=enemyBossShipImage.getWidth();
+        height=enemyBossShipImage.getHeight();
     }
 
     @Override
@@ -86,7 +91,10 @@ public class EnemyBossShip implements GameImageInterface {
 
                     bulletImages.remove(selectedBullet);
                     enemyship=booms;
-                    isDestroied= true;
+                    HP++;
+                    if(HP>4){
+                        isDestroied= true;
+                    }
                     break;
                 }
             }
@@ -114,4 +122,11 @@ public class EnemyBossShip implements GameImageInterface {
        }
     }
 
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
 }

@@ -1,26 +1,24 @@
 package com.overwatch.warofship.GameImage;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 
-public class Bullet implements GameImageInterface {
+import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+
+public class EnemyBullet implements GameImageInterface {
 
     private Bitmap myBulletImage;
-
-    private MyPlane myPlaneImage;
+    private EnemyBossShip bossShip;
 
     private float x;
     private float y;
 
-    public Bullet(Bitmap myBulletImage, MyPlane myPlaneImage) {
+    public EnemyBullet(Bitmap myBulletImage, EnemyBossShip bossShip) {
 
         this.myBulletImage = myBulletImage;
-        this.myPlaneImage = myPlaneImage;
+        this.bossShip = bossShip;
 
-        x=myPlaneImage.getX()+myPlaneImage.getWidth()/2-10;
-        y=myPlaneImage.getY()+70;//-myBulletImage.getHeight();
+        x=bossShip.getX()+bossShip.getWidth()/2-10;
+        y=bossShip.getY()+70;//-myBulletImage.getHeight();
     }
 
     @Override
@@ -48,12 +46,10 @@ public class Bullet implements GameImageInterface {
     }
 
     public boolean ifOutOfScreen(){
-        if(y<=-10){
+        if(y>= EndlessModeGameView.SCREEN_HEIGHT){
             return true;
         }else{
             return false;
         }
     }
-
 }
-

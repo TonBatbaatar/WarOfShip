@@ -14,6 +14,7 @@ import android.view.View;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
+import com.overwatch.warofship.GameImage.EnemyBullet;
 import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
 import com.overwatch.warofship.GameImage.MyPlane;
@@ -42,11 +43,13 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Bitmap enemy;
     private Bitmap enemyBoss;
     private Bitmap bullet;
+    private Bitmap enemyBullet;
     private Bitmap boom;
     private Bitmap preparation;
 
     public static ArrayList<GameImageInterface> gameImages = new ArrayList();
     public static ArrayList<Bullet> bulletImages = new ArrayList();
+    public static ArrayList<EnemyBullet> enemyBulletImages = new ArrayList();
 
     public EndlessModeGameView(Context context){
 
@@ -87,6 +90,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         myPlane= BitmapFactory.decodeResource(getResources(),R.mipmap.myplane);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemy);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet_enemy);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemyboss);
 
@@ -115,16 +119,29 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
             ////draw the picture to the screen except bullet
             for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
+
+                if (image instanceof MyPlane){
+                    ((MyPlane) image).isBeat(gameImages,bulletImages);
+                }
+
                 if (image instanceof EnemyShip){
                     ((EnemyShip) image).isBeat(bulletImages);
                     Log.i("REMOVE","Destroied the enemy ship!");
-
                 }
+
+                if (image instanceof EnemyBossShip){
+                    ((EnemyBossShip) image).isBeat(bulletImages);
+                    Log.i("REMOVE","Destroied the enemy boss ship!");
+                }
+
                 c.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
                 if (image instanceof MyPlane && count%4==0){
                     bulletImages.add(new Bullet(bullet,(MyPlane)image));
-                    ((MyPlane) image).isBeat(gameImages,bulletImages);
+                }
+
+                if (image instanceof EnemyBossShip && count%10==0){
+                    enemyBulletImages.add(new EnemyBullet(bullet,(EnemyBossShip)image));
                 }
 
             }

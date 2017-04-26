@@ -105,6 +105,7 @@ MyPlane implements GameImageInterface {
     public float getHeight() {
         return height;
     }
+
     public void isBeat(List<GameImageInterface> EnemyImages,List<Bullet> bulletImages){
         if(!isDestroyed){
             for (GameImageInterface enemyship :EnemyImages){
