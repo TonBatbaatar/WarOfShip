@@ -110,7 +110,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //if condition means:
             //every five time add an enemy ship
             //can change it to control the speed of add new enemy ship
-            if (count%5==0){
+            if (count%10==0){
                 gameImages.add(new EnemyShip(enemy,boom));
             }
             if (count%50==0){

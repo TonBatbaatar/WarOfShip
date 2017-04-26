@@ -26,7 +26,7 @@ public class GameLoop extends Thread {
                 canvas = view.getHolder().lockCanvas();
                 synchronized (view.getHolder()){
                     view.draw(canvas);
-                    Thread.sleep(50);
+                    Thread.sleep(20);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
