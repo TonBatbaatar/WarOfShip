@@ -18,12 +18,12 @@ public class EnemyBullet implements GameImageInterface {
         this.bossShip = bossShip;
 
         x=bossShip.getX()+bossShip.getWidth()/2-10;
-        y=bossShip.getY()+70;//-myBulletImage.getHeight();
+        y=bossShip.getY()+10+bossShip.getHeight();//-myBulletImage.getHeight();
     }
 
     @Override
     public Bitmap getBitmap() {
-        y-=125;
+        y+=125;
         return myBulletImage;
     }
 
