@@ -49,7 +49,7 @@ public class EnemyShip implements GameImageInterface {
             index=0;
         }
 
-        y+=50;
+        y+=25;
         if(this.ifOutOfScreen()){
             EndlessModeGameView.gameImages.remove(this);
         }
