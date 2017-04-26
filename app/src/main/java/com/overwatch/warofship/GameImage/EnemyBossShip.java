@@ -90,9 +90,9 @@ public class EnemyBossShip implements GameImageInterface {
                         &&selectedBullet.getY()<this.getY()+this.enemyBossShipImage.getHeight()){
 
                     bulletImages.remove(selectedBullet);
-                    enemyship=booms;
                     HP++;
                     if(HP>4){
+                        enemyship=booms;
                         isDestroied= true;
                     }
                     break;

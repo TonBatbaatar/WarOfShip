@@ -1,30 +1,27 @@
 package com.overwatch.warofship.GameImage;
 
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 
 public class Bullet implements GameImageInterface {
 
     private Bitmap myBulletImage;
-    private MyPlane myPlaneImage;
+    private MyShip myPlaneImage;
     private float x;
     private float y;
 
-    public Bullet(Bitmap myBulletImage, MyPlane myPlaneImage) {
+    public Bullet(Bitmap myBulletImage, MyShip myPlaneImage) {
         this.myBulletImage = myBulletImage;
         this.myPlaneImage = myPlaneImage;
         //initialize the location of bullet of my ship
-        x=myPlaneImage.getX()+myPlaneImage.getWidth()/2-10;
-        y=myPlaneImage.getY()+70;
+        x=myPlaneImage.getX()+myPlaneImage.getWidth()/2-5;
+        y=myPlaneImage.getY();
     }
 
     @Override
     public Bitmap getBitmap() {
         //move the bullet automatically
         //the number can change the speed
-        y-=125;
+        y-=15;
         return myBulletImage;
     }
 
@@ -43,6 +40,7 @@ public class Bullet implements GameImageInterface {
     public void setY(float y) {
         this.y = y;
     }
+
 
     //the method to judge if the bullet is out of screen
     //true: out of screen

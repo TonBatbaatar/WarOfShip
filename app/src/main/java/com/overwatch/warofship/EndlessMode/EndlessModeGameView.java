@@ -17,7 +17,7 @@ import com.overwatch.warofship.GameImage.EnemyBossShip;
 import com.overwatch.warofship.GameImage.EnemyBullet;
 import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
-import com.overwatch.warofship.GameImage.MyPlane;
+import com.overwatch.warofship.GameImage.MyShip;
 import com.overwatch.warofship.R;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Paint p=new Paint();// Paint for all draw code.
 
     private static int count;//controller of the speed of add a new item to the game.
-    private MyPlane selectedPlane;//used for control the ship.
+    private MyShip selectedShip;//used for control the ship.
 
     //Class variable to store width and height fo the screen.
     public static int SCREEN_WIDTH;
@@ -40,7 +40,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
     //Create Bitmap for picture to store.
     private Bitmap backGround;
-    private Bitmap myPlane;
+    private Bitmap myShip;
     private Bitmap enemy;
     private Bitmap enemyBoss;
     private Bitmap bullet;
@@ -52,8 +52,11 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     //the reason for using class variable is for convenience.
     //we need to use these tree variable in other classes.
     public static ArrayList<GameImageInterface> gameImages = new ArrayList();
-    public static ArrayList<Bullet> bulletImages = new ArrayList();
+    public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public static ArrayList<EnemyBullet> enemyBulletImages = new ArrayList();
+
+
+
 
     //Constructor of the endless mode game view.
     public EndlessModeGameView(Context context){
@@ -98,7 +101,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
         backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
-        myPlane= BitmapFactory.decodeResource(getResources(),R.mipmap.myship);
+        myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.myship);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet_enemy);
@@ -106,8 +109,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.bossship);
 
         gameImages.add(new BackGround(backGround));//add bitmap to list
-        gameImages.add(new MyPlane(myPlane,boom));
+        gameImages.add(new MyShip(myShip,boom));
     }
+
+
+
+
 
     @Override
     //the method of draw the bitmap to the screen
@@ -123,7 +130,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //if condition means that :
             //every five time we run this method add an enemy ship
             //can change it's value to control the speed of add new enemy ship
-            if (count%5==0){
+            if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
             }
             if (count%150==0){
@@ -140,8 +147,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 //these two if conditions is for:
                 //shoot the bullet
                 //count is also speed controller of bullet
-                if (image instanceof MyPlane && count%4==0){
-                    bulletImages.add(new Bullet(bullet,(MyPlane)image));
+                if (image instanceof MyShip && count%6==0){
+                    PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
                 }
                 if (image instanceof EnemyBossShip && count%10==0){
                     enemyBulletImages.add(new EnemyBullet(bullet,(EnemyBossShip)image));//shoot of enemy boss ship
@@ -149,24 +156,24 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
                 //this if method is for:
                 //destroy the player ship when it crashed with enemy ships
-                if (image instanceof MyPlane){
-                    ((MyPlane) image).isBeat(gameImages,bulletImages);
+                if (image instanceof MyShip){
+                    ((MyShip) image).isBeat(gameImages,PLAYER_BULLET_IMAGES);
                 }
 
                 //these two if conditions is for :
                 //destroy the enemy ships when it destroyed
                 if (image instanceof EnemyShip){
-                    ((EnemyShip) image).isBeat(bulletImages);
+                    ((EnemyShip) image).CheckIsBeat();
                     Log.i("TEST.REMOVE","Enemy ship is destroyed!");
                 }
                 if (image instanceof EnemyBossShip){
-                    ((EnemyBossShip) image).isBeat(bulletImages);
+                    ((EnemyBossShip) image).isBeat(PLAYER_BULLET_IMAGES);
                     Log.i("TEST.REMOVE","Destroyed the enemy boss ship!");
                 }
             }
 
             ////draw the bullet image to the screen
-            for (Bullet bullet : bulletImages){
+            for (Bullet bullet : PLAYER_BULLET_IMAGES){
                 c.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
             }
 
@@ -174,9 +181,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             // but there is still one problem to deal with:
             // I can't remove multi bullet in one loop
             // so i use break to remove one at one time;
-            for (Bullet bullet : bulletImages){
+            for (Bullet bullet : PLAYER_BULLET_IMAGES){
                 if (bullet.ifOutOfScreen()){
-                    bulletImages.remove(bullet);
+                    PLAYER_BULLET_IMAGES.remove(bullet);
                     Log.i("REMOVE","Removed the bullet!");
                 }
                 break;
@@ -193,12 +200,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
         if (event.getAction()==MotionEvent.ACTION_DOWN){
             for (GameImageInterface image: gameImages){
-                if (image instanceof MyPlane){
+                if (image instanceof MyShip){
                     //this if method is select the ship when we touch on it
-                    if (((MyPlane) image).ifPlaneSelected(event.getX(),event.getY())){
-                        selectedPlane=(MyPlane)image;
+                    if (((MyShip) image).ifPlaneSelected(event.getX(),event.getY())){
+                        selectedShip=(MyShip)image;
                     }else {
-                        selectedPlane = null;
+                        selectedShip = null;
                     }
                     break;
                 }
@@ -206,15 +213,15 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         } else if (event.getAction()==MotionEvent.ACTION_MOVE){
 
             //this if method is actual part of draw at location we moved
-            if (selectedPlane!=null){
-                float newX=event.getX()-(selectedPlane.getWidth()/2);
-                float newY=event.getY()-(selectedPlane.getHeight()/2);
-                selectedPlane.setX(newX);
-                selectedPlane.setY(newY);
+            if (selectedShip!=null){
+                float newX=event.getX()-(selectedShip.getWidth()/2);
+                float newY=event.getY()-(selectedShip.getHeight()/2);
+                selectedShip.setX(newX);
+                selectedShip.setY(newY);
             }
 
         } else if (event.getAction()==MotionEvent.ACTION_UP){
-            selectedPlane=null;//release the ship
+            selectedShip=null;//release the ship
         }
         return true;
     }

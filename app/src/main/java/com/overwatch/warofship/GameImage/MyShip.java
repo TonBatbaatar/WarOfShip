@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class
-MyPlane implements GameImageInterface {
+MyShip implements GameImageInterface {
 
     private Bitmap myShipImage;
     private Bitmap boomImage;
@@ -22,7 +22,7 @@ MyPlane implements GameImageInterface {
     private float width;
     private float height;
 
-    public MyPlane(Bitmap myShipImage,Bitmap boomImage){
+    public MyShip(Bitmap myShipImage, Bitmap boomImage){
         this.myShipImage=myShipImage;
         this.boomImage=boomImage;
         myShipImages.add(myShipImage);
@@ -108,7 +108,7 @@ MyPlane implements GameImageInterface {
                             &&enemyship.getY()>this.getY()
                             &&enemyship.getX()<this.getX()+this.myShipImage.getWidth()
                             &&enemyship.getY()<this.getY()+this.myShipImage.getHeight()){
-                       ((EnemyShip) enemyship).isBeat(bulletImages);
+                       ((EnemyShip) enemyship).CheckIsBeat();
                         myShipImages=booms;
                         isDestroyed= true;
                         break;
