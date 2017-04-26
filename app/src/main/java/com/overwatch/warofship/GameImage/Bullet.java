@@ -1,9 +1,5 @@
 package com.overwatch.warofship.GameImage;
 
-/**
- * Created by Administrator on 2017/4/25.
- */
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -21,7 +17,7 @@ public class Bullet implements GameImageInterface {
     public Bullet(Bitmap myBulletImage, MyPlane myPlaneImage) {
 
         this.myBulletImage = myBulletImage;
-        this.myPlaneImage= myPlaneImage;
+        this.myPlaneImage = myPlaneImage;
 
         x=myPlaneImage.getX()+myPlaneImage.getWidth()/2-10;
         y=myPlaneImage.getY()+70;//-myBulletImage.getHeight();

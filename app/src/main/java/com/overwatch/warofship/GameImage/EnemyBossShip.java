@@ -1,29 +1,28 @@
 package com.overwatch.warofship.GameImage;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
-public class EnemyShip implements GameImageInterface {
+public class EnemyBossShip implements GameImageInterface {
 
-    private Bitmap enemyShip1Image;
-    private Random random = new Random();
+    private Bitmap enemyBossShipImage;
     private List<Bitmap> booms=new ArrayList<>();
     private List<Bitmap> enemyship=new ArrayList<>();
     private int index=0;
     private boolean isDestroied=false;
+    private boolean moveDirection=true;
 
     private float x;
     private float y;
 
-    public EnemyShip(Bitmap enemyShip1Image,Bitmap boom) {
-
-        this.enemyShip1Image=enemyShip1Image;
-        enemyship.add(enemyShip1Image);
+    public EnemyBossShip(Bitmap enemyBossShipImage, Bitmap boom) {
+        this.enemyBossShipImage=enemyBossShipImage;
+        enemyship.add(enemyBossShipImage);
 
         booms.add(Bitmap.createBitmap(boom,0,0,boom.getWidth()/7,boom.getHeight()));
         booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*1,0,boom.getWidth()/7,boom.getHeight()));
@@ -33,13 +32,14 @@ public class EnemyShip implements GameImageInterface {
         booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*5,0,boom.getWidth()/7,boom.getHeight()));
         booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*6,0,boom.getWidth()/7,boom.getHeight()));
 
-        x=random.nextInt(EndlessModeGameView.SCREEN_WIDTH-this.enemyShip1Image.getWidth());
-        y=-this.enemyShip1Image.getHeight()-20;
+        //x=(EndlessModeGameView.SCREEN_WIDTH+this.enemyBossShipImage.getWidth())/2;
+        x=0;
+        y=-enemyBossShipImage.getHeight();
     }
 
     @Override
     public Bitmap getBitmap() {
-        Bitmap bitmaps=enemyship.get(index);
+        Bitmap selectedImage=enemyship.get(index);
         index++;
         if(index==7&&isDestroied){
             EndlessModeGameView.gameImages.remove(this);
@@ -49,11 +49,13 @@ public class EnemyShip implements GameImageInterface {
             index=0;
         }
 
-        y+=50;
         if(this.ifOutOfScreen()){
             EndlessModeGameView.gameImages.remove(this);
         }
-        return bitmaps;
+
+        this.moveVerticalAuto();
+        this.moveHorizontalAuto();
+        return selectedImage;
     }
 
     @Override
@@ -79,8 +81,8 @@ public class EnemyShip implements GameImageInterface {
             for (Bullet selectedBullet : bulletImages){
                 if (selectedBullet.getX()>this.getX()
                         &&selectedBullet.getY()>this.getY()
-                        &&selectedBullet.getX()<this.getX()+this.enemyShip1Image.getWidth()
-                        &&selectedBullet.getY()<this.getY()+this.enemyShip1Image.getHeight()){
+                        &&selectedBullet.getX()<this.getX()+this.enemyBossShipImage.getWidth()
+                        &&selectedBullet.getY()<this.getY()+this.enemyBossShipImage.getHeight()){
 
                     bulletImages.remove(selectedBullet);
                     enemyship=booms;
@@ -92,8 +94,24 @@ public class EnemyShip implements GameImageInterface {
         }
     }
 
+    private void moveHorizontalAuto(){
+        if (moveDirection){
+            x=x+20;
+        }else {
+            x=x-20;
+        }
+
+        if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyBossShipImage.getWidth())
+                ||this.x<=0){
+
+            moveDirection=!moveDirection;
+        }
+    }
+
+    private void moveVerticalAuto(){
+       if (y<=0){
+           y=y+20;
+       }
+    }
+
 }
-
-
-
-

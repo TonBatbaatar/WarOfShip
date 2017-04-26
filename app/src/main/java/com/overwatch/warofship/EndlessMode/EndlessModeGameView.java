@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
+import com.overwatch.warofship.GameImage.EnemyBossShip;
 import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
 import com.overwatch.warofship.GameImage.MyPlane;
@@ -39,11 +40,13 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Bitmap backGround;
     private Bitmap myPlane;
     private Bitmap enemy;
+    private Bitmap enemyBoss;
     private Bitmap bullet;
     private Bitmap boom;
     private Bitmap preparation;
+
     public static ArrayList<GameImageInterface> gameImages = new ArrayList();
-    private ArrayList<Bullet> bulletImages = new ArrayList();
+    public static ArrayList<Bullet> bulletImages = new ArrayList();
 
     public EndlessModeGameView(Context context){
 
@@ -85,6 +88,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemy);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemyboss);
 
         gameImages.add(new BackGround(backGround));
         gameImages.add(new MyPlane(myPlane));
@@ -98,12 +102,15 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             Canvas c=new Canvas(preparation);
             count++;
 
-            //// add enemy ship ramdomly
+            //// add enemy ship randomly
             //if condition means:
             //every five time add an enemy ship
             //can change it to control the speed of add new enemy ship
             if (count%5==0){
                 gameImages.add(new EnemyShip(enemy,boom));
+            }
+            if (count%50==0){
+                gameImages.add(new EnemyBossShip(enemyBoss,boom));
             }
 
             ////draw the picture to the screen except bullet
@@ -115,7 +122,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 }
                 c.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
-                if (image instanceof MyPlane && count%2==0){
+                if (image instanceof MyPlane && count%4==0){
                     bulletImages.add(new Bullet(bullet,(MyPlane)image));
                 }
 
@@ -126,38 +133,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 c.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
             }
 
-            ////remove the enemy ship if beat
-            //some problem with that:
-            //may because i use so many for loop
-            //some bullet can not destroy the ship
-//            for (GameImageInterface image : gameImages){
-//
-//
-//
-//
-//            }
-
-            ////remove the enemy ship already out of the screen
-            // but there is still one problem to deal with:
-            // I can't remove multible bullet in one loop
-            // so i use break to remove one at one time;
-//            for (GameImageInterface image : gameImages){
-//                if (image instanceof EnemyShip){
-//
-//                    EnemyShip selectedEnemyShip=(EnemyShip)image;
-//                    if (selectedEnemyShip.ifOutOfScreen()){
-//                        gameImages.remove(image);
-//                        Log.i("REMOVE","Removed the enemy ship!");
-//                        break;
-//                    }
-//
-//                }
-//
-//            }
-
             ////remove the bullet already out of the screen
             // but there is still one problem to deal with:
-            // I can't remove multible bullet in one loop
+            // I can't remove multi bullet in one loop
             // so i use break to remove one at one time;
             for (Bullet bullet : bulletImages){
                 if (bullet.ifOutOfScreen()){
