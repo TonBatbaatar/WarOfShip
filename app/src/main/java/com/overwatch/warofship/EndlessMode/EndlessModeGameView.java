@@ -139,7 +139,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
                 //these two if conditions is for:
                 //shoot the bullet
-                //count is also speed contoller of bullet
+                //count is also speed controller of bullet
                 if (image instanceof MyPlane && count%4==0){
                     bulletImages.add(new Bullet(bullet,(MyPlane)image));
                 }
