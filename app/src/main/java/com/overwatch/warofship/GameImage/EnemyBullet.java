@@ -7,7 +7,6 @@ import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 public class EnemyBullet implements GameImageInterface {
 
     private Bitmap myBulletImage;
-    private EnemyBossShip bossShip;
 
     private float x;
     private float y;
@@ -15,15 +14,14 @@ public class EnemyBullet implements GameImageInterface {
     public EnemyBullet(Bitmap myBulletImage, EnemyBossShip bossShip) {
 
         this.myBulletImage = myBulletImage;
-        this.bossShip = bossShip;
 
         x=bossShip.getX()+bossShip.getWidth()/2-10;
-        y=bossShip.getY()+10+bossShip.getHeight();//-myBulletImage.getHeight();
+        y=bossShip.getY()+10+bossShip.getHeight();
     }
 
     @Override
     public Bitmap getBitmap() {
-        y+=125;
+        y+=15;
         return myBulletImage;
     }
 
@@ -31,16 +29,12 @@ public class EnemyBullet implements GameImageInterface {
     public float getX() {
         return x;
     }
-
-    @Override
     public float getY() {
         return y;
     }
-
     public void setX(float x) {
         this.x = x;
     }
-
     public void setY(float y) {
         this.y = y;
     }
