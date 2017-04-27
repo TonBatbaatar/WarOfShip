@@ -53,7 +53,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     //we need to use these tree variable in other classes.
     public static ArrayList<GameImageInterface> gameImages = new ArrayList();
     public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
-    public static ArrayList<EnemyBullet> enemyBulletImages = new ArrayList();
+    public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
 
 
 
@@ -105,7 +105,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet_enemy);
+        enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
 
@@ -151,8 +151,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 if (image instanceof MyShip && count%6==0){
                     PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
                 }
-                if (image instanceof EnemyBossShip && count%10==0){
-                    enemyBulletImages.add(new EnemyBullet(bullet,(EnemyBossShip)image));//shoot of enemy boss ship
+                if (image instanceof EnemyBossShip && count%25==0){
+                    ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image));//shoot of enemy boss ship
                 }
 
                 //this if method is for:
@@ -165,16 +165,19 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 //destroy the enemy ships when it destroyed
                 if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
-                    Log.i("TEST.REMOVE","Enemy ship is destroyed!");
                 }
                 if (image instanceof EnemyBossShip){
                     ((EnemyBossShip) image).isBeat(PLAYER_BULLET_IMAGES);
-                    Log.i("TEST.REMOVE","Destroyed the enemy boss ship!");
                 }
             }
 
             ////draw the bullet image to the screen
             for (Bullet bullet : PLAYER_BULLET_IMAGES){
+                c.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
+            }
+
+            ////draw the bullet image to the screen
+            for (EnemyBullet bullet : ENEMY_BULLET_IMAGES){
                 c.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
             }
 
