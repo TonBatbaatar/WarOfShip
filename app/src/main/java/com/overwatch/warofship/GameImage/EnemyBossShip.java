@@ -11,6 +11,7 @@ import java.util.List;
 public class EnemyBossShip implements GameImageInterface {
 
     private Bitmap enemyBossShipImage;
+    private Bitmap boomImage;
     private List<Bitmap> booms=new ArrayList<>();
     private List<Bitmap> enemyship=new ArrayList<>();
     private int index=0;
@@ -23,23 +24,27 @@ public class EnemyBossShip implements GameImageInterface {
     private float width;
     private float height;
 
-    public EnemyBossShip(Bitmap enemyBossShipImage, Bitmap boom) {
+    public EnemyBossShip(Bitmap enemyBossShipImage, Bitmap boomImage){
         this.enemyBossShipImage=enemyBossShipImage;
+        this.boomImage=boomImage;
         enemyship.add(enemyBossShipImage);
+        this.initBoomPic();
 
-        booms.add(Bitmap.createBitmap(boom,0,0,boom.getWidth()/7,boom.getHeight()));
-        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*1,0,boom.getWidth()/7,boom.getHeight()));
-        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*2,0,boom.getWidth()/7,boom.getHeight()));
-        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*3,0,boom.getWidth()/7,boom.getHeight()));
-        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*4,0,boom.getWidth()/7,boom.getHeight()));
-        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*5,0,boom.getWidth()/7,boom.getHeight()));
-        booms.add(Bitmap.createBitmap(boom,(boom.getWidth()/7)*6,0,boom.getWidth()/7,boom.getHeight()));
-
-        //x=(EndlessModeGameView.SCREEN_WIDTH+this.enemyBossShipImage.getWidth())/2;
         x=0;
         y=-enemyBossShipImage.getHeight();
         width=enemyBossShipImage.getWidth();
         height=enemyBossShipImage.getHeight();
+    }
+
+    //initialize the boom pictures;
+    private void initBoomPic(){
+        booms.add(Bitmap.createBitmap(boomImage,0,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*1,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*2,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*3,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*4,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*5,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*6,0,boomImage.getWidth()/7,boomImage.getHeight()));
     }
 
     @Override
