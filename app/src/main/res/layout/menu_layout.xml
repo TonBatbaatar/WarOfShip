@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@mipmap/menu">
+    android:background="@mipmap/welcomebackground">
 
     <Button
-    android:id="@+id/button_2"
-    android:background="#808080"
-    android:textColor="#daa520"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="setting"
-    android:layout_marginTop="163dp"
-        android:layout_below="@+id/button_1"
+        android:id="@+id/button_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_light"
+        android:text="setting"
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:layout_marginBottom="136dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/button_1"
-        android:background="#808080"
-        android:textColor="#daa520"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_light"
         android:text="start"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+        android:layout_marginBottom="65dp"
+        android:layout_alignBottom="@+id/button_2"
+        android:layout_alignLeft="@+id/button_2"
+        android:layout_alignStart="@+id/button_2" />
 
 
 </RelativeLayout>

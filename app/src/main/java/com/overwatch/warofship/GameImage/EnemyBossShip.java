@@ -104,9 +104,9 @@ public class EnemyBossShip implements GameImageInterface {
 
     private void moveHorizontalAuto(){
         if (moveDirection){
-            x=x+20;
+            x=x+5;
         }else {
-            x=x-20;
+            x=x-5;
         }
 
         if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyBossShipImage.getWidth())
@@ -118,7 +118,7 @@ public class EnemyBossShip implements GameImageInterface {
 
     private void moveVerticalAuto(){
        if (y<=0){
-           y=y+20;
+           y=y+5;
        }
     }
 

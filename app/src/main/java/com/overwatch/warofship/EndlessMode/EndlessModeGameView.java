@@ -101,12 +101,13 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
         backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
-        myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.myship);
+        myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.playership);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
+        enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet_enemy);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
-        enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.bossship);
+
 
         gameImages.add(new BackGround(backGround));//add bitmap to list
         gameImages.add(new MyShip(myShip,boom));
