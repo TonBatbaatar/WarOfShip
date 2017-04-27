@@ -148,7 +148,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 //these two if conditions is for:
                 //shoot the bullet
                 //count is also speed controller of bullet
-                if (image instanceof MyShip && count%6==0){
+                if (image instanceof MyShip && count%10==0){
                     PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
                 }
                 if (image instanceof EnemyBossShip && count%25==0){
