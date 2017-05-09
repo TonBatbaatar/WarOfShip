@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -27,6 +29,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
+    private sound sound;
 
     private Paint p=new Paint();// Paint for all draw code.
 
@@ -48,6 +51,13 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Bitmap boom;
     private Bitmap preparation;
 
+
+
+    public static  SoundPool mysound;
+    public static int sound_boom;
+    private int sound_shot;
+    private int sound_background;
+
     //Class variable to store bullet images and game images.
     //the reason for using class variable is for convenience.
     //we need to use these tree variable in other classes.
@@ -63,6 +73,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
         super(context);
         gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
+        sound = new sound(this,sound.i);
         this.setOnTouchListener(this);//add the touch listener.
         holder=getHolder();
         //Main part of run the game.
@@ -111,6 +122,10 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
         gameImages.add(new BackGround(backGround));//add bitmap to list
         gameImages.add(new MyShip(myShip,boom));
+
+
+        mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
+        sound_boom=mysound.load(getContext(),R.raw.4032,1);
     }
 
 

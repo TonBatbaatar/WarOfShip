@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+import com.overwatch.warofship.EndlessMode.sound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,8 @@ public class EnemyShip implements GameImageInterface {
                     EndlessModeGameView.PLAYER_BULLET_IMAGES.remove(selectedBullet);
                     enemyship=booms;
                     isDestroied= true;
+                    new sound(sound.view,EndlessModeGameView.sound_boom).start();
+                    EndlessModeGameView.mysound.play(EndlessModeGameView.sound_boom,1,1,1,0,1);
                     break;
                 }
             }
