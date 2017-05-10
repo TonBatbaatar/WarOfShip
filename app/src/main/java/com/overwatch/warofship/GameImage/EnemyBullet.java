@@ -11,6 +11,8 @@ public class EnemyBullet implements GameImageInterface {
     private float x;
     private float y;
 
+    private boolean hit=false;
+
     public EnemyBullet(Bitmap myBulletImage, EnemyBossShip bossShip) {
 
         this.myBulletImage = myBulletImage;
@@ -44,6 +46,25 @@ public class EnemyBullet implements GameImageInterface {
             return true;
         }else{
             return false;
+        }
+    }
+    public void CheckIsBeat(MyShip myShip){
+        if(!hit){
+            for (EnemyBullet selectedBullet : EndlessModeGameView.ENEMY_BULLET_IMAGES){
+                if (selectedBullet.getX()>this.getX()
+                        &&selectedBullet.getY()>this.getY()
+                        &&selectedBullet.getX()<this.getX()+myShip.getWidth()
+                        &&selectedBullet.getY()<this.getY()+myShip.getHeight()){
+
+                    EndlessModeGameView.ENEMY_BULLET_IMAGES.remove(selectedBullet);
+
+                    hit= true;
+//                    new sound(sound.view,EndlessModeGameView.sound_boom).start();
+//                    EndlessModeGameView.mysound.play(EndlessModeGameView.sound_boom,1,1,1,0,1);
+                    break;
+                }
+            }
+
         }
     }
 }

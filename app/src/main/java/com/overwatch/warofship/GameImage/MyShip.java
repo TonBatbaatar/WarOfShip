@@ -100,7 +100,7 @@ MyShip implements GameImageInterface {
         return height;
     }
 
-    public void isBeat(List<GameImageInterface> EnemyImages,List<Bullet> bulletImages){
+    public void isBeat(List<GameImageInterface> EnemyImages,List<EnemyBullet> bulletImages){
         if(!isDestroyed){
             for (GameImageInterface enemyship :EnemyImages){
                 if(enemyship instanceof EnemyShip){
@@ -115,6 +115,20 @@ MyShip implements GameImageInterface {
                     }
                 }
 
+            }
+            for(GameImageInterface enemybullet :bulletImages){
+                if(enemybullet instanceof EnemyBullet){
+                    if(enemybullet.getX()>this.getX()
+                            &&enemybullet.getY()>this.getY()
+                            &&enemybullet.getX()<this.getX()+this.myShipImage.getWidth()
+                            &&enemybullet.getY()<this.getY()+this.myShipImage.getHeight()){
+                        ((EnemyBullet)enemybullet).CheckIsBeat(this);
+                        myShipImages=booms;
+                        isDestroyed= true;
+                        break;
+
+                    }
+                }
             }
 
         }

@@ -55,7 +55,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
     public static  SoundPool mysound;
     public static int sound_boom;
-    private int sound_shot;
+    public static int sound_shot;
     private int sound_background;
 
     //Class variable to store bullet images and game images.
@@ -125,7 +125,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
 
         mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
-        sound_boom=mysound.load(getContext(),R.raw.4032,1);
+        sound_boom=mysound.load(getContext(),R.raw.boom,1);
+        sound_shot=mysound.load(getContext(),R.raw.shot,1);
     }
 
 
@@ -165,6 +166,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 //count is also speed controller of bullet
                 if (image instanceof MyShip && count%10==0){
                     PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
+                    new sound(sound.view,sound_shot).start();
+                    EndlessModeGameView.mysound.play(sound_shot,1,1,1,0,1);
                 }
                 if (image instanceof EnemyBossShip && count%25==0){
                     ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image));//shoot of enemy boss ship
@@ -173,7 +176,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 //this if method is for:
                 //destroy the player ship when it crashed with enemy ships
                 if (image instanceof MyShip){
-                    ((MyShip) image).isBeat(gameImages,PLAYER_BULLET_IMAGES);
+                    ((MyShip) image).isBeat(gameImages,ENEMY_BULLET_IMAGES);
                 }
 
                 //these two if conditions is for :
@@ -194,6 +197,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             ////draw the bullet image to the screen
             for (EnemyBullet bullet : ENEMY_BULLET_IMAGES){
                 c.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
+
             }
 
             ////remove the bullet already out of the screen
