@@ -25,8 +25,7 @@ import com.overwatch.warofship.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EndlessModeGameView extends SurfaceView implements View.OnTouchListener {
-
+public class StoryModeGameView extends EndlessModeGameView implements View.OnTouchListener {
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
     private sound sound;
@@ -54,7 +53,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
 
 
-    public static  SoundPool mysound;
+    public static SoundPool mysound;
     public static int sound_boom;
     public static int sound_shot;
     private int sound_background;
@@ -70,7 +69,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
 
     //Constructor of the endless mode game view.
-    public EndlessModeGameView(Context context){
+    public StoryModeGameView(Context context){
 
         super(context);
         gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.

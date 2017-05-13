@@ -9,6 +9,16 @@ public class Bullet implements GameImageInterface {
     private float x;
     private float y;
 
+    /**
+     * Create player bullet
+     *
+     * @param myBulletImage
+     *              the Bitmap used for draw
+     *
+     * @param myPlaneImage
+     *              player ship to initialize location of bullet
+     *
+     */
     public Bullet(Bitmap myBulletImage, MyShip myPlaneImage) {
         this.myBulletImage = myBulletImage;
         this.myPlaneImage = myPlaneImage;

@@ -7,15 +7,14 @@ import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class
-MyShip implements GameImageInterface {
+public class MyShip implements GameImageInterface {
 
     private Bitmap myShipImage;
     private Bitmap boomImage;
     private List<Bitmap> booms=new ArrayList<>();
     private List<Bitmap> myShipImages=new ArrayList<>();
     private int index;
-    private boolean isDestroyed=false;
+    private boolean isDestroyed;
 
     private float x;
     private float y;
@@ -27,6 +26,7 @@ MyShip implements GameImageInterface {
         this.boomImage=boomImage;
         myShipImages.add(myShipImage);
         this.index=0;
+        this.isDestroyed=false;
 
         this.initBoomPic();//initialize the boom pictures
 
@@ -41,7 +41,7 @@ MyShip implements GameImageInterface {
     //initialize the boom pictures;
     private void initBoomPic(){
         booms.add(Bitmap.createBitmap(boomImage,0,0,boomImage.getWidth()/7,boomImage.getHeight()));
-        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*1,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7),0,boomImage.getWidth()/7,boomImage.getHeight()));
         booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*2,0,boomImage.getWidth()/7,boomImage.getHeight()));
         booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*3,0,boomImage.getWidth()/7,boomImage.getHeight()));
         booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*4,0,boomImage.getWidth()/7,boomImage.getHeight()));
@@ -67,7 +67,7 @@ MyShip implements GameImageInterface {
     }
 
     @Override
-    //getter and setter method of location
+    //// Getter and setter method of location
     public float getX() {
         return x;
     }
@@ -81,6 +81,8 @@ MyShip implements GameImageInterface {
         this.y = y;
     }
 
+
+    //// Check if plane selected by player
     public boolean ifPlaneSelected(float x, float y){
         if (x>this.getX()
                 &&y>this.getY()
@@ -92,14 +94,17 @@ MyShip implements GameImageInterface {
         }
     }
 
+
+    //// Getter of width and height
     public float getWidth() {
         return width;
     }
-
     public float getHeight() {
         return height;
     }
 
+
+    ////
     public void isBeat(List<GameImageInterface> EnemyImages,List<EnemyBullet> bulletImages){
         if(!isDestroyed){
             for (GameImageInterface enemyship :EnemyImages){
