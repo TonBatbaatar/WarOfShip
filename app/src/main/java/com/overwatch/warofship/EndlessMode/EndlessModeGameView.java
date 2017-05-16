@@ -1,6 +1,7 @@
 package com.overwatch.warofship.EndlessMode;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.overwatch.warofship.End;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -20,13 +22,13 @@ import com.overwatch.warofship.GameImage.EnemyBullet;
 import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
 import com.overwatch.warofship.GameImage.MyShip;
-import com.overwatch.warofship.R;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EndlessModeGameView extends SurfaceView implements View.OnTouchListener {
-
+    public static boolean lala=false;
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
     private sound sound;
@@ -58,7 +60,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     public static int sound_boom;
     public static int sound_shot;
     private int sound_background;
-
+    private Context context;
     //Class variable to store bullet images and game images.
     //the reason for using class variable is for convenience.
     //we need to use these tree variable in other classes.
@@ -71,11 +73,13 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
     //Constructor of the endless mode game view.
     public EndlessModeGameView(Context context){
-
         super(context);
+
+
         gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
         sound = new sound(this,sound.i);
         this.setOnTouchListener(this);//add the touch listener.
+        this.context=context;
         holder=getHolder();
         //Main part of run the game.
         //Game start from here.
@@ -123,7 +127,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
 
         gameImages.add(new BackGround(backGround));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom));
+        gameImages.add(new MyShip(myShip,boom,context));
 
 
         mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
@@ -188,6 +192,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
                     ((MyShip) image).isBeat(gameImages,ENEMY_BULLET_IMAGES);
+
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){

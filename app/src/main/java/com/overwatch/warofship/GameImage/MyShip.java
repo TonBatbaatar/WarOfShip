@@ -1,13 +1,20 @@
 package com.overwatch.warofship.GameImage;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v7.app.AppCompatActivity;
 
+import com.overwatch.warofship.End;
+import com.overwatch.warofship.EndlessMode.EndlessModeActivity;
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyShip implements GameImageInterface {
+public  class MyShip implements GameImageInterface {
 
     private Bitmap myShipImage;
     private Bitmap boomImage;
@@ -20,14 +27,14 @@ public class MyShip implements GameImageInterface {
     private float y;
     private float width;
     private float height;
-
-    public MyShip(Bitmap myShipImage, Bitmap boomImage){
+    private Context context;
+    public MyShip(Bitmap myShipImage, Bitmap boomImage, Context context){
         this.myShipImage=myShipImage;
         this.boomImage=boomImage;
         myShipImages.add(myShipImage);
         this.index=0;
         this.isDestroyed=false;
-
+        this.context=context;
         this.initBoomPic();//initialize the boom pictures
 
         //initialize the width and height
@@ -115,7 +122,11 @@ public class MyShip implements GameImageInterface {
                             &&enemyship.getY()<this.getY()+this.myShipImage.getHeight()){
                        ((EnemyShip) enemyship).CheckIsBeat();
                         myShipImages=booms;
+                        System.out.print("1");
+                        Intent intent=new Intent(context,End.class);
+                        context.startActivity(intent);
                         isDestroyed= true;
+
                         break;
                     }
                 }
@@ -129,8 +140,11 @@ public class MyShip implements GameImageInterface {
                             &&enemybullet.getY()<this.getY()+this.myShipImage.getHeight()){
                         ((EnemyBullet)enemybullet).CheckIsBeat(this);
                         myShipImages=booms;
+                        System.out.print("2");
+                        Intent intent=new Intent(context,End.class);
+                        context.startActivity(intent);
                         isDestroyed= true;
-                        break;
+
 
                     }
                 }

@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EndlessMode.EndlessModeActivity"></activity>
+        <activity android:name=".EndlessMode.EndlessModeActivity" />
+        <activity android:name=".End" />
     </application>
 
 </manifest>
