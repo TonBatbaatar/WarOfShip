@@ -63,7 +63,7 @@ public  class MyShip implements GameImageInterface {
 
         //if ship destroyed and played all boom pictures we remove my ship
         if(index==7&&isDestroyed){
-            EndlessModeGameView.gameImages.remove(this);
+            EndlessModeGameView.GAME_IMAGES.remove(this);
         }
         //make sure the we can draw every time
         if(index==myShipImages.size()){
@@ -111,46 +111,51 @@ public  class MyShip implements GameImageInterface {
     }
 
 
-    ////
-    public void isBeat(List<GameImageInterface> EnemyImages,List<EnemyBullet> bulletImages){
-        if(!isDestroyed){
-            for (GameImageInterface enemyship :EnemyImages){
-                if(enemyship instanceof EnemyShip){
-                    if (enemyship.getX()>this.getX()
-                            &&enemyship.getY()>this.getY()
-                            &&enemyship.getX()<this.getX()+this.myShipImage.getWidth()
-                            &&enemyship.getY()<this.getY()+this.myShipImage.getHeight()){
-                       ((EnemyShip) enemyship).CheckIsBeat();
-                        myShipImages=booms;
-                        System.out.print("1");
-                        Intent intent=new Intent(context,End.class);
-                        context.startActivity(intent);
-                        isDestroyed= true;
+    ////Check if the player ship is beat
+    //boolean return type is just for stop the loop
+    public boolean checkIsBeat(){
+        if (!this.isDestroyed){
+            //check if player ship crash with enemy ship
+            for (GameImageInterface image : EndlessModeGameView.GAME_IMAGES){
+                if(image instanceof EnemyShip){
+                    if (image.getX()>this.getX()
+                            &&image.getY()>this.getY()
+                            &&image.getX()<this.getX()+this.myShipImage.getWidth()
+                            &&image.getY()<this.getY()+this.myShipImage.getHeight()){
 
-                        break;
+                        ((EnemyShip) image).removeEnmeyShip();
+                        this.removePlayership();
+                        return true;
                     }
                 }
 
             }
-            for(GameImageInterface enemybullet :bulletImages){
+
+            //check if player ship beat by enemy bullet
+            for(GameImageInterface enemybullet :EndlessModeGameView.ENEMY_BULLET_IMAGES){
                 if(enemybullet instanceof EnemyBullet){
                     if(enemybullet.getX()>this.getX()
                             &&enemybullet.getY()>this.getY()
                             &&enemybullet.getX()<this.getX()+this.myShipImage.getWidth()
                             &&enemybullet.getY()<this.getY()+this.myShipImage.getHeight()){
-                        ((EnemyBullet)enemybullet).CheckIsBeat(this);
-                        myShipImages=booms;
-                        System.out.print("2");
-                        Intent intent=new Intent(context,End.class);
-                        context.startActivity(intent);
-                        isDestroyed= true;
 
-
+                        ((EnemyBullet)enemybullet).removeEnemyBullet();
+                        this.removePlayership();
+                        return true;
                     }
                 }
             }
-
+        }else if (this.isDestroyed){
+          return true;
         }
+        return false;
+    }
+
+    public void removePlayership(){
+        myShipImages=booms;
+        isDestroyed= true;
+        Intent intent=new Intent(context,End.class);
+        context.startActivity(intent);
     }
 
 }

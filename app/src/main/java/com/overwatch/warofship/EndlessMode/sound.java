@@ -1,8 +1,5 @@
 package com.overwatch.warofship.EndlessMode;
 
-/**
- * Created by Administrator on 2017/5/9.
- */
 
 public class sound extends Thread {
     public static EndlessModeGameView view;

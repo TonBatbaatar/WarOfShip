@@ -54,11 +54,11 @@ public class EnemyShip implements GameImageInterface {
         //remove the ship if nessary
         //first if: remove when destroy and played the boom picture
         if(index==7&&isDestroied){
-            EndlessModeGameView.gameImages.remove(this);
+            EndlessModeGameView.GAME_IMAGES.remove(this);
         }
         //second if: remove if out of screen
         if(this.ifOutOfScreen()){
-            EndlessModeGameView.gameImages.remove(this);
+            EndlessModeGameView.GAME_IMAGES.remove(this);
             Log.i("REMOVE.Test","The enemy ship is removed because it out of screen");
         }
 
@@ -95,7 +95,7 @@ public class EnemyShip implements GameImageInterface {
     }
 
     public void CheckIsBeat(){
-        if(!isDestroied){
+        if (!this.isDestroied){
             for (Bullet selectedBullet : EndlessModeGameView.PLAYER_BULLET_IMAGES){
                 if (selectedBullet.getX()>this.getX()
                         &&selectedBullet.getY()>this.getY()
@@ -103,20 +103,18 @@ public class EnemyShip implements GameImageInterface {
                         &&selectedBullet.getY()<this.getY()+this.enemyShipImage.getHeight()){
 
                     EndlessModeGameView.PLAYER_BULLET_IMAGES.remove(selectedBullet);
-                    enemyship=booms;
-                    isDestroied= true;
-                    new sound(sound.view,EndlessModeGameView.sound_boom).start();
-                    EndlessModeGameView.mysound.play(EndlessModeGameView.sound_boom,1,1,1,0,1);
+                    this.removeEnmeyShip();
                     break;
                 }
             }
-
         }
     }
 
+    public void removeEnmeyShip(){
+        enemyship=booms;
+        isDestroied = true;
+        new sound(sound.view,EndlessModeGameView.sound_boom).start();
+        EndlessModeGameView.mysound.play(EndlessModeGameView.sound_boom,1,1,1,0,1);
+    }
+
 }
-
-
-
-
-//fafafag

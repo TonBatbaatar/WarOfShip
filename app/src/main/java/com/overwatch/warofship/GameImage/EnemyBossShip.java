@@ -52,7 +52,7 @@ public class EnemyBossShip implements GameImageInterface {
         Bitmap selectedImage=enemyship.get(index);
         index++;
         if(index==7&&isDestroied){
-            EndlessModeGameView.gameImages.remove(this);
+            EndlessModeGameView.GAME_IMAGES.remove(this);
         }
 
         if(index==enemyship.size()){
@@ -60,7 +60,7 @@ public class EnemyBossShip implements GameImageInterface {
         }
 
         if(this.ifOutOfScreen()){
-            EndlessModeGameView.gameImages.remove(this);
+            EndlessModeGameView.GAME_IMAGES.remove(this);
         }
 
         this.moveVerticalAuto();
@@ -72,8 +72,6 @@ public class EnemyBossShip implements GameImageInterface {
     public float getX() {
         return x;
     }
-
-    @Override
     public float getY() {
         return y;
     }
@@ -87,7 +85,7 @@ public class EnemyBossShip implements GameImageInterface {
     }
 
     public void isBeat(List<Bullet> bulletImages){
-        if(!isDestroied){
+        if (!this.isDestroied){
             for (Bullet selectedBullet : bulletImages){
                 if (selectedBullet.getX()>this.getX()
                         &&selectedBullet.getY()>this.getY()
@@ -95,16 +93,21 @@ public class EnemyBossShip implements GameImageInterface {
                         &&selectedBullet.getY()<this.getY()+this.enemyBossShipImage.getHeight()){
 
                     bulletImages.remove(selectedBullet);
+
                     HP++;
                     if(HP>4){
-                        enemyship=booms;
-                        isDestroied= true;
+                        this.removeEBossShip();
                     }
                     break;
                 }
             }
-
         }
+
+    }
+
+    public void removeEBossShip(){
+        enemyship=booms;
+        isDestroied= true;
     }
 
     private void moveHorizontalAuto(){
@@ -130,7 +133,6 @@ public class EnemyBossShip implements GameImageInterface {
     public float getWidth() {
         return width;
     }
-
     public float getHeight() {
         return height;
     }

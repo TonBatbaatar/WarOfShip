@@ -10,7 +10,6 @@ import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
 import com.overwatch.warofship.GameImage.BackGround;
@@ -25,9 +24,10 @@ import com.overwatch.warofship.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoryModeGameView extends EndlessModeGameView implements View.OnTouchListener {
+public class Story2LevGV extends EndlessModeGameView implements View.OnTouchListener {
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
+    private Context context;
     private sound sound;
 
     private Paint p=new Paint();// Paint for all draw code.
@@ -69,13 +69,14 @@ public class StoryModeGameView extends EndlessModeGameView implements View.OnTou
 
 
     //Constructor of the endless mode game view.
-    public StoryModeGameView(Context context){
+    public Story2LevGV(Context context){
 
         super(context);
         gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
         sound = new sound(this,sound.i);
         this.setOnTouchListener(this);//add the touch listener.
         holder=getHolder();
+        this.context=context;
         //Main part of run the game.
         //Game start from here.
         holder.addCallback(
@@ -122,7 +123,7 @@ public class StoryModeGameView extends EndlessModeGameView implements View.OnTou
 
 
         gameImages.add(new BackGround(backGround));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom));
+        gameImages.add(new MyShip(myShip,boom,context));
 
 
         mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
@@ -186,7 +187,7 @@ public class StoryModeGameView extends EndlessModeGameView implements View.OnTou
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
-                    ((MyShip) image).isBeat(gameImages,ENEMY_BULLET_IMAGES);
+                    ((MyShip) image).checkIsBeat();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){

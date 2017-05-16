@@ -14,7 +14,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.overwatch.warofship.End;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -22,6 +21,7 @@ import com.overwatch.warofship.GameImage.EnemyBullet;
 import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
 import com.overwatch.warofship.GameImage.MyShip;
+import com.overwatch.warofship.R;
 
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     //Class variable to store bullet images and game images.
     //the reason for using class variable is for convenience.
     //we need to use these tree variable in other classes.
-    public static ArrayList<GameImageInterface> gameImages = new ArrayList();
+    public static ArrayList<GameImageInterface> GAME_IMAGES = new ArrayList();
     public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
 
@@ -118,7 +118,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
         backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
-        myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.playership);
+        myShip= BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
@@ -126,8 +126,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
 
-        gameImages.add(new BackGround(backGround));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom,context));
+        GAME_IMAGES.add(new BackGround(backGround));//add bitmap to list
+        GAME_IMAGES.add(new MyShip(myShip,boom,context));
 
 
         mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
@@ -160,17 +160,17 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //every 15 time --> add an basic enemy ship
             //every 150 time --> add an boss enemy ship
             if (count%15==0){
-                gameImages.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
+                GAME_IMAGES.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
             }
             if (count%150==0){
-                gameImages.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
+                GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
             }
 
 
 
             //// Draw game images
             // For loop --> draw every bitmap in the gameImages list
-            for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
+            for (GameImageInterface image : (List<GameImageInterface>)GAME_IMAGES.clone()){
 
                 //following draw method --> draw every bitmaps to preparation canvas
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
@@ -187,12 +187,11 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 }
 
 
-                //// Destroy ships
+                //// remove ships
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
-                    ((MyShip) image).isBeat(gameImages,ENEMY_BULLET_IMAGES);
-
+                    ((MyShip) image).checkIsBeat();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
@@ -235,7 +234,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     public boolean onTouch(View v, MotionEvent event) {
 
         if (event.getAction()==MotionEvent.ACTION_DOWN){
-            for (GameImageInterface image: gameImages){
+            for (GameImageInterface image: GAME_IMAGES){
                 if (image instanceof MyShip){
                     //this if method is select the ship when we touch on it
                     if (((MyShip) image).ifPlaneSelected(event.getX(),event.getY())){

@@ -24,13 +24,10 @@ import com.overwatch.warofship.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Administrator on 2017/5/16.
- */
-
 public class Story4LevGV extends EndlessModeGameView implements View.OnTouchListener {
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
+    private Context context;
     private sound sound;
 
     private Paint p=new Paint();// Paint for all draw code.
@@ -79,6 +76,7 @@ public class Story4LevGV extends EndlessModeGameView implements View.OnTouchList
         sound = new sound(this,sound.i);
         this.setOnTouchListener(this);//add the touch listener.
         holder=getHolder();
+        this.context=context;
         //Main part of run the game.
         //Game start from here.
         holder.addCallback(
@@ -125,7 +123,7 @@ public class Story4LevGV extends EndlessModeGameView implements View.OnTouchList
 
 
         gameImages.add(new BackGround(backGround));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom));
+        gameImages.add(new MyShip(myShip,boom,context));
 
 
         mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
@@ -189,7 +187,7 @@ public class Story4LevGV extends EndlessModeGameView implements View.OnTouchList
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
-                    ((MyShip) image).isBeat(gameImages,ENEMY_BULLET_IMAGES);
+                    ((MyShip) image).checkIsBeat();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
