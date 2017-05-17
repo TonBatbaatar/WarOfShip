@@ -1,7 +1,6 @@
 package com.overwatch.warofship.GameImage;
 
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 
@@ -97,6 +96,7 @@ public class EnemyBossShip implements GameImageInterface {
                     HP++;
                     if(HP>4){
                         this.removeEBossShip();
+                        EndlessModeGameView.bossnumber=0;
                     }
                     break;
                 }

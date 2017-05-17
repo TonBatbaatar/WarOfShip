@@ -34,6 +34,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Paint p=new Paint();// Paint for all draw code.
 
     private static int count;//controller of the speed of add a new item to the game.
+    public static int bossnumber;
     private MyShip selectedShip;//used for control the ship.
 
     //Class variable to store width and height fo the screen.
@@ -107,6 +108,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                     }
                 });
         this.count=0;//initialize the speed controller
+        this.bossnumber=0;//control the number of boss ship
         this.SCORE=0;
 
         this.GAME_IMAGES = new ArrayList();
@@ -154,6 +156,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
             Canvas preparationCanvas = new Canvas(preparation);//create a new canvas to draw preparation Bitmap
             count++;//Speed controller to be updated
+            bossnumber++;
 
 
 
@@ -169,8 +172,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             if (count%15==0){
                 GAME_IMAGES.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
             }
-            if (count%150==0){
+            if (bossnumber%150==0&&bossnumber<=600){
                 GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
+
 
             }
 
