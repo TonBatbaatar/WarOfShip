@@ -159,7 +159,7 @@ public class Story6LevGV extends EndlessModeGameView implements View.OnTouchList
             //if condition means that :
             //every 15 time --> add an basic enemy ship
             //every 150 time --> add an boss enemy ship
-            if (count%15==0){
+            if (count%10==0){
                 gameImages.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
             }
             if (count%150==0){
