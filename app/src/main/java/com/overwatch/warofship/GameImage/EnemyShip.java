@@ -122,6 +122,7 @@ public class EnemyShip implements GameImageInterface {
     public void removeEnmeyShip(){
         enemyship=booms;
         isDestroied = true;
+        EndlessModeGameView.SCORE+=50;
         new sound(sound.view,EndlessModeGameView.sound_boom).start();
         EndlessModeGameView.mysound.play(EndlessModeGameView.sound_boom,1,1,1,0,1);
     }

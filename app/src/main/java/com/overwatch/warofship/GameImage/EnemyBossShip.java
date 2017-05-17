@@ -108,6 +108,7 @@ public class EnemyBossShip implements GameImageInterface {
     public void removeEBossShip(){
         enemyship=booms;
         isDestroied= true;
+        EndlessModeGameView.SCORE+=150;
     }
 
     private void moveHorizontalAuto(){

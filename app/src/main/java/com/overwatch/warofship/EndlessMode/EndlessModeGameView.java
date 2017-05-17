@@ -154,7 +154,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
 
             if (count%15==0){
-                SCORE+=10;
+                SCORE+=5;
             }
 
 
