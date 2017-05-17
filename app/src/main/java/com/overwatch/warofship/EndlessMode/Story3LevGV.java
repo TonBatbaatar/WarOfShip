@@ -66,6 +66,9 @@ public class Story3LevGV extends EndlessModeGameView implements View.OnTouchList
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
 
 
+    public int modenumber=3;
+
+
 
 
     //Constructor of the endless mode game view.
@@ -169,6 +172,9 @@ public class Story3LevGV extends EndlessModeGameView implements View.OnTouchList
             for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
 
                 //following draw method --> draw every bitmaps to preparation canvas
+                if(image instanceof EnemyShip){
+                    preparationCanvas.drawBitmap(((EnemyShip) image).StoryModegetBitmap(modenumber),image.getX(),image.getY(),p);
+                }
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
 

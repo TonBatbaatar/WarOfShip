@@ -10,7 +10,6 @@ import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
 import com.overwatch.warofship.GameImage.BackGround;
@@ -65,6 +64,9 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
     public static ArrayList<GameImageInterface> gameImages = new ArrayList();
     public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
+
+
+    public int modenumber=1;
 
 
 
@@ -170,6 +172,9 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
             for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
 
                 //following draw method --> draw every bitmaps to preparation canvas
+                if(image instanceof EnemyShip){
+                    preparationCanvas.drawBitmap(((EnemyShip) image).StoryModegetBitmap(modenumber),image.getX(),image.getY(),p);
+                }
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
 
