@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Game Over" />
-</LinearLayout>
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="@mipmap/end_background">
+
+    <Button
+        android:id="@+id/button_1"
+        android:layout_width="206dp"
+        android:layout_height="wrap_content"
+        android:text="Return"
+        android:layout_marginBottom="204dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold|italic" />
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:text="Game Over"
+        android:textAppearance="@android:style/TextAppearance"
+        android:textSize="36sp"
+        android:textAlignment="center"
+        android:textStyle="normal|bold|italic"
+        android:typeface="serif"
+        android:fontFamily="casual"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
+</RelativeLayout>

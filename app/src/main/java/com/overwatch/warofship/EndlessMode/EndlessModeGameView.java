@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EndlessModeGameView extends SurfaceView implements View.OnTouchListener {
-    public static boolean lala=false;
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
     private sound sound;
