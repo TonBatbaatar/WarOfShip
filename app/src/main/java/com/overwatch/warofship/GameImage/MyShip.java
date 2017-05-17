@@ -99,10 +99,7 @@ public  class MyShip implements GameImageInterface {
     }
 
     public void moveintoscreen(){
-        while(y>EndlessModeGameView.SCREEN_HEIGHT-height-10){
-            y=y-1;
-        }
-
+            y=y-10;
     }
 
 
