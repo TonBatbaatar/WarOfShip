@@ -23,6 +23,15 @@ public class Menu extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button button2=(Button) findViewById(R.id.button_2);
+        button2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                Intent intent=new Intent(Menu.this,StoryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

@@ -69,6 +69,9 @@ public class Story5LevGV extends EndlessModeGameView implements View.OnTouchList
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
 
 
+    private int modenumber;
+
+
     //Constructor of the endless mode game view.
     public Story5LevGV(Context context) {
 
@@ -78,6 +81,7 @@ public class Story5LevGV extends EndlessModeGameView implements View.OnTouchList
         this.setOnTouchListener(this);//add the touch listener.
         holder = getHolder();
         this.context = context;
+        modenumber=5;
         //Main part of run the game.
         //Game start from here.
         holder.addCallback(
