@@ -31,7 +31,7 @@ public class Bullet implements GameImageInterface {
     public Bitmap getBitmap() {
         //move the bullet automatically
         //the number can change the speed
-        y-=1;
+        y-=10;
         return myBulletImage;
     }
 

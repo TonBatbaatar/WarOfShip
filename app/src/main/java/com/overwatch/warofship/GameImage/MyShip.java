@@ -61,6 +61,8 @@ public  class MyShip implements GameImageInterface {
         //if ship destroyed and played all boom pictures we remove my ship
         if(index==7&&isDestroyed){
             EndlessModeGameView.GAME_IMAGES.remove(this);
+            Intent intent=new Intent(context,End.class);
+            context.startActivity(intent);
         }
         //make sure the we can draw every time
         if(index==myShipImages.size()){
@@ -155,8 +157,6 @@ public  class MyShip implements GameImageInterface {
     public void removePlayership(){
         myShipImages=booms;
         isDestroyed= true;
-        Intent intent=new Intent(context,End.class);
-        context.startActivity(intent);
     }
 
 }

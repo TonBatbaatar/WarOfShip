@@ -157,7 +157,7 @@ public class Story5LevGV extends EndlessModeGameView implements View.OnTouchList
                 gameImages.add(new EnemyShip(enemy, boom));//every five times we add an enemy ship
             }
             if (count % 150 == 0) {
-                gameImages.add(new EnemyBossShip(enemyBoss, boom));//every 150 times we add an enemy ship
+                gameImages.add(new EnemyBossShip(enemyBoss, boom,15));//every 150 times we add an enemy ship
             }
 
 
