@@ -199,9 +199,10 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
-
-                    ((MyShip) image).moveintoscreen();;
-
+                    if (count<15) {
+                        ((MyShip) image).moveintoscreen();
+                        ;
+                    }
                     ((MyShip) image).checkIsBeat();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
@@ -254,7 +255,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 if (image instanceof MyShip){
                     //this if method is select the ship when we touch on it
                     if (((MyShip) image).ifPlaneSelected(event.getX(),event.getY())){
-                        selectedShip=(MyShip)image;
+                        if (count>15) {
+                            selectedShip = (MyShip) image;
+                        }
                     }else {
                         selectedShip = null;
                     }
