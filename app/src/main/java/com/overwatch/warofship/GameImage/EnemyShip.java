@@ -4,6 +4,10 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+import com.overwatch.warofship.EndlessMode.Story2LevGV;
+import com.overwatch.warofship.EndlessMode.Story3LevGV;
+import com.overwatch.warofship.EndlessMode.Story4LevGV;
+import com.overwatch.warofship.EndlessMode.Story5LevGV;
 import com.overwatch.warofship.EndlessMode.sound;
 
 import java.util.ArrayList;
@@ -107,7 +111,7 @@ public class EnemyShip implements GameImageInterface {
             }
 
             //control the move speed of the enemy ship by change number
-            y+=25;
+            y+=20;
             if(levelnumber==2) {
                 if(movedirection){
                 x+=3;
@@ -115,7 +119,7 @@ public class EnemyShip implements GameImageInterface {
             else{
                 x-=3;
                 }
-            if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+            if (this.x>=(Story2LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
                     ||this.x<=0){
 
                 movedirection=!movedirection;
@@ -131,7 +135,7 @@ public class EnemyShip implements GameImageInterface {
             else{
                 x-=5;
             }
-            if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+            if (this.x>=(Story3LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
                     ||this.x<=0){
 
                 movedirection=!movedirection;
@@ -144,14 +148,14 @@ public class EnemyShip implements GameImageInterface {
 
 
              if(levelnumber==4) {
-                 Log.i("test", "level 4");
+
                  if(movedirection){
                      x+=7;
                  }
                  else{
                      x-=7;
                  }
-                 if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+                 if (this.x>=(Story4LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
                          ||this.x<=0){
 
                      movedirection=!movedirection;
@@ -159,6 +163,22 @@ public class EnemyShip implements GameImageInterface {
 
 
              }
+        if(levelnumber==5) {
+
+            if(movedirection){
+                x+=10;
+            }
+            else{
+                x-=10;
+            }
+            if (this.x>=(Story5LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+                    ||this.x<=0){
+
+                movedirection=!movedirection;
+            }
+
+
+        }
 
 
 
