@@ -174,7 +174,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             // For loop --> draw every bitmap in the gameImages list
             for (GameImageInterface image : (List<GameImageInterface>)GAME_IMAGES.clone()){
 
-                //following draw method --> draw every bitmaps to preparation canvas
+                ////draw every bitmaps to preparation canvas
+                //draw player ship,enemy ship, enemy boss ship
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
 
