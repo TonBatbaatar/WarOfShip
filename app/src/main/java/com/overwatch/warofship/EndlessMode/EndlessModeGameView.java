@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -14,6 +15,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.overwatch.warofship.End;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -150,6 +152,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             count++;//Speed controller to be updated
 
 
+
             if (count%15==0){
                 SCORE+=10;
             }
@@ -176,7 +179,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
 
-                //Add the bullet
+                //Add bullet
                 //change new bullet inserting speed here
                 if (image instanceof MyShip && count%10==0){
                     PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
@@ -204,7 +207,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //remove the bullet already out of the screen
             for (Bullet bullet : PLAYER_BULLET_IMAGES){
                 if(bullet.ifOutOfScreen()){
-                    PLAYER_BULLET_IMAGES.remove(bullet);
+//                    PLAYER_BULLET_IMAGES.remove(bullet);
                     Log.i("REMOVE","Removed the player bullet!");
                 }else {
                     preparationCanvas.drawBitmap(bullet.getBitmap(), bullet.getX(), bullet.getY(), p);
@@ -216,12 +219,17 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //remove the bullet already out of the screen
             for (EnemyBullet bullet : ENEMY_BULLET_IMAGES){
                 if(bullet.ifOutOfScreen()){
-                    ENEMY_BULLET_IMAGES.remove(bullet);
+//                    ENEMY_BULLET_IMAGES.remove(bullet);
                     Log.i("REMOVE","Removed the enemy bullet!");
                 }else{
                     preparationCanvas.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
                 }
             }
+
+            Paint textp=new Paint();
+            String scoreBoard = "SCORE: <" + EndlessModeGameView.SCORE + " >";
+            textp.setColor(Color.WHITE);
+            preparationCanvas.drawText(scoreBoard, 10,10,textp);
 
 
             //// Draw the preparation Bitmap to screen.
