@@ -1,7 +1,6 @@
 package com.overwatch.warofship.EndlessMode;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,7 +14,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.overwatch.warofship.End;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -24,7 +22,6 @@ import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
 import com.overwatch.warofship.GameImage.MyShip;
 import com.overwatch.warofship.R;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,6 +173,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
                 //following draw method --> draw every bitmaps to preparation canvas
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
+//                if(image instanceof MyShip){
+//                    ((MyShip) image).moveintoscreen();;
+//                }
 
 
                 //Add bullet
@@ -193,6 +193,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
+
+                    ((MyShip) image).moveintoscreen();;
+
                     ((MyShip) image).checkIsBeat();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
