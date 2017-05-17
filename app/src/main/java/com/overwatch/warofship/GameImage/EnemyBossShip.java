@@ -84,15 +84,15 @@ public class EnemyBossShip implements GameImageInterface {
         }
     }
 
-    public void isBeat(List<Bullet> bulletImages){
+    public void checkIsBeat(){
         if (!this.isDestroied){
-            for (Bullet selectedBullet : bulletImages){
+            for (Bullet selectedBullet : EndlessModeGameView.PLAYER_BULLET_IMAGES){
                 if (selectedBullet.getX()>this.getX()
                         &&selectedBullet.getY()>this.getY()
                         &&selectedBullet.getX()<this.getX()+this.enemyBossShipImage.getWidth()
                         &&selectedBullet.getY()<this.getY()+this.enemyBossShipImage.getHeight()){
 
-                    bulletImages.remove(selectedBullet);
+                    EndlessModeGameView.PLAYER_BULLET_IMAGES.remove(selectedBullet);
 
                     HP++;
                     if(HP>4){

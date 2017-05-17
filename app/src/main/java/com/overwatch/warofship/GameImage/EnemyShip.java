@@ -18,7 +18,7 @@ public class EnemyShip implements GameImageInterface {
     private List<Bitmap> booms=new ArrayList<>();
     private List<Bitmap> enemyship=new ArrayList<>();
     private int index=0;
-    private boolean isDestroied=false;
+    private boolean isDestroied;
 
     private float x;
     private float y;
@@ -27,6 +27,7 @@ public class EnemyShip implements GameImageInterface {
 
         this.enemyShipImage=enemyShipImage;
         this.boomImage=boomImage;
+        this.isDestroied=false;
         enemyship.add(enemyShipImage);
         //initialize the boom picture
         this.initBoomPic();
@@ -48,6 +49,14 @@ public class EnemyShip implements GameImageInterface {
 
     @Override
     public Bitmap getBitmap() {
+//        Bitmap returnBitmap;
+//        if (!this.isDestroied){
+//            returnBitmap=enemyShipImage;
+//        }else{
+//            returnBitmap=booms.get(index);
+//            index++;
+//        }
+
         Bitmap bitmaps=enemyship.get(index);
         index++;
 

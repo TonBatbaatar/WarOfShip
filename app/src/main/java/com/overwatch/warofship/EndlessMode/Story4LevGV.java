@@ -191,7 +191,7 @@ public class Story4LevGV extends EndlessModeGameView implements View.OnTouchList
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
-                    ((EnemyBossShip) image).isBeat(PLAYER_BULLET_IMAGES);
+                    ((EnemyBossShip) image).checkIsBeat();
                 }
             }
 
