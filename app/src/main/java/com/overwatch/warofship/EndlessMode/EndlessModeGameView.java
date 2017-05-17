@@ -62,9 +62,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     //Class variable to store bullet images and game images.
     //the reason for using class variable is for convenience.
     //we need to use these tree variable in other classes.
-    public static ArrayList<GameImageInterface> GAME_IMAGES = new ArrayList();
-    public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
-    public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
+    public static ArrayList<GameImageInterface> GAME_IMAGES;
+    public static ArrayList<Bullet> PLAYER_BULLET_IMAGES;
+    public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES;
 
 
 
@@ -105,6 +105,11 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 });
         this.count=0;//initialize the speed controller
         this.SCORE=0;
+
+        this.GAME_IMAGES = new ArrayList();
+        this.PLAYER_BULLET_IMAGES = new ArrayList();
+        this.ENEMY_BULLET_IMAGES = new ArrayList();
+
     }
 
     ////Method for initialize the game images:
