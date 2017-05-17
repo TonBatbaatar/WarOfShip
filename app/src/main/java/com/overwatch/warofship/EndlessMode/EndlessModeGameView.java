@@ -67,6 +67,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES;
 
 
+    public int modenumber=4;
+
+
 
 
     //Constructor of the endless mode game view.
@@ -168,6 +171,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             }
             if (count%150==0){
                 GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
+
             }
 
 
@@ -178,10 +182,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
                 ////draw every bitmaps to preparation canvas
                 //draw player ship,enemy ship, enemy boss ship
-                preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
-//                if(image instanceof MyShip){
-//                    ((MyShip) image).moveintoscreen();;
-//                }
+
+
+                    preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
+
+
+
 
 
                 //Add bullet

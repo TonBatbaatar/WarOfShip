@@ -19,6 +19,7 @@ public class EnemyShip implements GameImageInterface {
     private List<Bitmap> enemyship=new ArrayList<>();
     private int index=0;
     private boolean isDestroied;
+    private boolean movedirection;
 
     private float x;
     private float y;
@@ -28,6 +29,7 @@ public class EnemyShip implements GameImageInterface {
         this.enemyShipImage=enemyShipImage;
         this.boomImage=boomImage;
         this.isDestroied=false;
+        this.movedirection=true;
         enemyship.add(enemyShipImage);
         //initialize the boom picture
         this.initBoomPic();
@@ -49,6 +51,7 @@ public class EnemyShip implements GameImageInterface {
 
     @Override
     public Bitmap getBitmap() {
+
 //        Bitmap returnBitmap;
 //        if (!this.isDestroied){
 //            returnBitmap=enemyShipImage;
@@ -79,8 +82,93 @@ public class EnemyShip implements GameImageInterface {
         //control the move speed of the enemy ship by change number
         y+=25;
 
+
         return bitmaps;
     }
+
+    public Bitmap StoryModegetBitmap(int levelnumber) {
+            Bitmap bitmaps=enemyship.get(index);
+            index++;
+
+            //remove the ship if nessary
+            //first if: remove when destroy and played the boom picture
+            if(index==7&&isDestroied){
+                EndlessModeGameView.GAME_IMAGES.remove(this);
+            }
+            //second if: remove if out of screen
+            if(this.ifOutOfScreen()){
+                EndlessModeGameView.GAME_IMAGES.remove(this);
+                Log.i("REMOVE.Test","The enemy ship is removed because it out of screen");
+            }
+
+            //make sure that draw the picture every time except it removed
+            if(index==enemyship.size()){
+                index=0;
+            }
+
+            //control the move speed of the enemy ship by change number
+            y+=25;
+            if(levelnumber==2) {
+                if(movedirection){
+                x+=3;
+                }
+            else{
+                x-=3;
+                }
+            if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+                    ||this.x<=0){
+
+                movedirection=!movedirection;
+            }
+            }
+
+
+            if(levelnumber==3) {
+
+            if(movedirection){
+                x+=5;
+            }
+            else{
+                x-=5;
+            }
+            if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+                    ||this.x<=0){
+
+                movedirection=!movedirection;
+            }
+
+
+        }
+
+
+
+
+             if(levelnumber==4) {
+                 Log.i("test", "level 4");
+                 if(movedirection){
+                     x+=7;
+                 }
+                 else{
+                     x-=7;
+                 }
+                 if (this.x>=(EndlessModeGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+                         ||this.x<=0){
+
+                     movedirection=!movedirection;
+                 }
+
+
+             }
+
+
+
+
+
+//
+
+        return bitmaps;
+    }
+
 
     @Override
     public float getX() {
