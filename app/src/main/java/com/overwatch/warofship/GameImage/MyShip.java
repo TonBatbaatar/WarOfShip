@@ -1,15 +1,11 @@
 package com.overwatch.warofship.GameImage;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 
 import com.overwatch.warofship.End;
-import com.overwatch.warofship.EndlessMode.EndlessModeActivity;
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +38,8 @@ public  class MyShip implements GameImageInterface {
         height=myShipImage.getHeight();
         //initialize the location
         x=(EndlessModeGameView.SCREEN_WIDTH-width)/2;
-        y=EndlessModeGameView.SCREEN_HEIGHT-height-10;
+        y=EndlessModeGameView.SCREEN_HEIGHT;
+
     }
 
     //initialize the boom pictures;
@@ -99,6 +96,13 @@ public  class MyShip implements GameImageInterface {
         }else {
             return false;
         }
+    }
+
+    public void moveintoscreen(){
+        while(y>EndlessModeGameView.SCREEN_HEIGHT-height-10){
+            y=y-1;
+        }
+
     }
 
 
