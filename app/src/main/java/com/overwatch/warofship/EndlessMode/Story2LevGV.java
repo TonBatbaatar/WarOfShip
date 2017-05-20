@@ -160,7 +160,7 @@ public class Story2LevGV extends EndlessModeGameView implements View.OnTouchList
             //every 15 time --> add an basic enemy ship
             //every 150 time --> add an boss enemy ship
             if (count%15==0){
-                gameImages.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
+                gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
             if (count%150==0){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5));//every 150 times we add an enemy ship
@@ -188,6 +188,8 @@ public class Story2LevGV extends EndlessModeGameView implements View.OnTouchList
                 } else if (image instanceof EnemyBossShip && count%25==0){
                     ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image));
                 }
+
+                //?!
 
 
                 //// Destroy ships

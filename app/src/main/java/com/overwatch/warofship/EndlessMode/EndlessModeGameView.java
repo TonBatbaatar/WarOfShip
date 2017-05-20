@@ -68,7 +68,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES;
 
 
-    public int modenumber=4;
+    public int modenumber=3;
 
 
 
@@ -170,10 +170,10 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //every 15 time --> add an basic enemy ship
             //every 150 time --> add an boss enemy ship
             if (count%15==0){
-                GAME_IMAGES.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
+                GAME_IMAGES.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
             if (bossnumber%150==0&&bossnumber<=600){
-                GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
+                GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom,5));//every 150 times we add an enemy ship
 
 
             }
@@ -186,9 +186,15 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
                 ////draw every bitmaps to preparation canvas
                 //draw player ship,enemy ship, enemy boss ship
+                    if(image instanceof EnemyShip){
+                        preparationCanvas.drawBitmap(((EnemyShip) image).StoryModegetBitmap(modenumber),image.getX(),image.getY(),p);
+                    }
+                    else{
+                        preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
+                    }
 
 
-                    preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
+
 
 
 
@@ -247,8 +253,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
             Paint textp=new Paint();
             String scoreBoard = "SCORE: <" + EndlessModeGameView.SCORE + " >";
-            textp.setColor(Color.WHITE);
-            preparationCanvas.drawText(scoreBoard, 10,10,textp);
+            textp.setColor(Color.RED);
+            textp.setTextSize(22);
+            preparationCanvas.drawText(scoreBoard, 10,20,textp);
 
 
             //// Draw the preparation Bitmap to screen.

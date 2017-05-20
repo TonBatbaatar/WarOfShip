@@ -4,10 +4,6 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
-import com.overwatch.warofship.EndlessMode.Story2LevGV;
-import com.overwatch.warofship.EndlessMode.Story3LevGV;
-import com.overwatch.warofship.EndlessMode.Story4LevGV;
-import com.overwatch.warofship.EndlessMode.Story5LevGV;
 import com.overwatch.warofship.EndlessMode.sound;
 
 import java.util.ArrayList;
@@ -16,6 +12,7 @@ import java.util.Random;
 
 public class EnemyShip implements GameImageInterface {
 
+    private EndlessModeGameView currentGameView;
     private Bitmap enemyShipImage;
     private Bitmap boomImage;
     private Random random = new Random();
@@ -23,17 +20,23 @@ public class EnemyShip implements GameImageInterface {
     private List<Bitmap> enemyship=new ArrayList<>();
     private int index=0;
     private boolean isDestroied;
-    private boolean movedirection;
+    private int movedirection;
+
+
 
     private float x;
     private float y;
 
-    public EnemyShip(Bitmap enemyShipImage,Bitmap boomImage) {
+
+    //constructer
+    public EnemyShip(Bitmap enemyShipImage,Bitmap boomImage,EndlessModeGameView gameView) {
 
         this.enemyShipImage=enemyShipImage;
         this.boomImage=boomImage;
         this.isDestroied=false;
-        this.movedirection=true;
+//        this.movedirection=true;
+        movedirection=random.nextInt(2);
+        this.currentGameView=gameView;
         enemyship.add(enemyShipImage);
         //initialize the boom picture
         this.initBoomPic();
@@ -70,11 +73,11 @@ public class EnemyShip implements GameImageInterface {
         //remove the ship if nessary
         //first if: remove when destroy and played the boom picture
         if(index==7&&isDestroied){
-            EndlessModeGameView.GAME_IMAGES.remove(this);
+            currentGameView.GAME_IMAGES.remove(this);
         }
         //second if: remove if out of screen
         if(this.ifOutOfScreen()){
-            EndlessModeGameView.GAME_IMAGES.remove(this);
+            currentGameView.GAME_IMAGES.remove(this);
             Log.i("REMOVE.Test","The enemy ship is removed because it out of screen");
         }
 
@@ -97,11 +100,11 @@ public class EnemyShip implements GameImageInterface {
             //remove the ship if nessary
             //first if: remove when destroy and played the boom picture
             if(index==7&&isDestroied){
-                EndlessModeGameView.GAME_IMAGES.remove(this);
+                currentGameView.GAME_IMAGES.remove(this);
             }
             //second if: remove if out of screen
             if(this.ifOutOfScreen()){
-                EndlessModeGameView.GAME_IMAGES.remove(this);
+                currentGameView.GAME_IMAGES.remove(this);
                 Log.i("REMOVE.Test","The enemy ship is removed because it out of screen");
             }
 
@@ -111,34 +114,34 @@ public class EnemyShip implements GameImageInterface {
             }
 
             //control the move speed of the enemy ship by change number
-            y+=20;
+            y+=16;
             if(levelnumber==2) {
-                if(movedirection){
+                if(movedirection==0){
                 x+=3;
                 }
             else{
                 x-=3;
                 }
-            if (this.x>=(Story2LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+            if (this.x>=(currentGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
                     ||this.x<=0){
 
-                movedirection=!movedirection;
+                movedirection=1-movedirection;
             }
             }
 
 
             if(levelnumber==3) {
 
-            if(movedirection){
-                x+=5;
+            if(movedirection==0){
+                x+=10;
             }
             else{
-                x-=5;
+                x-=10;
             }
-            if (this.x>=(Story3LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+            if (this.x>=(currentGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
                     ||this.x<=0){
 
-                movedirection=!movedirection;
+                movedirection=1-movedirection;
             }
 
 
@@ -148,37 +151,21 @@ public class EnemyShip implements GameImageInterface {
 
 
              if(levelnumber==4) {
-
-                 if(movedirection){
+                 Log.i("test", "level 4");
+                 if(movedirection==0){
                      x+=7;
                  }
                  else{
                      x-=7;
                  }
-                 if (this.x>=(Story4LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
+                 if (this.x>=(currentGameView.SCREEN_WIDTH-this.enemyShipImage.getWidth())
                          ||this.x<=0){
 
-                     movedirection=!movedirection;
+                     movedirection=1-movedirection;
                  }
 
 
              }
-        if(levelnumber==5) {
-
-            if(movedirection){
-                x+=10;
-            }
-            else{
-                x-=10;
-            }
-            if (this.x>=(Story5LevGV.SCREEN_WIDTH-this.enemyShipImage.getWidth())
-                    ||this.x<=0){
-
-                movedirection=!movedirection;
-            }
-
-
-        }
 
 
 
@@ -204,7 +191,7 @@ public class EnemyShip implements GameImageInterface {
     //true: out of screen
     //false: in screen
     public boolean ifOutOfScreen(){
-        if (this.y>=EndlessModeGameView.SCREEN_HEIGHT+10){
+        if (this.y>=currentGameView.SCREEN_HEIGHT+10){
             return true;
         }else {
             return false;
@@ -213,13 +200,13 @@ public class EnemyShip implements GameImageInterface {
 
     public void CheckIsBeat(){
         if (!this.isDestroied){
-            for (Bullet selectedBullet : EndlessModeGameView.PLAYER_BULLET_IMAGES){
+            for (Bullet selectedBullet : currentGameView.PLAYER_BULLET_IMAGES){
                 if (selectedBullet.getX()>this.getX()
                         &&selectedBullet.getY()>this.getY()
                         &&selectedBullet.getX()<this.getX()+this.enemyShipImage.getWidth()
                         &&selectedBullet.getY()<this.getY()+this.enemyShipImage.getHeight()){
 
-                    EndlessModeGameView.PLAYER_BULLET_IMAGES.remove(selectedBullet);
+                    currentGameView.PLAYER_BULLET_IMAGES.remove(selectedBullet);
                     this.removeEnmeyShip();
                     break;
                 }
@@ -230,9 +217,9 @@ public class EnemyShip implements GameImageInterface {
     public void removeEnmeyShip(){
         enemyship=booms;
         isDestroied = true;
-        EndlessModeGameView.SCORE+=50;
-        new sound(sound.view,EndlessModeGameView.sound_boom).start();
-        EndlessModeGameView.mysound.play(EndlessModeGameView.sound_boom,1,1,1,0,1);
+        currentGameView.SCORE+=50;
+        new sound(sound.view,currentGameView.sound_boom).start();
+        currentGameView.mysound.play(currentGameView.sound_boom,1,1,1,0,1);
     }
 
 }

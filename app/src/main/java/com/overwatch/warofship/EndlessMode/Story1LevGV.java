@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -28,11 +29,11 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
     private sound sound;
-    private Context context;
 
     private Paint p=new Paint();// Paint for all draw code.
 
     private static int count;//controller of the speed of add a new item to the game.
+    public static int bossnumber;
     private MyShip selectedShip;//used for control the ship.
 
     //Class variable to store width and height fo the screen.
@@ -53,34 +54,34 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
 
 
 
-    public static SoundPool mysound;
+    public static  SoundPool mysound;
     public static int sound_boom;
     public static int sound_shot;
     private int sound_background;
-
+    private Context context;
     //Class variable to store bullet images and game images.
     //the reason for using class variable is for convenience.
     //we need to use these tree variable in other classes.
-    public static ArrayList<GameImageInterface> gameImages = new ArrayList();
-    public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
-    public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
+    public static ArrayList<GameImageInterface> GAME_IMAGES;
+    public static ArrayList<Bullet> PLAYER_BULLET_IMAGES;
+    public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES;
 
 
-    public int modenumber;
+    public int modenumber=4;
 
 
 
 
     //Constructor of the endless mode game view.
     public Story1LevGV(Context context){
-
         super(context);
+
+
         gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
         sound = new sound(this,sound.i);
         this.setOnTouchListener(this);//add the touch listener.
-        holder=getHolder();
         this.context=context;
-        modenumber=1;
+        holder=getHolder();
         //Main part of run the game.
         //Game start from here.
         holder.addCallback(
@@ -106,7 +107,13 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
                     }
                 });
         this.count=0;//initialize the speed controller
+        this.bossnumber=0;//control the number of boss ship
         this.SCORE=0;
+
+        this.GAME_IMAGES = new ArrayList();
+        this.PLAYER_BULLET_IMAGES = new ArrayList();
+        this.ENEMY_BULLET_IMAGES = new ArrayList();
+
     }
 
     ////Method for initialize the game images:
@@ -118,7 +125,7 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
         preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
         backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
-        myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.playership);
+        myShip= BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
         bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
@@ -126,8 +133,8 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
 
-        gameImages.add(new BackGround(backGround));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom,context));
+        GAME_IMAGES.add(new BackGround(backGround));//add bitmap to list
+        GAME_IMAGES.add(new MyShip(myShip,boom,context));
 
 
         mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
@@ -148,10 +155,12 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
 
             Canvas preparationCanvas = new Canvas(preparation);//create a new canvas to draw preparation Bitmap
             count++;//Speed controller to be updated
+            bossnumber++;
+
 
 
             if (count%15==0){
-                SCORE+=10;
+                SCORE+=5;
             }
 
 
@@ -160,26 +169,31 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
             //every 15 time --> add an basic enemy ship
             //every 150 time --> add an boss enemy ship
             if (count%15==0){
-                gameImages.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
+                GAME_IMAGES.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
-            if (count%150==0){
-                gameImages.add(new EnemyBossShip(enemyBoss,boom,5));//every 150 times we add an enemy ship
+            if (bossnumber%150==0&&bossnumber<=600){
+                GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom,5));//every 150 times we add an enemy ship
+
+
             }
 
 
 
             //// Draw game images
             // For loop --> draw every bitmap in the gameImages list
-            for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
+            for (GameImageInterface image : (List<GameImageInterface>)GAME_IMAGES.clone()){
 
-                //following draw method --> draw every bitmaps to preparation canvas
-                if(image instanceof EnemyShip){
-                    preparationCanvas.drawBitmap(((EnemyShip) image).StoryModegetBitmap(modenumber),image.getX(),image.getY(),p);
-                }
+                ////draw every bitmaps to preparation canvas
+                //draw player ship,enemy ship, enemy boss ship
+
+
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
 
-                //Add the bullet
+
+
+
+                //Add bullet
                 //change new bullet inserting speed here
                 if (image instanceof MyShip && count%10==0){
                     PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
@@ -190,10 +204,13 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
                 }
 
 
-                //// Destroy ships
+                //// remove ships
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
+                    if (count<15) {
+                        ((MyShip) image).moveintoscreen();
+                    }
                     ((MyShip) image).checkIsBeat();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
@@ -207,7 +224,7 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
             //remove the bullet already out of the screen
             for (Bullet bullet : PLAYER_BULLET_IMAGES){
                 if(bullet.ifOutOfScreen()){
-                    PLAYER_BULLET_IMAGES.remove(bullet);
+//                    PLAYER_BULLET_IMAGES.remove(bullet);
                     Log.i("REMOVE","Removed the player bullet!");
                 }else {
                     preparationCanvas.drawBitmap(bullet.getBitmap(), bullet.getX(), bullet.getY(), p);
@@ -219,12 +236,18 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
             //remove the bullet already out of the screen
             for (EnemyBullet bullet : ENEMY_BULLET_IMAGES){
                 if(bullet.ifOutOfScreen()){
-                    ENEMY_BULLET_IMAGES.remove(bullet);
+//                    ENEMY_BULLET_IMAGES.remove(bullet);
                     Log.i("REMOVE","Removed the enemy bullet!");
                 }else{
                     preparationCanvas.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
                 }
             }
+
+            Paint textp=new Paint();
+            String scoreBoard = "SCORE: <" + EndlessModeGameView.SCORE + " >";
+            textp.setColor(Color.RED);
+            textp.setTextSize(22);
+            preparationCanvas.drawText(scoreBoard, 20,10,textp);
 
 
             //// Draw the preparation Bitmap to screen.
@@ -237,11 +260,13 @@ public class Story1LevGV extends EndlessModeGameView implements View.OnTouchList
     public boolean onTouch(View v, MotionEvent event) {
 
         if (event.getAction()==MotionEvent.ACTION_DOWN){
-            for (GameImageInterface image: gameImages){
+            for (GameImageInterface image: GAME_IMAGES){
                 if (image instanceof MyShip){
                     //this if method is select the ship when we touch on it
                     if (((MyShip) image).ifPlaneSelected(event.getX(),event.getY())){
-                        selectedShip=(MyShip)image;
+                        if (count>15) {
+                            selectedShip = (MyShip) image;
+                        }
                     }else {
                         selectedShip = null;
                     }
