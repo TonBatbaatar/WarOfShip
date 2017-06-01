@@ -44,8 +44,7 @@ public class Bullet implements GameImageInterface {
     @Override
     public Bitmap getBitmap() {
 
-        //move the bullet automatically
-        //the number can change the speed
+        //if the level of the bullet changed , change the image .
         if(myPlaneImage.levelofbullet==2){
             Log.i("levelofbullet is 2","another bullet");
             shotbullet=secondbullet;
@@ -58,6 +57,8 @@ public class Bullet implements GameImageInterface {
             Log.i("levelofbullet is 4","another bullet");
             shotbullet=fourthbullet;
         }
+        //move the bullet automatically
+        //the number can change the speed
 
         y -= 10;
 

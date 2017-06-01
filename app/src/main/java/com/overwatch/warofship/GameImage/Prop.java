@@ -51,7 +51,7 @@ public class Prop implements GameImageInterface {
             return false;
         }
     }
-
+    //when the prop is received by the ship, remove it from the screen
     public void receivedbyship(){
         if(!received){
             for(GameImageInterface myShip : EndlessModeGameView.GAME_IMAGES){

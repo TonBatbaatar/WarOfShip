@@ -19,6 +19,7 @@ public  class MyShip implements GameImageInterface {
     private List<Bitmap> myShipImages=new ArrayList<>();
     private int index;
     private boolean isDestroyed;
+    //represents the level of the bullet
     public  int levelofbullet;
 
     private float x;

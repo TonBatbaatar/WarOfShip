@@ -179,7 +179,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             //// Add enemy ship randomly.
             //if condition means that :
             //every 15 time --> add an basic enemy ship
-            //every 150 time --> add an boss enemy ship
+            //every 150 time --> add a boss enemy ship
+            //every 150 time --> add a prop
             if (count%15==0){
                 GAME_IMAGES.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
 
@@ -221,6 +222,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
 
                 //// remove ships
+                // Strengthen the weapon when --> receive prop
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
@@ -262,6 +264,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             }
 
 
+            ////Draw props
+            //remove the prop already out of the screen
             for(Prop prop : PROP_IMAGE){
                 if(prop.ifOutOfScreen()){
                     Log.i("REMOVE","Removed the prop!");
