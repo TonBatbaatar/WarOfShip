@@ -9,6 +9,8 @@ public class Bullet implements GameImageInterface {
     private MyShip myPlaneImage;
     private float x;
     private float y;
+    private float locationX;
+    private float locationY;
     private Bitmap secondbullet;
     private Bitmap thirdbullet;
     private Bitmap fourthbullet;
@@ -36,6 +38,8 @@ public class Bullet implements GameImageInterface {
         x=myPlaneImage.getX()+myPlaneImage.getWidth()/2-5;
         y=myPlaneImage.getY();
 
+        locationX=x;
+
 
     }
 
@@ -47,14 +51,17 @@ public class Bullet implements GameImageInterface {
         //if the level of the bullet changed , change the image .
         if(myPlaneImage.levelofbullet==2){
             Log.i("levelofbullet is 2","another bullet");
+            x=locationX+5-myPlaneImage.getWidth()/2+14;
             shotbullet=secondbullet;
         }
         else if(myPlaneImage.levelofbullet==3){
             Log.i("levelofbullet is 3","another bullet");
+            x=locationX+5-myPlaneImage.getWidth()/2+10;
             shotbullet=thirdbullet;
         }
         else if(myPlaneImage.levelofbullet==4){
             Log.i("levelofbullet is 4","another bullet");
+            x=locationX+5-myPlaneImage.getWidth()/2;
             shotbullet=fourthbullet;
         }
         //move the bullet automatically

@@ -7,31 +7,24 @@ import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 import java.util.Random;
 
 /**
- * Created by Administrator on 2017/5/29.
+ * Created by Administrator on 2017/6/1.
  */
 
-public class Prop implements GameImageInterface {
-
-    private Bitmap prop;
-    private float x, y;
+public class Bomb implements GameImageInterface {
+    private Bitmap bomb;
+    private float x,y;
     private Random random=new Random();
     private boolean received=false;
 
-
-    public Prop(Bitmap prop) {
-        this.prop = prop;
-        x = random.nextInt(EndlessModeGameView.SCREEN_WIDTH - this.prop.getWidth());
-        y = -this.prop.getHeight() - 10;
+    public Bomb(Bitmap bomb){
+        this.bomb=bomb;
+        x = random.nextInt(EndlessModeGameView.SCREEN_WIDTH - this.bomb.getWidth());
+        y = -this.bomb.getHeight() - 10;
     }
-
     @Override
     public Bitmap getBitmap() {
-        y = y + 5;
-//        if(this.ifOutOfScreen()){
-//            EndlessModeGameView.PROP_IMAGE.remove(this);
-//            Log.i("REMOVE.Test","The prop is removed because it out of screen");
-//        }
-        return prop;
+        y=y+10;
+        return bomb;
     }
 
     @Override
@@ -43,7 +36,6 @@ public class Prop implements GameImageInterface {
     public float getY() {
         return y;
     }
-
     public boolean ifOutOfScreen() {
         if (this.y >= EndlessModeGameView.SCREEN_HEIGHT + 10) {
             return true;
@@ -51,16 +43,15 @@ public class Prop implements GameImageInterface {
             return false;
         }
     }
-    //when the prop is received by the ship, remove it from the screen
     public void receivedbyship(){
         if(!received){
             for(GameImageInterface myShip : EndlessModeGameView.GAME_IMAGES){
                 if(myShip instanceof MyShip){
                     if (myShip.getX()>this.getX()
                             &&myShip.getY()>this.getY()
-                            &&myShip.getX()<this.getX()+this.prop.getWidth()
-                            &&myShip.getY()<this.getY()+this.prop.getHeight()){
-                        EndlessModeGameView.PROP_IMAGE.remove(this);
+                            &&myShip.getX()<this.getX()+this.bomb.getWidth()
+                            &&myShip.getY()<this.getY()+this.bomb.getHeight()){
+                        EndlessModeGameView.BOMB_IMAGE.remove(this);
                         received=true;
                         break;
                     }
@@ -69,9 +60,8 @@ public class Prop implements GameImageInterface {
             }
         }
     }
-    public void removeprop(){
-        EndlessModeGameView.PROP_IMAGE.remove(this);
+    public void removebomb(){
+        EndlessModeGameView.BOMB_IMAGE.remove(this);
     }
+
 }
-
-

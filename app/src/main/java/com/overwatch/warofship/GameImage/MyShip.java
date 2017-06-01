@@ -20,7 +20,7 @@ public  class MyShip implements GameImageInterface {
     private int index;
     private boolean isDestroyed;
     //represents the level of the bullet
-    public  int levelofbullet;
+    public  static int levelofbullet;
 
     private float x;
     private float y;
@@ -163,12 +163,32 @@ public  class MyShip implements GameImageInterface {
                         &&prop.getY()>this.getY()
                         &&prop.getX()<this.getX()+this.myShipImage.getWidth()
                         &&prop.getY()<this.getY()+this.myShipImage.getHeight()){
+                    ((Prop) prop).removeprop();
+                    EndlessModeGameView.STRENGTHENTIME=1;
 
                     levelofbullet += 1;
                     Log.i("weapon strengthen","levelofbullet");
                     if(levelofbullet>=4){
                         levelofbullet=4;
                     }
+                    break;
+                }
+            }
+        }
+    }
+    public void receivebomb(){
+        for(GameImageInterface bomb : EndlessModeGameView.BOMB_IMAGE){
+            if(bomb instanceof Bomb){
+                if (bomb.getX()>this.getX()
+                        &&bomb.getY()>this.getY()
+                        &&bomb.getX()<this.getX()+this.myShipImage.getWidth()
+                        &&bomb.getY()<this.getY()+this.myShipImage.getHeight()){
+                    for(GameImageInterface enemyship : EndlessModeGameView.GAME_IMAGES){
+                        if(enemyship instanceof EnemyShip){
+                            ((EnemyShip) enemyship).removeEnmeyShip();
+                        }
+                    }
+                    ((Bomb) bomb).removebomb();
                     break;
                 }
             }
