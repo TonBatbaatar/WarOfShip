@@ -19,6 +19,7 @@ import com.overwatch.warofship.GameImage.EnemyBullet;
 import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
 import com.overwatch.warofship.GameImage.MyShip;
+import com.overwatch.warofship.GameImage.Prop;
 import com.overwatch.warofship.R;
 
 import java.util.ArrayList;
@@ -68,6 +69,7 @@ public class Story2LevGV extends EndlessModeGameView implements View.OnTouchList
     public static ArrayList<GameImageInterface> gameImages = new ArrayList();
     public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
+    public static ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
 
 
     public int modenumber;
@@ -163,6 +165,7 @@ public class Story2LevGV extends EndlessModeGameView implements View.OnTouchList
             }
 
 
+
             //// Add enemy ship randomly.
             //if condition means that :
             //every 15 time --> add an basic enemy ship
@@ -172,6 +175,10 @@ public class Story2LevGV extends EndlessModeGameView implements View.OnTouchList
             }
             if (count%150==0){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
+            }
+
+            if(count%150==0){
+                PROP_IMAGE.add(new Prop(prop));
             }
 
 
@@ -203,6 +210,7 @@ public class Story2LevGV extends EndlessModeGameView implements View.OnTouchList
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
                     ((MyShip) image).checkIsBeat();
+                    ((MyShip) image).receiveprop();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
@@ -231,6 +239,14 @@ public class Story2LevGV extends EndlessModeGameView implements View.OnTouchList
                     Log.i("REMOVE","Removed the enemy bullet!");
                 }else{
                     preparationCanvas.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
+                }
+            }
+
+            for(Prop prop : PROP_IMAGE){
+                if(prop.ifOutOfScreen()){
+                    Log.i("REMOVE","Removed the prop!");
+                }else{
+                    preparationCanvas.drawBitmap(prop.getBitmap(),prop.getX(),prop.getY(),p);
                 }
             }
 
