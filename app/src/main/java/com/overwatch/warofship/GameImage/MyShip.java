@@ -3,6 +3,7 @@ package com.overwatch.warofship.GameImage;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.overwatch.warofship.End;
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
@@ -18,6 +19,7 @@ public  class MyShip implements GameImageInterface {
     private List<Bitmap> myShipImages=new ArrayList<>();
     private int index;
     private boolean isDestroyed;
+    public  int levelofbullet;
 
     private float x;
     private float y;
@@ -30,6 +32,7 @@ public  class MyShip implements GameImageInterface {
         myShipImages.add(myShipImage);
         this.index=0;
         this.isDestroyed=false;
+        levelofbullet=1;
         this.context=context;
         this.initBoomPic();//initialize the boom pictures
 
@@ -150,6 +153,25 @@ public  class MyShip implements GameImageInterface {
           return true;
         }
         return false;
+    }
+
+    public void receiveprop(){
+        for(GameImageInterface prop : EndlessModeGameView.PROP_IMAGE){
+            if(prop instanceof Prop){
+                if (prop.getX()>this.getX()
+                        &&prop.getY()>this.getY()
+                        &&prop.getX()<this.getX()+this.myShipImage.getWidth()
+                        &&prop.getY()<this.getY()+this.myShipImage.getHeight()){
+
+                    levelofbullet += 1;
+                    Log.i("weapon strengthen","levelofbullet");
+                    if(levelofbullet>=4){
+                        levelofbullet=4;
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     public void removePlayership(){

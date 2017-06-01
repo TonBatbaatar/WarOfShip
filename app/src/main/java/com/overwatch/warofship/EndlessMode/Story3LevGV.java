@@ -46,10 +46,14 @@ public class Story3LevGV extends EndlessModeGameView implements View.OnTouchList
     private Bitmap myShip;
     private Bitmap enemy;
     private Bitmap enemyBoss;
-    private Bitmap bullet;
+    private Bitmap initialbullet;
+    private Bitmap secondbullet;
+    private Bitmap thirdbullet;
+    private Bitmap fourthbullet;
     private Bitmap enemyBullet;
     private Bitmap boom;
     private Bitmap preparation;
+    private Bitmap prop;
 
 
 
@@ -121,9 +125,13 @@ public class Story3LevGV extends EndlessModeGameView implements View.OnTouchList
         myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.playership);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
-        bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        initialbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
+        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
 
 
         gameImages.add(new BackGround(backGround));//add bitmap to list
@@ -182,7 +190,7 @@ public class Story3LevGV extends EndlessModeGameView implements View.OnTouchList
                 //Add the bullet
                 //change new bullet inserting speed here
                 if (image instanceof MyShip && count%10==0){
-                    PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
+                    PLAYER_BULLET_IMAGES.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
                     new sound(sound.view,sound_shot).start();
                     EndlessModeGameView.mysound.play(sound_shot,1,1,1,0,1);
                 } else if (image instanceof EnemyBossShip && count%25==0){
