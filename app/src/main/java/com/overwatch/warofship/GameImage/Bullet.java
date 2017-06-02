@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 public class Bullet implements GameImageInterface {
 
     private Bitmap myBulletImage;
-    private MyShip myPlaneImage;
     private float x;
     private float y;
 
@@ -21,29 +20,32 @@ public class Bullet implements GameImageInterface {
      */
     public Bullet(Bitmap myBulletImage, MyShip myPlaneImage) {
         this.myBulletImage = myBulletImage;
-        this.myPlaneImage = myPlaneImage;
-        //initialize the location of bullet of my ship
-        x=myPlaneImage.getX()+myPlaneImage.getWidth()/2-5;
-        y=myPlaneImage.getY();
+        this.x = myPlaneImage.getX()+myPlaneImage.getWidth()/2-5;//initialize the location of bullet of my ship
+        this.y = myPlaneImage.getY();
     }
 
     @Override
+    /**
+     * getter of bitmap
+     * move the bullet automatically in this method
+     * number change the move speed
+     */
     public Bitmap getBitmap() {
-        //move the bullet automatically
-        //the number can change the speed
-        y-=10;
+        y -= 10;
         return myBulletImage;
     }
 
     @Override
-    //getter fo the location : x and y
+    /**
+     * getter of location
+     * setter of location
+     */
     public float getX() {
         return x;
     }
     public float getY() {
         return y;
     }
-    //setter of the location : x and y
     public void setX(float x) {
         this.x = x;
     }
@@ -51,10 +53,12 @@ public class Bullet implements GameImageInterface {
         this.y = y;
     }
 
-
-    //the method to judge if the bullet is out of screen
-    //true: out of screen
-    //false: in screen
+    /**
+     * judge if the bullet is out of screen
+     * @return
+     *          return true if bullet out of screen
+     *          return false if bullet no out of screen
+     */
     public boolean ifOutOfScreen(){
         if(y<=-10){
             return true;

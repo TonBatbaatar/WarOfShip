@@ -1,4 +1,4 @@
-package com.overwatch.warofship.EndlessMode;
+package com.overwatch.warofship.StoryMode;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

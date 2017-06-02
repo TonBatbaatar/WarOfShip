@@ -4,29 +4,44 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
-import com.overwatch.warofship.End;
-import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+import com.overwatch.warofship.GameMenu.End;
+import com.overwatch.warofship.GameLogic.GameViewInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public  class MyShip implements GameImageInterface {
 
+    /**
+     * variable declaration
+     */
     private Bitmap myShipImage;
     private Bitmap boomImage;
+    private GameViewInterface currentGameView;
     private List<Bitmap> booms=new ArrayList<>();
     private List<Bitmap> myShipImages=new ArrayList<>();
     private int index;
     private boolean isDestroyed;
-
     private float x;
     private float y;
     private float width;
     private float height;
     private Context context;
-    public MyShip(Bitmap myShipImage, Bitmap boomImage, Context context){
+
+    /**
+     * constructor of MyShip
+     * @param myShipImage
+     *          bitmap stored play ship image
+     * @param boomImage
+     *          bitmap store boom picture
+     * @param context
+     * @param gameVeiw
+     *          game view use my ship
+     */
+    public MyShip(Bitmap myShipImage, Bitmap boomImage, Context context, GameViewInterface gameVeiw){
         this.myShipImage=myShipImage;
         this.boomImage=boomImage;
+        this.currentGameView = gameVeiw;
         myShipImages.add(myShipImage);
         this.index=0;
         this.isDestroyed=false;
@@ -37,8 +52,8 @@ public  class MyShip implements GameImageInterface {
         width=myShipImage.getWidth();
         height=myShipImage.getHeight();
         //initialize the location
-        x=(EndlessModeGameView.SCREEN_WIDTH-width)/2;
-        y=EndlessModeGameView.SCREEN_HEIGHT;
+        x=(currentGameView.getScreenWidth()-width)/2;
+        y=currentGameView.getScreenHeight();
 
     }
 
@@ -60,7 +75,7 @@ public  class MyShip implements GameImageInterface {
 
         //if ship destroyed and played all boom pictures we remove my ship
         if(index==7&&isDestroyed){
-            EndlessModeGameView.GAME_IMAGES.remove(this);
+            currentGameView.getGameImages().remove(this);
             Intent intent=new Intent(context,End.class);
             context.startActivity(intent);
         }
@@ -119,7 +134,7 @@ public  class MyShip implements GameImageInterface {
     public boolean checkIsBeat(){
         if (!this.isDestroyed){
             //check if player ship crash with enemy ship
-            for (GameImageInterface image : EndlessModeGameView.GAME_IMAGES){
+            for (GameImageInterface image : currentGameView.getGameImages()){
                 if(image instanceof EnemyShip){
                     if (image.getX()>this.getX()
                             &&image.getY()>this.getY()
@@ -135,7 +150,7 @@ public  class MyShip implements GameImageInterface {
             }
 
             //check if player ship beat by enemy bullet
-            for(GameImageInterface enemybullet :EndlessModeGameView.ENEMY_BULLET_IMAGES){
+            for(GameImageInterface enemybullet :currentGameView.getPlayerBulletImages()){
                 if(enemybullet instanceof EnemyBullet){
                     if(enemybullet.getX()>this.getX()
                             &&enemybullet.getY()>this.getY()

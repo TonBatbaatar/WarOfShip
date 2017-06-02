@@ -1,12 +1,14 @@
-package com.overwatch.warofship.EndlessMode;
+package com.overwatch.warofship.GameImage;
 
+
+import com.overwatch.warofship.GameLogic.GameViewInterface;
 
 public class sound extends Thread {
-    public static EndlessModeGameView view;
+    public static GameViewInterface view;
+    public static  int i=0;
     private boolean runningState = false;//run state of the thread
-     static  int i=0;
 
-    public sound(EndlessModeGameView view,int i){
+    public sound(GameViewInterface view,int i){
         this.view=view;
         this.i=i;
     }
@@ -17,7 +19,6 @@ public class sound extends Thread {
     }
 
     public void run(){
-        EndlessModeGameView.mysound.play(i,1,1,1,0,1);
-
+        view.getMysound().play(i,1,1,1,0,1);
     }
 }

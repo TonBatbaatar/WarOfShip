@@ -1,24 +1,41 @@
-package com.overwatch.warofship.EndlessMode;
+package com.overwatch.warofship.GameLogic;
 
 import android.graphics.Canvas;
-import android.util.Log;
 
 public class GameLoop extends Thread {
 
-    private EndlessModeGameView view;
-    private boolean runningState = false;//run state of the thread
+    /**
+     * variable declaration:
+     * GameViewInterface view --> let system know which view to draw
+     * boolean runningState --> running state of thread
+     */
+    private GameViewInterface view;
+    private boolean runningState;
 
-    public GameLoop(EndlessModeGameView view){
+    /**
+     * constructor of loop
+     * @param view
+     *          parameter to initialize current view
+     */
+    public GameLoop(GameViewInterface view){
         this.view=view;
+        this.runningState = false;
     }
 
-    //set the running state from out other part of the program
+    /**
+     * setter of the runningState
+     * @param run
+     *          set the runningState to param run
+     */
     public void setRunning(boolean run){
         runningState = run;
     }
 
     @Override
-    //Actual part of running the thread
+    /**
+     * override of run method of thread
+     * game view draw here
+     */
     public void run() {
         while(runningState){
             Canvas canvas = null;
