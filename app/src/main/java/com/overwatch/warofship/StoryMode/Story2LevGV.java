@@ -13,6 +13,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.overwatch.warofship.GameImage.Bomb;
+import com.overwatch.warofship.GameImage.Prop;
 import com.overwatch.warofship.GameImage.sound;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
@@ -43,6 +45,8 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
     public int SCREEN_WIDTH;
     public int SCREEN_HEIGHT;
     public int SCORE;
+    public int STRENGTHENTIME;
+    public int bossnumber;
 
 
     //Create Bitmap for picture to store.
@@ -58,6 +62,7 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private Bitmap boom;
     private Bitmap preparation;
     private Bitmap prop;
+    private Bitmap bomb;
 
 
 
@@ -72,7 +77,8 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
     public ArrayList<GameImageInterface> gameImages = new ArrayList();
     public ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
-    public static ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
+    public ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
+    public ArrayList<Bomb> BombImages = new ArrayList<>();
 
 
     public int modenumber;
@@ -116,6 +122,8 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 });
         this.count=0;//initialize the speed controller
         this.SCORE=0;
+        this.STRENGTHENTIME=0;
+        this.bossnumber=0;
     }
 
     ////Method for initialize the game images:
@@ -131,12 +139,13 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
         initialbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
-        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet2);
+        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
+        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
         prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
+        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet4);
 
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
@@ -161,6 +170,8 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
 
             Canvas preparationCanvas = new Canvas(preparation);//create a new canvas to draw preparation Bitmap
             count++;//Speed controller to be updated
+            bossnumber++;
+            STRENGTHENTIME++;
 
 
             if (count%15==0){
@@ -176,12 +187,18 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
             if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
-            if (count%150==0){
+            if (bossnumber%150==0&&bossnumber<=600){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
+                gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
+
+            }
+            if(count%150==0){
+                PROP_IMAGES.add(new Prop(prop));
+
             }
 
-            if(count%150==0){
-                PROP_IMAGE.add(new Prop(prop));
+            if(count%200==0){
+                BombImages.add(new Bomb(bomb));
             }
 
 
@@ -200,7 +217,7 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 //Add the bullet
                 //change new bullet inserting speed here
                 if (image instanceof MyShip && count%10==0){
-                    PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
+                    PLAYER_BULLET_IMAGES.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
                     new sound(sound.view,sound_shot).start();
                     mysound.play(sound_shot,1,1,1,0,1);
                 } else if (image instanceof EnemyBossShip && count%25==0){
@@ -214,6 +231,7 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 if (image instanceof MyShip){
                     ((MyShip) image).checkIsBeat();
                     ((MyShip) image).receiveprop();
+                    ((MyShip) image).receivebomb();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
@@ -245,12 +263,26 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 }
             }
 
-            for(Prop prop : PROP_IMAGE){
+            for(Prop prop : PROP_IMAGES){
                 if(prop.ifOutOfScreen()){
                     Log.i("REMOVE","Removed the prop!");
                 }else{
                     preparationCanvas.drawBitmap(prop.getBitmap(),prop.getX(),prop.getY(),p);
                 }
+            }
+
+
+            for(Bomb bomb : BombImages){
+                if(bomb.ifOutOfScreen()){
+                    Log.i("REMOVE","Removed the prop!");
+                }else{
+                    preparationCanvas.drawBitmap(bomb.getBitmap(),bomb.getX(),bomb.getY(),p);
+                }
+            }
+
+
+            if(STRENGTHENTIME%150==0){
+                MyShip.levelofbullet=1;
             }
 
 

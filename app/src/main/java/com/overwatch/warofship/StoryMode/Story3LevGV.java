@@ -13,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.overwatch.warofship.GameImage.Bomb;
 import com.overwatch.warofship.GameImage.sound;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
@@ -44,6 +45,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
     public int SCREEN_WIDTH;
     public int SCREEN_HEIGHT;
     public int SCORE;
+    public int STRENGTHENTIME;
 
 
     //Create Bitmap for picture to store.
@@ -59,6 +61,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private Bitmap boom;
     private Bitmap preparation;
     private Bitmap prop;
+    private Bitmap bomb;
 
 
 
@@ -77,6 +80,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
     public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
     public static ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
+    public static ArrayList<Bomb> Bombimages = new ArrayList<>();
 
 
     public int modenumber;
@@ -120,6 +124,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 });
         this.count=0;//initialize the speed controller
         this.SCORE=0;
+        this.STRENGTHENTIME=0;
     }
 
     ////Method for initialize the game images:
@@ -135,12 +140,13 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
         initialbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
-        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet2);
+        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
+        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
         prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
+        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet4);
 
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
@@ -183,8 +189,9 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
             }
             if(count%150==0){
-                PROP_IMAGE.add(new Prop(prop));
+                PROP_IMAGES.add(new Prop(prop));
             }
+
 
 
 

@@ -11,7 +11,6 @@ public class Bullet implements GameImageInterface {
     private float x;
     private float y;
     private float locationX;
-    private float locationY;
     private Bitmap secondbullet;
     private Bitmap thirdbullet;
     private Bitmap fourthbullet;

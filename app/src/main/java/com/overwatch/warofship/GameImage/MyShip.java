@@ -175,14 +175,14 @@ public  class MyShip implements GameImageInterface {
     }
 
     public void receiveprop(){
-        for(GameImageInterface prop : EndlessModeGameView.PROP_IMAGE){
+        for(GameImageInterface prop : currentGameView.PROP_IMAGE){
             if(prop instanceof Prop){
                 if (prop.getX()>this.getX()
                         &&prop.getY()>this.getY()
                         &&prop.getX()<this.getX()+this.myShipImage.getWidth()
                         &&prop.getY()<this.getY()+this.myShipImage.getHeight()){
                     ((Prop) prop).removeprop();
-                    EndlessModeGameView.STRENGTHENTIME=1;
+                    currentGameView.STRENGTHENTIME=1;
 
                     levelofbullet += 1;
                     Log.i("weapon strengthen","levelofbullet");

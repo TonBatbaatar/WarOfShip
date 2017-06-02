@@ -107,6 +107,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private ArrayList<GameImageInterface> gameImages;
     private ArrayList<Bullet> playerBulletImages;
     private ArrayList<EnemyBullet> enemyBulletImages;
+    private ArrayList<Prop> PropImages;
+    private ArrayList<Bomb> BombImages;
     public static int bossnumber;
     public int modenumber = 3;
 
@@ -153,6 +155,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         this.gameImages = new ArrayList();
         this.playerBulletImages = new ArrayList();
         this.enemyBulletImages = new ArrayList();
+        this.PropImages =new ArrayList<>();
+        this.BombImages = new ArrayList<>();
         this.count=0;//initialize the speed controller
         this.bossnumber=0;//control the number of boss ship
         this.SCORE=0;
@@ -192,7 +196,6 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         myShip = BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
         enemy = BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss = BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
-        bullet = BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
         enemyBullet = BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
         boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
@@ -242,12 +245,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
              */
             if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
-                GAME_IMAGES.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
+                GAME_IMAGES.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
 
             }
             if (bossnumber%150==0&&bossnumber<=600){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
-                GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
+                GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
 
             }
             if(count%150==0){
@@ -274,7 +277,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                  * bullet adding speed control here
                  */
                 if (image instanceof MyShip && count%10==0){
-                    playerBulletImages.add(new Bullet(bullet,(MyShip)image));
+                    playerBulletImages.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
                     PLAYER_BULLET_IMAGES.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
                     new sound(sound.view,sound_shot).start();
                     mysound.play(sound_shot,1,1,1,0,1);
