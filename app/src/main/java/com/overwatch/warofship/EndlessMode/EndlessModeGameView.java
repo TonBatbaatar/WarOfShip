@@ -36,6 +36,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
      * variable declaration:
      * thread variables
      */
+
+    //god
+
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
     private Context context;
