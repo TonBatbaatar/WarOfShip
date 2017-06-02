@@ -185,6 +185,24 @@ public class EnemyShip implements GameImageInterface {
 
              }
 
+
+        if(levelNumber==5) {
+            Log.i("test", "level 4");
+            if(moveDirection==0){
+                x+=9;
+            }
+            else{
+                x-=9;
+            }
+            if (this.x>=(currentGameView.getScreenWidth()-this.enemyShipImage.getWidth())
+                    ||this.x<=0){
+
+                moveDirection=1-moveDirection;
+            }
+
+
+        }
+
         return returnBitmap;
     }
 
