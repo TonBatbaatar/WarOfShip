@@ -387,12 +387,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
     @Override
     public ArrayList<Prop> getPropImages() {
-        return null;
+        return propImages;
     }
 
     @Override
     public ArrayList<Bomb> getBombImages() {
-        return null;
+        return bombImages;
     }
 
     public int getStrengthenTime() {

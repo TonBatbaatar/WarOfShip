@@ -692,12 +692,12 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
 
     @Override
     public ArrayList<Prop> getPropImages() {
-        return null;
+        return propImages;
     }
 
     @Override
     public ArrayList<Bomb> getBombImages() {
-        return null;
+        return bombImages;
     }
 
 }

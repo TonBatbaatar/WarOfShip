@@ -2,7 +2,6 @@ package com.overwatch.warofship.GameImage;
 
 import android.graphics.Bitmap;
 
-import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 import com.overwatch.warofship.GameLogic.GameViewInterface;
 
 import java.util.Random;
@@ -53,7 +52,7 @@ public class Prop implements GameImageInterface {
     //when the prop is received by the ship, remove it from the screen
     public void receivedbyship(){
         if(!received){
-            for(GameImageInterface myShip : currentGameView.getGameImages()){
+            for(GameImageInterface myShip : currentGameView.getPropImages()){
                 if(myShip instanceof MyShip){
                     if (myShip.getX()>this.getX()
                             &&myShip.getY()>this.getY()

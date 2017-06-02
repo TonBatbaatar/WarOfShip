@@ -2,7 +2,6 @@ package com.overwatch.warofship.GameImage;
 
 import android.graphics.Bitmap;
 
-import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 import com.overwatch.warofship.GameLogic.GameViewInterface;
 
 import java.util.Random;
@@ -44,7 +43,7 @@ public class Bomb implements GameImageInterface {
     }
     public void receivedbyship(){
         if(!received){
-            for(GameImageInterface myShip : currentGameView.getGameImages()){
+            for(GameImageInterface myShip : currentGameView.getBombImages()){
                 if(myShip instanceof MyShip){
                     if (myShip.getX()>this.getX()
                             &&myShip.getY()>this.getY()
