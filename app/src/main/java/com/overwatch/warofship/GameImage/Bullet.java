@@ -7,6 +7,7 @@ public class Bullet implements GameImageInterface {
 
     private Bitmap initialbullet;
     private MyShip myPlaneImage;
+    private Bitmap myBulletImage;
     private float x;
     private float y;
     private float locationX;
@@ -19,7 +20,7 @@ public class Bullet implements GameImageInterface {
     /**
      * Create player bullet
      *
-     * @param initialbullet
+     * @param myBulletImage
      *              the Bitmap used for draw
      *
      * @param myPlaneImage
@@ -43,9 +44,12 @@ public class Bullet implements GameImageInterface {
 
     }
 
-
-
     @Override
+    /**
+     * getter of bitmap
+     * move the bullet automatically in this method
+     * number change the move speed
+     */
     public Bitmap getBitmap() {
 
         //if the level of the bullet changed , change the image .
@@ -73,7 +77,10 @@ public class Bullet implements GameImageInterface {
     }
 
     @Override
-    //getter fo the location : x and y
+    /**
+     * getter of location
+     * setter of location
+     */
     public float getX() {
         return x;
     }
@@ -88,10 +95,12 @@ public class Bullet implements GameImageInterface {
         this.y = y;
     }
 
-
-    //the method to judge if the bullet is out of screen
-    //true: out of screen
-    //false: in screen
+    /**
+     * judge if the bullet is out of screen
+     * @return
+     *          return true if bullet out of screen
+     *          return false if bullet no out of screen
+     */
     public boolean ifOutOfScreen(){
         if(y<=-10){
             return true;

@@ -1,15 +1,16 @@
-package com.overwatch.warofship;
+package com.overwatch.warofship.GameMenu;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import com.overwatch.warofship.EndlessMode.Story1LevActivity;
-import com.overwatch.warofship.EndlessMode.Story2LevActivity;
-import com.overwatch.warofship.EndlessMode.Story3LevActivity;
-import com.overwatch.warofship.EndlessMode.Story4LevActivity;
-import com.overwatch.warofship.EndlessMode.Story5LevActivity;
+import com.overwatch.warofship.StoryMode.Story1LevActivity;
+import com.overwatch.warofship.StoryMode.Story2LevActivity;
+import com.overwatch.warofship.StoryMode.Story3LevActivity;
+import com.overwatch.warofship.StoryMode.Story4LevActivity;
+import com.overwatch.warofship.StoryMode.Story5LevActivity;
+import com.overwatch.warofship.R;
 
 public class StoryActivity extends AppCompatActivity {
 
@@ -17,6 +18,7 @@ public class StoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.story_layout);
+
         Button button1=(Button) findViewById(R.id.button_6);
         button1.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -26,6 +28,7 @@ public class StoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         Button button2=(Button) findViewById(R.id.button_7);
         button2.setOnClickListener(new View.OnClickListener(){
             @Override
