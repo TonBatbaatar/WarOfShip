@@ -203,8 +203,8 @@ public class Story4LevGV extends SurfaceView implements View.OnTouchListener,Gam
             if(count%100==0){
                 gameImages.add(new Barrier(stone,this));
             }
-            if (bossnumber%150==0&&bossnumber<=600){
-                gameImages.add(new EnemyBossShip(enemyBoss,bossboom,5,this));//every 150 times we add an enemy ship
+            if (bossnumber==800){
+                gameImages.add(new EnemyBossShip(enemyBoss,bossboom,15,this,context));//every 150 times we add an enemy ship
             }
             if(count%150==0){
                 propImages.add(new Prop(prop,this));

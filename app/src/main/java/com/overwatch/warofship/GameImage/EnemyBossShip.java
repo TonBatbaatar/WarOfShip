@@ -1,12 +1,17 @@
 package com.overwatch.warofship.GameImage;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
+import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
 import com.overwatch.warofship.GameLogic.GameViewInterface;
+import com.overwatch.warofship.GameMenu.End;
+import com.overwatch.warofship.GameMenu.Pass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +37,7 @@ public class EnemyBossShip implements GameImageInterface {
     private float y;
     private float width;
     private float height;
+    private Context context;
 
     /**
      * constructor of EnemyBossShip
@@ -44,7 +50,7 @@ public class EnemyBossShip implements GameImageInterface {
      * @param currentGameView
      *          current game view
      */
-    public EnemyBossShip(Bitmap enemyBossShipImage,Bitmap boomImage, int maxHp, GameViewInterface currentGameView){
+    public EnemyBossShip(Bitmap enemyBossShipImage,Bitmap boomImage, int maxHp, GameViewInterface currentGameView,Context context){
         this.enemyBossShipImage=enemyBossShipImage;
         this.enemyBossShipWithHP=Bitmap.createBitmap(enemyBossShipImage.getWidth(),enemyBossShipImage.getHeight()+30,
                 Bitmap.Config.ARGB_8888);
@@ -62,6 +68,7 @@ public class EnemyBossShip implements GameImageInterface {
         this.y=-enemyBossShipImage.getHeight();
         this.width=enemyBossShipImage.getWidth();
         this.height=enemyBossShipImage.getHeight();
+        this.context = context;
 
         this.initBoomPic();// initialize the boom pictures
     }
@@ -125,6 +132,10 @@ public class EnemyBossShip implements GameImageInterface {
          */
         if(index==14&&isDestroyed){
             currentGameview.getGameImages().remove(this);
+            if(!(currentGameview instanceof EndlessModeGameView)){
+                Intent intent=new Intent(context,Pass.class);
+                context.startActivity(intent);
+            }
         }
 
         /**
