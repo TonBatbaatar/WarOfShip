@@ -19,6 +19,8 @@ public interface GameViewInterface {
     int getScreenWidth();
     int getScreenHeight();
     int getSCORE();
+    int getStrengthenTime();
+    void setStrengthenTime(int strengthenTime);
     void setSCORE(int SCORE);
     ArrayList<GameImageInterface> getGameImages();
     ArrayList<Bullet> getPlayerBulletImages();

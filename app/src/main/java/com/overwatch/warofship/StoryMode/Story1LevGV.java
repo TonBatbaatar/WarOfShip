@@ -16,7 +16,7 @@ import android.view.View;
 
 import com.overwatch.warofship.GameImage.Bomb;
 import com.overwatch.warofship.GameImage.Prop;
-import com.overwatch.warofship.GameImage.sound;
+import com.overwatch.warofship.GameImage.Sound;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -34,7 +34,7 @@ import java.util.List;
 public class Story1LevGV extends SurfaceView implements View.OnTouchListener,GameViewInterface {
 //    private GameLoop gameLoop;
 //    private SurfaceHolder holder=null;
-//    private sound sound;
+//    private Sound Sound;
 //
 //    private Paint p=new Paint();// Paint for all draw code.
 //
@@ -83,7 +83,7 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
 //        super(context);
 //
 //        gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
-//        sound = new sound(this,sound.i);
+//        Sound = new Sound(this,Sound.i);
 //        this.setOnTouchListener(this);//add the touch listener.
 //        this.context=context;
 //        holder=getHolder();
@@ -202,7 +202,7 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
 //                //change new bullet inserting speed here
 //                if (image instanceof MyShip && count%10==0){
 //                    PLAYER_BULLET_IMAGES.add(new Bullet(bullet,(MyShip)image));
-//                    new sound(sound.view,sound_shot).start();
+//                    new Sound(Sound.view,sound_shot).start();
 //                    EndlessModeGameView.mysound.play(sound_shot,1,1,1,0,1);
 //                } else if (image instanceof EnemyBossShip && count%25==0){
 //                    ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image,this));
@@ -343,10 +343,10 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private Bitmap myShip;
     private Bitmap enemy;
     private Bitmap enemyBoss;
-    private Bitmap initialbullet;
-    private Bitmap secondbullet;
-    private Bitmap thirdbullet;
-    private Bitmap fourthbullet;
+    private Bitmap initialBullet;
+    private Bitmap secondBullet;
+    private Bitmap thirdBullet;
+    private Bitmap fourthBullet;
     private Bitmap enemyBullet;
     private Bitmap boom;
     private Bitmap preparation;
@@ -355,9 +355,9 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
 
     /**
      * variable declaration:
-     * sound resource
+     * Sound resource
      */
-    private com.overwatch.warofship.GameImage.sound sound;
+    private Sound Sound;
     public SoundPool mysound;
     public static int sound_boom;
     public static int sound_shot;
@@ -370,19 +370,19 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private int SCREEN_WIDTH;// variable to store width and height fo the screen.
     private int SCREEN_HEIGHT;
     private int SCORE;
-    public static int STRENGTHENTIME;
     private int count;//controller of the speed of add a new item to the game.
     private MyShip selectedShip;//used for control the ship.
     private ArrayList<GameImageInterface> gameImages;
     private ArrayList<Bullet> playerBulletImages;
     private ArrayList<EnemyBullet> enemyBulletImages;
-    private ArrayList<Prop> PropImages;
-    private ArrayList<Bomb> BombImages;
+    private ArrayList<Prop> propImages;
+    private ArrayList<Bomb> bombImages;
+    public int strengthenTime;
     public static int bossnumber;
     public int modenumber = 3;
 
     /**
-     * constructor of Story1LevGV
+     * constructor of EndlessModeGameView
      * @param context
      */
     public Story1LevGV(Context context){
@@ -416,26 +416,27 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
                     }
                 });
 
-        sound = new sound(this,sound.i);
+        Sound = new Sound(this, Sound.i);
 
         this.count = 0;//initialize the speed controller
         this.bossnumber = 0;//control the number of boss ship
         this.SCORE = 0;
-        this.STRENGTHENTIME = 0;
         this.gameImages = new ArrayList();
         this.playerBulletImages = new ArrayList();
         this.enemyBulletImages = new ArrayList();
-        this.PropImages = new ArrayList<>();
-        this.BombImages = new ArrayList<>();
+        this.propImages =new ArrayList<>();
+        this.bombImages = new ArrayList<>();
+        this.strengthenTime=0;
 
     }
 
     /**
      * Method for initialize the game images and sounds:
      * insert the picture to bitmap
-     * insert the music to sound
+     * insert the music to Sound
      */
     private void init(){
+
         //Preparation Bitmap is used for make the draw part more fluently
         preparation = Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
@@ -443,19 +444,13 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
         myShip= BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
-        initialbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet2);
-        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
-        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
+        initialBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        secondBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet2);
+        thirdBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
+        fourthBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
-        boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
         prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
         bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet4);
-        backGround = BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
-        myShip = BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
-        enemy = BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
-        enemyBoss = BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
-        enemyBullet = BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
         boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
@@ -476,9 +471,9 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
         if(canvas!=null){
 
             Canvas preparationCanvas = new Canvas(preparation);//create a new canvas to draw preparation Bitmap
+            count++;//Speed controller to be updated
             bossnumber++;
-            count++;// speed controller to be updated
-            STRENGTHENTIME++;
+            strengthenTime++;
             if (count%15==0){
                 SCORE+=5;// the score increase by time player survive
             }
@@ -487,22 +482,19 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
              * Add enemy ship randomly:
              * every 15 time --> add an basic enemy ship
              * every 150 time --> add an boss enemy ship
+             * every 150 time --> add a prop
              */
             if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
             if (bossnumber%150==0&&bossnumber<=600){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
-                gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
-
             }
             if(count%150==0){
-                PropImages.add(new Prop(prop));
-
+                propImages.add(new Prop(prop,this));
             }
-
             if(count%200==0){
-                BombImages.add(new Bomb(bomb));
+                bombImages.add(new Bomb(bomb,this));
             }
 
             /**
@@ -520,15 +512,17 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
                  * bullet adding speed control here
                  */
                 if (image instanceof MyShip && count%10==0){
-                    playerBulletImages.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
-                    new sound(sound.view,sound_shot).start();
+                    playerBulletImages.add(new Bullet(initialBullet,(MyShip)image,secondBullet,thirdBullet,fourthBullet));
+                    new Sound(Sound.view,sound_shot).start();
                     mysound.play(sound_shot,1,1,1,0,1);
                 } else if (image instanceof EnemyBossShip && count%25==0){
                     enemyBulletImages.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image, this));
                 }
 
                 /**
-                 * check destroy and remove ships
+                 * 1.check destroy
+                 * 2.remove ships
+                 * 3.receive reward
                  * destroy when crash with ship
                  * destroy when beat by bullet
                  */
@@ -574,14 +568,18 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 }
             }
 
-            for(Prop prop : PropImages){
+            /**
+             * Draw props
+             * remove the prop already out of the screen
+             */
+            for(Prop prop : propImages){
                 if(prop.ifOutOfScreen()){
                     Log.i("REMOVE","Removed the prop!");
                 }else{
                     preparationCanvas.drawBitmap(prop.getBitmap(),prop.getX(),prop.getY(),p);
                 }
             }
-            for(Bomb bomb : BombImages){
+            for(Bomb bomb : bombImages){
                 if(bomb.ifOutOfScreen()){
                     Log.i("REMOVE","Removed the prop!");
                 }else{
@@ -589,8 +587,11 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 }
             }
 
-
-            if(STRENGTHENTIME%150==0){
+            /**
+             * discard reward after amount of time
+             * change discard time
+             */
+            if(strengthenTime%150==0){
                 MyShip.levelofbullet=1;
             }
 
@@ -671,11 +672,32 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
     public int getSCORE() {
         return SCORE;
     }
+
+    @Override
+    public int getStrengthenTime() {
+        return strengthenTime;
+    }
+
+    @Override
+    public void setStrengthenTime(int strengthenTime) {
+        this.strengthenTime = strengthenTime;
+    }
+
     public void setSCORE(int SCORE) {
         this.SCORE = SCORE;
     }
     public ArrayList<EnemyBullet> getEnemyBulletImages() {
         return enemyBulletImages;
+    }
+
+    @Override
+    public ArrayList<Prop> getPropImages() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Bomb> getBombImages() {
+        return null;
     }
 
 }

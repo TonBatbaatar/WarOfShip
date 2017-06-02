@@ -175,14 +175,14 @@ public  class MyShip implements GameImageInterface {
     }
 
     public void receiveprop(){
-        for(GameImageInterface prop : currentGameView.PROP_IMAGE){
+        for(GameImageInterface prop : currentGameView.getPropImages()){
             if(prop instanceof Prop){
                 if (prop.getX()>this.getX()
                         &&prop.getY()>this.getY()
                         &&prop.getX()<this.getX()+this.myShipImage.getWidth()
                         &&prop.getY()<this.getY()+this.myShipImage.getHeight()){
                     ((Prop) prop).removeprop();
-                    currentGameView.STRENGTHENTIME=1;
+                    currentGameView.setStrengthenTime(1);
 
                     levelofbullet += 1;
                     Log.i("weapon strengthen","levelofbullet");
@@ -195,13 +195,13 @@ public  class MyShip implements GameImageInterface {
         }
     }
     public void receivebomb(){
-        for(GameImageInterface bomb : EndlessModeGameView.BOMB_IMAGE){
+        for(GameImageInterface bomb : currentGameView.getBombImages()){
             if(bomb instanceof Bomb){
                 if (bomb.getX()>this.getX()
                         &&bomb.getY()>this.getY()
                         &&bomb.getX()<this.getX()+this.myShipImage.getWidth()
                         &&bomb.getY()<this.getY()+this.myShipImage.getHeight()){
-                    for(GameImageInterface enemyship : EndlessModeGameView.GAME_IMAGES){
+                    for(GameImageInterface enemyship : currentGameView.getGameImages()){
                         if(enemyship instanceof EnemyShip){
                             ((EnemyShip) enemyship).removeEnmeyShip();
                         }

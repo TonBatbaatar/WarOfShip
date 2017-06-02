@@ -1,9 +1,10 @@
-package com.overwatch.warofship.EndlessMode;
+package com.overwatch.warofship.StoryMode;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -13,7 +14,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
-import com.overwatch.warofship.GameImage.sound;
+import com.overwatch.warofship.GameImage.Bomb;
+import com.overwatch.warofship.GameImage.Sound;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -30,70 +32,74 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Story4LevGV extends SurfaceView implements View.OnTouchListener,GameViewInterface {
+    /**
+     * variable declaration:
+     * thread variables
+     */
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
     private Context context;
-    private com.overwatch.warofship.GameImage.sound sound;
+    private Paint p;// Paint for all pictures.
 
-    private Paint p=new Paint();// Paint for all draw code.
-
-    private static int count;//controller of the speed of add a new item to the game.
-    private MyShip selectedShip;//used for control the ship.
-
-    //Class variable to store width and height fo the screen.
-    public int SCREEN_WIDTH;
-    public int SCREEN_HEIGHT;
-    public int SCORE;
-
-
-    //Create Bitmap for picture to store.
+    /**
+     * variable declaration:
+     * Bitmap to store game picture
+     */
     private Bitmap backGround;
     private Bitmap myShip;
     private Bitmap enemy;
     private Bitmap enemyBoss;
-    private Bitmap initialbullet;
-    private Bitmap secondbullet;
-    private Bitmap thirdbullet;
-    private Bitmap fourthbullet;
+    private Bitmap initialBullet;
+    private Bitmap secondBullet;
+    private Bitmap thirdBullet;
+    private Bitmap fourthBullet;
     private Bitmap enemyBullet;
     private Bitmap boom;
     private Bitmap preparation;
     private Bitmap prop;
+    private Bitmap bomb;
 
-
-
-    public static SoundPool mysound;
+    /**
+     * variable declaration:
+     * Sound resource
+     */
+    private Sound Sound;
+    public SoundPool mysound;
     public static int sound_boom;
     public static int sound_shot;
     private int sound_background;
 
-    //Class variable to store bullet images and game images.
-    //the reason for using class variable is for convenience.
-    //we need to use these tree variable in other classes.
-    public static ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
-    public ArrayList<GameImageInterface> gameImages = new ArrayList();
-    public ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
-    public ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
+    /**
+     * variable declaration:
+     * game info
+     */
+    private int SCREEN_WIDTH;// variable to store width and height fo the screen.
+    private int SCREEN_HEIGHT;
+    private int SCORE;
+    private int count;//controller of the speed of add a new item to the game.
+    private MyShip selectedShip;//used for control the ship.
+    private ArrayList<GameImageInterface> gameImages;
+    private ArrayList<Bullet> playerBulletImages;
+    private ArrayList<EnemyBullet> enemyBulletImages;
+    private ArrayList<Prop> propImages;
+    private ArrayList<Bomb> bombImages;
+    public int strengthenTime;
+    public static int bossnumber;
+    public int modenumber = 3;
 
-
-    public int modenumber;
-
-
-
-
-    //Constructor of the endless mode game view.
+    /**
+     * constructor of EndlessModeGameView
+     * @param context
+     */
     public Story4LevGV(Context context){
-
         super(context);
-        gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
-        sound = new sound(this,sound.i);
+
+        this.gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
+        this.holder = getHolder();
+        this.context = context;
+        this.p = new Paint();
         this.setOnTouchListener(this);//add the touch listener.
-        holder=getHolder();
-        this.context=context;
-        modenumber=4;
-        //Main part of run the game.
-        //Game start from here.
-        holder.addCallback(
+        this.holder.addCallback(
                 new SurfaceHolder.Callback(){
                     @Override
                     //The thread begins from here
@@ -115,104 +121,124 @@ public class Story4LevGV extends SurfaceView implements View.OnTouchListener,Gam
                         gameLoop.setRunning(false);//set the run state of the game loop to stop
                     }
                 });
-        this.count=0;//initialize the speed controller
-        this.SCORE=0;
+
+        Sound = new Sound(this, Sound.i);
+
+        this.count = 0;//initialize the speed controller
+        this.bossnumber = 0;//control the number of boss ship
+        this.SCORE = 0;
+        this.gameImages = new ArrayList();
+        this.playerBulletImages = new ArrayList();
+        this.enemyBulletImages = new ArrayList();
+        this.propImages =new ArrayList<>();
+        this.bombImages = new ArrayList<>();
+        this.strengthenTime=0;
+
     }
 
-    ////Method for initialize the game images:
-    //initialize the bitmaps with the images.
-    //this method is used in constructor
+    /**
+     * Method for initialize the game images and sounds:
+     * insert the picture to bitmap
+     * insert the music to Sound
+     */
     private void init(){
 
         //Preparation Bitmap is used for make the draw part more fluently
-        preparation= Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
+        preparation = Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
         backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
-        myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.playership);
+        myShip= BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
-        initialbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
-        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
-        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        initialBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        secondBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet2);
+        thirdBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
+        fourthBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
-        boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
         prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
-
+        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet4);
+        boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
         gameImages.add(new MyShip(myShip,boom,context,this));
 
-
-        mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
-        sound_boom=mysound.load(getContext(),R.raw.boom,1);
-        sound_shot=mysound.load(getContext(),R.raw.shot,1);
+        mysound = new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
+        sound_boom = mysound.load(getContext(),R.raw.boom,1);
+        sound_shot = mysound.load(getContext(),R.raw.shot,1);
     }
 
-
-
-
-
     @Override
-    //the method of draw the bitmap to the screen
-    //this method is used in Game loop
+    /**
+     * the method of draw use in thread(Game loop)
+     * to draw the bitmap to screen
+     */
     public void draw(Canvas canvas) {
 
         if(canvas!=null){
 
             Canvas preparationCanvas = new Canvas(preparation);//create a new canvas to draw preparation Bitmap
             count++;//Speed controller to be updated
-
-
+            bossnumber++;
+            strengthenTime++;
             if (count%15==0){
-                SCORE+=10;
+                SCORE+=5;// the score increase by time player survive
             }
 
-
-            //// Add enemy ship randomly.
-            //if condition means that :
-            //every 15 time --> add an basic enemy ship
-            //every 150 time --> add an boss enemy ship
+            /**
+             * Add enemy ship randomly:
+             * every 15 time --> add an basic enemy ship
+             * every 150 time --> add an boss enemy ship
+             * every 150 time --> add a prop
+             */
             if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
-            if (count%150==0){
-                gameImages.add(new EnemyBossShip(enemyBoss,boom,10,this));//every 150 times we add an enemy ship
+            if (bossnumber%150==0&&bossnumber<=600){
+                gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
             }
             if(count%150==0){
-                PROP_IMAGE.add(new Prop(prop));
+                propImages.add(new Prop(prop,this));
+            }
+            if(count%200==0){
+                bombImages.add(new Bomb(bomb,this));
             }
 
-
-
-            //// Draw game images
-            // For loop --> draw every bitmap in the gameImages list
+            /**
+             * Draw game images
+             * draw every bitmap in the gameImages list
+             * draw to preparation canvas
+             */
             for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
 
-                //following draw method --> draw every bitmaps to preparation canvas
-                if(image instanceof EnemyShip){
-                    preparationCanvas.drawBitmap(((EnemyShip) image).StoryModeGetBitmap(modenumber),image.getX(),image.getY(),p);
-                }
-                preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
+                preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);// draw code
 
-
-                //Add the bullet
-                //change new bullet inserting speed here
+                /**
+                 * Add bullet
+                 * player and enemy bullet all here
+                 * bullet adding speed control here
+                 */
                 if (image instanceof MyShip && count%10==0){
-                    PLAYER_BULLET_IMAGES.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
-                    new sound(sound.view,sound_shot).start();
+                    playerBulletImages.add(new Bullet(initialBullet,(MyShip)image,secondBullet,thirdBullet,fourthBullet));
+                    new Sound(Sound.view,sound_shot).start();
                     mysound.play(sound_shot,1,1,1,0,1);
                 } else if (image instanceof EnemyBossShip && count%25==0){
-                    ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image,this));
+                    enemyBulletImages.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image, this));
                 }
 
-
-                //// Destroy ships
-                // Destroy when --> crash with ship
-                // Destroy when --> beat by bullet
+                /**
+                 * 1.check destroy
+                 * 2.remove ships
+                 * 3.receive reward
+                 * destroy when crash with ship
+                 * destroy when beat by bullet
+                 */
                 if (image instanceof MyShip){
+                    if (count<15) {
+                        ((MyShip) image).moveintoscreen();
+                    }
                     ((MyShip) image).checkIsBeat();
                     ((MyShip) image).receiveprop();
+                    ((MyShip) image).receivebomb();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
@@ -220,47 +246,83 @@ public class Story4LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 }
             }
 
-
-            ////Draw player bullet
-            //remove the bullet already out of the screen
-            for (Bullet bullet : PLAYER_BULLET_IMAGES){
+            /**
+             * draw player bullet
+             * remove the bullet
+             * remove when bullet out of screen
+             */
+            for (Bullet bullet : playerBulletImages){
                 if(bullet.ifOutOfScreen()){
-                    PLAYER_BULLET_IMAGES.remove(bullet);
+//                    PLAYER_BULLET_IMAGES.remove(bullet);
                     Log.i("REMOVE","Removed the player bullet!");
                 }else {
                     preparationCanvas.drawBitmap(bullet.getBitmap(), bullet.getX(), bullet.getY(), p);
                 }
             }
 
-
-            ////Draw enemy bullet
-            //remove the bullet already out of the screen
-            for (EnemyBullet bullet : ENEMY_BULLET_IMAGES){
+            /**
+             * draw enemy bullet
+             * remove the bullet
+             * remove when bullet out of screen
+             */
+            for (EnemyBullet bullet : enemyBulletImages){
                 if(bullet.ifOutOfScreen()){
-                    ENEMY_BULLET_IMAGES.remove(bullet);
+//                    ENEMY_BULLET_IMAGES.remove(bullet);
                     Log.i("REMOVE","Removed the enemy bullet!");
                 }else{
                     preparationCanvas.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
                 }
             }
 
-
-            for(Prop prop : PROP_IMAGE){
+            /**
+             * Draw props
+             * remove the prop already out of the screen
+             */
+            for(Prop prop : propImages){
                 if(prop.ifOutOfScreen()){
                     Log.i("REMOVE","Removed the prop!");
                 }else{
                     preparationCanvas.drawBitmap(prop.getBitmap(),prop.getX(),prop.getY(),p);
                 }
             }
+            for(Bomb bomb : bombImages){
+                if(bomb.ifOutOfScreen()){
+                    Log.i("REMOVE","Removed the prop!");
+                }else{
+                    preparationCanvas.drawBitmap(bomb.getBitmap(),bomb.getX(),bomb.getY(),p);
+                }
+            }
+
+            /**
+             * discard reward after amount of time
+             * change discard time
+             */
+            if(strengthenTime%150==0){
+                MyShip.levelofbullet=1;
+            }
 
 
-            //// Draw the preparation Bitmap to screen.
+            /**
+             * draw score board
+             * set the type of text here
+             * size or color or style
+             */
+            Paint textp=new Paint();
+            String scoreBoard = "SCORE: <" + this.SCORE + " >";
+            textp.setColor(Color.RED);
+            textp.setTextSize(22);
+            preparationCanvas.drawText(scoreBoard, 10,20,textp);
+
+
+            // Draw the preparation Bitmap to screen.
             canvas.drawBitmap(preparation,0,0,p);
         }
     }
 
     @Override
-    //Following method is code for touch listener
+    /**
+     * on touch listener to control player ship
+     */
     public boolean onTouch(View v, MotionEvent event) {
 
         if (event.getAction()==MotionEvent.ACTION_DOWN){
@@ -268,7 +330,9 @@ public class Story4LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 if (image instanceof MyShip){
                     //this if method is select the ship when we touch on it
                     if (((MyShip) image).ifPlaneSelected(event.getX(),event.getY())){
-                        selectedShip=(MyShip)image;
+                        if (count>15) {
+                            selectedShip = (MyShip) image;
+                        }
                     }else {
                         selectedShip = null;
                     }
@@ -291,35 +355,54 @@ public class Story4LevGV extends SurfaceView implements View.OnTouchListener,Gam
         return true;
     }
 
+    /**
+     * useful getters
+     * @return
+     *          return the variable needed
+     */
     public SoundPool getMysound() {
         return mysound;
     }
-
     public int getScreenWidth() {
         return SCREEN_WIDTH;
     }
-
     public int getScreenHeight() {
         return SCREEN_HEIGHT;
     }
-
     public ArrayList<GameImageInterface> getGameImages() {
         return gameImages;
     }
-
     public ArrayList<Bullet> getPlayerBulletImages() {
-        return PLAYER_BULLET_IMAGES;
+        return playerBulletImages;
     }
-
     public int getSCORE() {
         return SCORE;
+    }
+
+    @Override
+    public int getStrengthenTime() {
+        return strengthenTime;
+    }
+
+    @Override
+    public void setStrengthenTime(int strengthenTime) {
+        this.strengthenTime = strengthenTime;
     }
 
     public void setSCORE(int SCORE) {
         this.SCORE = SCORE;
     }
-
     public ArrayList<EnemyBullet> getEnemyBulletImages() {
-        return ENEMY_BULLET_IMAGES;
+        return enemyBulletImages;
+    }
+
+    @Override
+    public ArrayList<Prop> getPropImages() {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Bomb> getBombImages() {
+        return null;
     }
 }

@@ -3,22 +3,21 @@ package com.overwatch.warofship.GameImage;
 import android.graphics.Bitmap;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+import com.overwatch.warofship.GameLogic.GameViewInterface;
 
 import java.util.Random;
 
-/**
- * Created by Administrator on 2017/6/1.
- */
-
 public class Bomb implements GameImageInterface {
     private Bitmap bomb;
+    private GameViewInterface currentGameView;
     private float x,y;
     private Random random=new Random();
     private boolean received=false;
 
-    public Bomb(Bitmap bomb){
+    public Bomb(Bitmap bomb,GameViewInterface currentGameView){
         this.bomb=bomb;
-        x = random.nextInt(EndlessModeGameView.SCREEN_WIDTH - this.bomb.getWidth());
+        this.currentGameView = currentGameView;
+        x = random.nextInt(currentGameView.getScreenWidth() - this.bomb.getWidth());
         y = -this.bomb.getHeight() - 10;
     }
     @Override
@@ -37,7 +36,7 @@ public class Bomb implements GameImageInterface {
         return y;
     }
     public boolean ifOutOfScreen() {
-        if (this.y >= EndlessModeGameView.SCREEN_HEIGHT + 10) {
+        if (this.y >= currentGameView.getScreenHeight() + 10) {
             return true;
         } else {
             return false;
@@ -45,13 +44,13 @@ public class Bomb implements GameImageInterface {
     }
     public void receivedbyship(){
         if(!received){
-            for(GameImageInterface myShip : EndlessModeGameView.GAME_IMAGES){
+            for(GameImageInterface myShip : currentGameView.getGameImages()){
                 if(myShip instanceof MyShip){
                     if (myShip.getX()>this.getX()
                             &&myShip.getY()>this.getY()
                             &&myShip.getX()<this.getX()+this.bomb.getWidth()
                             &&myShip.getY()<this.getY()+this.bomb.getHeight()){
-                        EndlessModeGameView.BOMB_IMAGE.remove(this);
+                        currentGameView.getBombImages().remove(this);
                         received=true;
                         break;
                     }
@@ -61,7 +60,7 @@ public class Bomb implements GameImageInterface {
         }
     }
     public void removebomb(){
-        EndlessModeGameView.BOMB_IMAGE.remove(this);
+        currentGameView.getBombImages().remove(this);
     }
 
 }

@@ -3,12 +3,12 @@ package com.overwatch.warofship.GameImage;
 
 import com.overwatch.warofship.GameLogic.GameViewInterface;
 
-public class sound extends Thread {
+public class Sound extends Thread {
     public static GameViewInterface view;
     public static  int i=0;
     private boolean runningState = false;//run state of the thread
 
-    public sound(GameViewInterface view,int i){
+    public Sound(GameViewInterface view, int i){
         this.view=view;
         this.i=i;
     }

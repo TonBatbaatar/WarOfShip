@@ -228,7 +228,7 @@ public class EnemyShip implements GameImageInterface {
         enemyShipList=booms;
         isDestroyed = true;
         currentGameView.setSCORE(currentGameView.getSCORE() + 50);
-//        new sound(sound.view,currentGameView.sound_boom).start();
+//        new Sound(Sound.view,currentGameView.sound_boom).start();
 //        currentGameView.getMysound().play(currentGameView.sound_boom,1,1,1,0,1);
     }
 

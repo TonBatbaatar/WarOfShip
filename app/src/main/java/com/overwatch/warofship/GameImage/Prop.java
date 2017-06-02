@@ -3,12 +3,9 @@ package com.overwatch.warofship.GameImage;
 import android.graphics.Bitmap;
 
 import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+import com.overwatch.warofship.GameLogic.GameViewInterface;
 
 import java.util.Random;
-
-/**
- * Created by Administrator on 2017/5/29.
- */
 
 public class Prop implements GameImageInterface {
 
@@ -16,11 +13,13 @@ public class Prop implements GameImageInterface {
     private float x, y;
     private Random random=new Random();
     private boolean received=false;
+    private GameViewInterface currentGameView;
 
 
-    public Prop(Bitmap prop) {
+    public Prop(Bitmap prop,GameViewInterface currentGameView) {
         this.prop = prop;
-        x = random.nextInt(EndlessModeGameView.SCREEN_WIDTH - this.prop.getWidth());
+        this.currentGameView = currentGameView;
+        x = random.nextInt(currentGameView.getScreenWidth() - this.prop.getWidth());
         y = -this.prop.getHeight() - 10;
     }
 
@@ -45,7 +44,7 @@ public class Prop implements GameImageInterface {
     }
 
     public boolean ifOutOfScreen() {
-        if (this.y >= EndlessModeGameView.SCREEN_HEIGHT + 10) {
+        if (this.y >= currentGameView.getScreenHeight() + 10) {
             return true;
         } else {
             return false;
@@ -54,13 +53,13 @@ public class Prop implements GameImageInterface {
     //when the prop is received by the ship, remove it from the screen
     public void receivedbyship(){
         if(!received){
-            for(GameImageInterface myShip : EndlessModeGameView.GAME_IMAGES){
+            for(GameImageInterface myShip : currentGameView.getGameImages()){
                 if(myShip instanceof MyShip){
                     if (myShip.getX()>this.getX()
                             &&myShip.getY()>this.getY()
                             &&myShip.getX()<this.getX()+this.prop.getWidth()
                             &&myShip.getY()<this.getY()+this.prop.getHeight()){
-                        EndlessModeGameView.PROP_IMAGE.remove(this);
+                        currentGameView.getPropImages().remove(this);
                         received=true;
                         break;
                     }
@@ -70,7 +69,7 @@ public class Prop implements GameImageInterface {
         }
     }
     public void removeprop(){
-        EndlessModeGameView.PROP_IMAGE.remove(this);
+        currentGameView.getPropImages().remove(this);
     }
 }
 
