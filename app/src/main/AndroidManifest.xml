@@ -22,7 +22,9 @@
         <activity android:name=".StoryMode.Story3LevActivity" />
         <activity android:name=".StoryMode.Story4LevActivity" />
         <activity android:name=".StoryMode.Story5LevActivity" />
-        <activity android:name=".GameMenu.StoryActivity"></activity>
+        <activity android:name=".GameMenu.StoryActivity" />
+        <activity android:name=".GameMenu.Record_Activity" />
+        <activity android:name=".GameMenu.Pass"></activity>
     </application>
 
 </manifest>

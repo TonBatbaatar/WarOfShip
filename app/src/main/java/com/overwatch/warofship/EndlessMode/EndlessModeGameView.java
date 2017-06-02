@@ -79,7 +79,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
      */
     private int SCREEN_WIDTH;// variable to store width and height fo the screen.
     private int SCREEN_HEIGHT;
-    private int SCORE;
+    private static int SCORE;
     private int count;//controller of the speed of add a new item to the game.
     private MyShip selectedShip;//used for control the ship.
     private ArrayList<GameImageInterface> gameImages;
@@ -140,6 +140,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
     }
 
+
+
     /**
      * Method for initialize the game images and sounds:
      * insert the picture to bitmap
@@ -167,7 +169,7 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         stone=BitmapFactory.decodeResource(getResources(),R.mipmap.stone);
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom,context,this));
+        gameImages.add(new MyShip(myShip,boom,context,this,SCORE));
 
         mysound = new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
         sound_boom = mysound.load(getContext(),R.raw.boom,1);

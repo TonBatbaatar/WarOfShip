@@ -167,7 +167,7 @@ public class Story5LevGV extends SurfaceView implements View.OnTouchListener,Gam
         stone= BitmapFactory.decodeResource(getResources(),R.mipmap.stone);
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom,context,this));
+        gameImages.add(new MyShip(myShip,boom,context,this,SCORE));
 
         mysound = new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
         sound_boom = mysound.load(getContext(),R.raw.boom,1);

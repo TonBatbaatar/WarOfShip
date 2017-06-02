@@ -1,10 +1,14 @@
 package com.overwatch.warofship.GameImage;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.overwatch.warofship.EndlessMode.EndlessModeGameView;
+import com.overwatch.warofship.GameMenu.DbHelper;
 import com.overwatch.warofship.GameMenu.End;
 import com.overwatch.warofship.GameLogic.GameViewInterface;
 
@@ -23,6 +27,7 @@ public  class MyShip implements GameImageInterface {
     private List<Bitmap> myShipImages=new ArrayList<>();
     private int index;
     private boolean isDestroyed;
+    private DbHelper dbHelper;
     //represents the level of the bullet
     public  static int levelofbullet;
 
@@ -31,7 +36,7 @@ public  class MyShip implements GameImageInterface {
     private float width;
     private float height;
     private Context context;
-
+    private int score;
     /**
      * constructor of MyShip
      * @param myShipImage
@@ -42,7 +47,7 @@ public  class MyShip implements GameImageInterface {
      * @param gameVeiw
      *          game view use my ship
      */
-    public MyShip(Bitmap myShipImage, Bitmap boomImage, Context context, GameViewInterface gameVeiw){
+    public MyShip(Bitmap myShipImage, Bitmap boomImage, Context context, GameViewInterface gameVeiw,int score){
         this.myShipImage=myShipImage;
         this.boomImage=boomImage;
         this.currentGameView = gameVeiw;
@@ -51,6 +56,7 @@ public  class MyShip implements GameImageInterface {
         this.isDestroyed=false;
         levelofbullet=1;
         this.context=context;
+        this.score=score;
         this.initBoomPic();//initialize the boom pictures
 
         //initialize the width and height
@@ -214,6 +220,13 @@ public  class MyShip implements GameImageInterface {
     public void removePlayership(){
         myShipImages=booms;
         isDestroyed= true;
+        dbHelper=new DbHelper(context,"record.db",null,1);
+        SQLiteDatabase db=dbHelper.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        values.put("name","user");
+        values.put("score",currentGameView.getSCORE());
+        db.insert("record",null,values);
+        values.clear();
         Intent intent=new Intent(context,End.class);
         context.startActivity(intent);
     }
