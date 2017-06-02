@@ -57,6 +57,7 @@ public class Story5LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private Bitmap enemyBullet;
     private Bitmap superBullet;
     private Bitmap boom;
+    private Bitmap bossboom;
     private Bitmap preparation;
     private Bitmap prop;
     private Bitmap bomb;
@@ -162,6 +163,7 @@ public class Story5LevGV extends SurfaceView implements View.OnTouchListener,Gam
         prop=BitmapFactory.decodeResource(getResources(),R.mipmap.weaponup);
         bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.skill);
         boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        bossboom=BitmapFactory.decodeResource(getResources(),R.mipmap.explosion);
         stone= BitmapFactory.decodeResource(getResources(),R.mipmap.stone);
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
@@ -202,7 +204,7 @@ public class Story5LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 gameImages.add(new Barrier(stone,this));
             }
             if (bossnumber%150==0&&bossnumber<=600){
-                gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
+                gameImages.add(new EnemyBossShip(enemyBoss,bossboom,5,this));//every 150 times we add an enemy ship
             }
             if(count%150==0){
                 propImages.add(new Prop(prop,this));

@@ -68,13 +68,22 @@ public class EnemyBossShip implements GameImageInterface {
 
     //initialize the boom pictures;
     private void initBoomPic(){
-        booms.add(Bitmap.createBitmap(boomImage,0,0,boomImage.getWidth()/7,boomImage.getHeight()));
-        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*1,0,boomImage.getWidth()/7,boomImage.getHeight()));
-        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*2,0,boomImage.getWidth()/7,boomImage.getHeight()));
-        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*3,0,boomImage.getWidth()/7,boomImage.getHeight()));
-        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*4,0,boomImage.getWidth()/7,boomImage.getHeight()));
-        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*5,0,boomImage.getWidth()/7,boomImage.getHeight()));
-        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/7)*6,0,boomImage.getWidth()/7,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,0,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*1,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*2,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*3,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*4,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*5,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*6,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*7,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*8,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*9,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*10,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*11,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*12,0,boomImage.getWidth()/14,boomImage.getHeight()));
+        booms.add(Bitmap.createBitmap(boomImage,(boomImage.getWidth()/14)*13,0,boomImage.getWidth()/14,boomImage.getHeight()));
+
+
     }
 
 
@@ -114,7 +123,7 @@ public class EnemyBossShip implements GameImageInterface {
          * remove the ship
          * when finish the boom picture
          */
-        if(index==7&&isDestroyed){
+        if(index==14&&isDestroyed){
             currentGameview.getGameImages().remove(this);
         }
 
