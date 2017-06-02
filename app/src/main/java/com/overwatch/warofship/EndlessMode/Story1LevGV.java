@@ -10,10 +10,8 @@ import android.media.SoundPool;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 
-import com.overwatch.warofship.GameImage.sound;
 import com.overwatch.warofship.GameImage.BackGround;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -21,19 +19,17 @@ import com.overwatch.warofship.GameImage.EnemyBullet;
 import com.overwatch.warofship.GameImage.EnemyShip;
 import com.overwatch.warofship.GameImage.GameImageInterface;
 import com.overwatch.warofship.GameImage.MyShip;
-import com.overwatch.warofship.GameLogic.GameLoop;
-import com.overwatch.warofship.GameLogic.GameViewInterface;
 import com.overwatch.warofship.GameImage.Prop;
 import com.overwatch.warofship.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Story3LevGV extends SurfaceView implements View.OnTouchListener,GameViewInterface {
+public class Story1LevGV extends EndlessModeGameView implements View.OnTouchListener {
     private GameLoop gameLoop;
     private SurfaceHolder holder=null;
+    private sound sound;
     private Context context;
-    private com.overwatch.warofship.GameImage.sound sound;
 
     private Paint p=new Paint();// Paint for all draw code.
 
@@ -41,9 +37,9 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private MyShip selectedShip;//used for control the ship.
 
     //Class variable to store width and height fo the screen.
-    public int SCREEN_WIDTH;
-    public int SCREEN_HEIGHT;
-    public int SCORE;
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
+    public static int SCORE;
 
 
     //Create Bitmap for picture to store.
@@ -62,7 +58,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
 
 
 
-    public SoundPool mysound;
+    public static SoundPool mysound;
     public static int sound_boom;
     public static int sound_shot;
     private int sound_background;
@@ -70,13 +66,11 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
     //Class variable to store bullet images and game images.
     //the reason for using class variable is for convenience.
     //we need to use these tree variable in other classes.
-    public ArrayList<GameImageInterface> gameImages = new ArrayList();
-    public ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
-    public ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
     public static ArrayList<GameImageInterface> gameImages = new ArrayList();
     public static ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
-    public static ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
+    private static ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
+
 
 
     public int modenumber;
@@ -85,7 +79,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
 
 
     //Constructor of the endless mode game view.
-    public Story3LevGV(Context context){
+    public Story1LevGV(Context context){
 
         super(context);
         gameLoop = new GameLoop(this);//initialize the new loop for the endless mode.
@@ -93,7 +87,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
         this.setOnTouchListener(this);//add the touch listener.
         holder=getHolder();
         this.context=context;
-        modenumber=3;
+        modenumber=1;
         //Main part of run the game.
         //Game start from here.
         holder.addCallback(
@@ -108,8 +102,8 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
 
                     @Override
                     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                        SCREEN_WIDTH = width;//initialize the class variable when surface changed
-                        SCREEN_HEIGHT = height;
+                        EndlessModeGameView.SCREEN_WIDTH = width;//initialize the class variable when surface changed
+                        EndlessModeGameView.SCREEN_HEIGHT = height;
                         init();//initialize all of the pictures in the class
                     }
 
@@ -143,8 +137,8 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
         prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
 
 
-        gameImages.add(new BackGround(backGround,this));//add bitmap to list
-        gameImages.add(new MyShip(myShip,boom,context,this));
+        gameImages.add(new BackGround(backGround));//add bitmap to list
+        gameImages.add(new MyShip(myShip,boom,context));
 
 
         mysound=new SoundPool(10, AudioManager.STREAM_SYSTEM,0);
@@ -171,19 +165,21 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 SCORE+=10;
             }
 
+            if(count%150==0){
+                PROP_IMAGE.add(new Prop(prop));
+
+            }
+
 
             //// Add enemy ship randomly.
             //if condition means that :
             //every 15 time --> add an basic enemy ship
             //every 150 time --> add an boss enemy ship
             if (count%15==0){
-                gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
+                gameImages.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
             }
             if (count%150==0){
-                gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
-            }
-            if(count%150==0){
-                PROP_IMAGE.add(new Prop(prop));
+                gameImages.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
             }
 
 
@@ -194,7 +190,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
 
                 //following draw method --> draw every bitmaps to preparation canvas
                 if(image instanceof EnemyShip){
-                    preparationCanvas.drawBitmap(((EnemyShip) image).StoryModeGetBitmap(modenumber),image.getX(),image.getY(),p);
+                    preparationCanvas.drawBitmap(((EnemyShip) image).StoryModegetBitmap(modenumber),image.getX(),image.getY(),p);
                 }
                 preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);
 
@@ -204,9 +200,9 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
                 if (image instanceof MyShip && count%10==0){
                     PLAYER_BULLET_IMAGES.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
                     new sound(sound.view,sound_shot).start();
-                    mysound.play(sound_shot,1,1,1,0,1);
+                    EndlessModeGameView.mysound.play(sound_shot,1,1,1,0,1);
                 } else if (image instanceof EnemyBossShip && count%25==0){
-                    ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image,this));
+                    ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image));
                 }
 
 
@@ -246,6 +242,7 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
                     preparationCanvas.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
                 }
             }
+
 
             for(Prop prop : PROP_IMAGE){
                 if(prop.ifOutOfScreen()){
@@ -291,37 +288,5 @@ public class Story3LevGV extends SurfaceView implements View.OnTouchListener,Gam
             selectedShip=null;//release the ship
         }
         return true;
-    }
-
-    public SoundPool getMysound() {
-        return mysound;
-    }
-
-    public int getScreenWidth() {
-        return SCREEN_WIDTH;
-    }
-
-    public int getScreenHeight() {
-        return SCREEN_HEIGHT;
-    }
-
-    public ArrayList<GameImageInterface> getGameImages() {
-        return gameImages;
-    }
-
-    public ArrayList<Bullet> getPlayerBulletImages() {
-        return PLAYER_BULLET_IMAGES;
-    }
-
-    public int getSCORE() {
-        return SCORE;
-    }
-
-    public void setSCORE(int SCORE) {
-        this.SCORE = SCORE;
-    }
-
-    public ArrayList<EnemyBullet> getEnemyBulletImages() {
-        return ENEMY_BULLET_IMAGES;
     }
 }

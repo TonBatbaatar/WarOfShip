@@ -15,6 +15,7 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import com.overwatch.warofship.GameImage.BackGround;
+import com.overwatch.warofship.GameImage.Bomb;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
 import com.overwatch.warofship.GameImage.EnemyBullet;
@@ -24,6 +25,7 @@ import com.overwatch.warofship.GameImage.MyShip;
 import com.overwatch.warofship.GameImage.sound;
 import com.overwatch.warofship.GameLogic.GameLoop;
 import com.overwatch.warofship.GameLogic.GameViewInterface;
+import com.overwatch.warofship.GameImage.Prop;
 import com.overwatch.warofship.R;
 
 import java.util.ArrayList;
@@ -39,6 +41,20 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Context context;
     private Paint p;// Paint for all pictures.
 
+    private Paint p=new Paint();// Paint for all draw code.
+
+    private static int count;//controller of the speed of add a new item to the game.
+    public static int bossnumber;
+    private MyShip selectedShip;//used for control the ship.
+
+    //Class variable to store width and height fo the screen.
+    public static int SCREEN_WIDTH;
+    public static int SCREEN_HEIGHT;
+    public static int SCORE;
+    public static int STRENGTHENTIME;
+
+
+    //Create Bitmap for picture to store.
     /**
      * variable declaration:
      * Bitmap to store game picture
@@ -47,10 +63,15 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Bitmap myShip;
     private Bitmap enemy;
     private Bitmap enemyBoss;
-    private Bitmap bullet;
+    private Bitmap initialbullet;
+    private Bitmap secondbullet;
+    private Bitmap thirdbullet;
+    private Bitmap fourthbullet;
     private Bitmap enemyBullet;
     private Bitmap boom;
     private Bitmap preparation;
+    private Bitmap prop;
+    private Bitmap bomb;
 
     /**
      * variable declaration:
@@ -61,6 +82,15 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     public static int sound_boom;
     public static int sound_shot;
     private int sound_background;
+    private Context context;
+    //Class variable to store bullet images and game images.
+    //the reason for using class variable is for convenience.
+    //we need to use these tree variable in other classes.
+    public static ArrayList<GameImageInterface> GAME_IMAGES;
+    public static ArrayList<Bullet> PLAYER_BULLET_IMAGES;
+    public static ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES;
+    public static ArrayList<Prop>  PROP_IMAGE;
+    public static ArrayList<Bomb> BOMB_IMAGE;
 
     /**
      * variable declaration:
@@ -101,8 +131,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
 
                     @Override
                     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                        SCREEN_WIDTH = width;//initialize the class variable when surface changed
-                        SCREEN_HEIGHT = height;
+                        EndlessModeGameView.SCREEN_WIDTH = width;//initialize the class variable when surface changed
+                        EndlessModeGameView.SCREEN_HEIGHT = height;
                         init();//initialize all of the pictures in the class
                     }
 
@@ -120,6 +150,16 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         this.gameImages = new ArrayList();
         this.playerBulletImages = new ArrayList();
         this.enemyBulletImages = new ArrayList();
+        this.count=0;//initialize the speed controller
+        this.bossnumber=0;//control the number of boss ship
+        this.SCORE=0;
+        this.STRENGTHENTIME=0;
+
+        this.GAME_IMAGES = new ArrayList();
+        this.PLAYER_BULLET_IMAGES = new ArrayList();
+        this.ENEMY_BULLET_IMAGES = new ArrayList();
+        this.PROP_IMAGE = new ArrayList<>();
+        this.BOMB_IMAGE = new ArrayList<>();
 
     }
 
@@ -129,9 +169,22 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
      * insert the music to sound
      */
     private void init(){
+
         //Preparation Bitmap is used for make the draw part more fluently
         preparation = Bitmap.createBitmap(SCREEN_WIDTH,SCREEN_HEIGHT, Bitmap.Config.ARGB_8888);
 
+        backGround= BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
+        myShip= BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
+        enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
+        enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
+        initialbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet2);
+        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
+        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
+        enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
+        boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
+        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet4);
         backGround = BitmapFactory.decodeResource(getResources(), R.mipmap.sea);
         myShip = BitmapFactory.decodeResource(getResources(), R.mipmap.playership);
         enemy = BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
@@ -148,6 +201,10 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         sound_shot = mysound.load(getContext(),R.raw.shot,1);
     }
 
+
+
+
+
     @Override
     /**
      * the method of draw use in thread(Game loop)
@@ -158,12 +215,23 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         if(canvas!=null){
 
             Canvas preparationCanvas = new Canvas(preparation);//create a new canvas to draw preparation Bitmap
+            count++;//Speed controller to be updated
             bossnumber++;
             count++;// speed controller to be updated
+            STRENGTHENTIME++;
+
+
+
             if (count%15==0){
                 SCORE+=5;// the score increase by time player survive
             }
 
+
+            //// Add enemy ship randomly.
+            //if condition means that :
+            //every 15 time --> add an basic enemy ship
+            //every 150 time --> add aa boss enemy ship
+            //every 150 time --> add a prop
             /**
              * Add enemy ship randomly:
              * every 15 time --> add an basic enemy ship
@@ -171,9 +239,21 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
              */
             if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
+                GAME_IMAGES.add(new EnemyShip(enemy,boom));//every five times we add an enemy ship
+
             }
             if (bossnumber%150==0&&bossnumber<=600){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
+                GAME_IMAGES.add(new EnemyBossShip(enemyBoss,boom));//every 150 times we add an enemy ship
+
+            }
+            if(count%150==0){
+                PROP_IMAGE.add(new Prop(prop));
+
+            }
+
+            if(count%200==0){
+                BOMB_IMAGE.add(new Bomb(bomb));
             }
 
             /**
@@ -192,12 +272,18 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                  */
                 if (image instanceof MyShip && count%10==0){
                     playerBulletImages.add(new Bullet(bullet,(MyShip)image));
+                    PLAYER_BULLET_IMAGES.add(new Bullet(initialbullet,(MyShip)image,secondbullet,thirdbullet,fourthbullet));
                     new sound(sound.view,sound_shot).start();
                     mysound.play(sound_shot,1,1,1,0,1);
                 } else if (image instanceof EnemyBossShip && count%25==0){
                     enemyBulletImages.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image, this));
                 }
 
+
+                //// remove ships
+                // Strengthen the weapon when --> receive prop
+                // Destroy when --> crash with ship
+                // Destroy when --> beat by bullet
                 /**
                  * check destroy and remove ships
                  * destroy when crash with ship
@@ -208,6 +294,8 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                         ((MyShip) image).moveintoscreen();
                     }
                     ((MyShip) image).checkIsBeat();
+                    ((MyShip) image).receiveprop();
+                    ((MyShip) image).receivebomb();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
@@ -241,6 +329,29 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                 }else{
                     preparationCanvas.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
                 }
+            }
+
+
+            ////Draw props
+            //remove the prop already out of the screen
+            for(Prop prop : PROP_IMAGE){
+                if(prop.ifOutOfScreen()){
+                    Log.i("REMOVE","Removed the prop!");
+                }else{
+                    preparationCanvas.drawBitmap(prop.getBitmap(),prop.getX(),prop.getY(),p);
+                }
+            }
+            for(Bomb bomb : BOMB_IMAGE){
+                if(bomb.ifOutOfScreen()){
+                    Log.i("REMOVE","Removed the prop!");
+                }else{
+                    preparationCanvas.drawBitmap(bomb.getBitmap(),bomb.getX(),bomb.getY(),p);
+                }
+            }
+
+
+            if(STRENGTHENTIME%150==0){
+                MyShip.levelofbullet=1;
             }
 
 

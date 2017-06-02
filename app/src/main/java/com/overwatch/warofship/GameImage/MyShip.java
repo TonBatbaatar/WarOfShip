@@ -3,6 +3,7 @@ package com.overwatch.warofship.GameImage;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.overwatch.warofship.GameMenu.End;
 import com.overwatch.warofship.GameLogic.GameViewInterface;
@@ -22,6 +23,9 @@ public  class MyShip implements GameImageInterface {
     private List<Bitmap> myShipImages=new ArrayList<>();
     private int index;
     private boolean isDestroyed;
+    //represents the level of the bullet
+    public  static int levelofbullet;
+
     private float x;
     private float y;
     private float width;
@@ -45,6 +49,7 @@ public  class MyShip implements GameImageInterface {
         myShipImages.add(myShipImage);
         this.index=0;
         this.isDestroyed=false;
+        levelofbullet=1;
         this.context=context;
         this.initBoomPic();//initialize the boom pictures
 
@@ -169,9 +174,50 @@ public  class MyShip implements GameImageInterface {
         return false;
     }
 
+    public void receiveprop(){
+        for(GameImageInterface prop : EndlessModeGameView.PROP_IMAGE){
+            if(prop instanceof Prop){
+                if (prop.getX()>this.getX()
+                        &&prop.getY()>this.getY()
+                        &&prop.getX()<this.getX()+this.myShipImage.getWidth()
+                        &&prop.getY()<this.getY()+this.myShipImage.getHeight()){
+                    ((Prop) prop).removeprop();
+                    EndlessModeGameView.STRENGTHENTIME=1;
+
+                    levelofbullet += 1;
+                    Log.i("weapon strengthen","levelofbullet");
+                    if(levelofbullet>=4){
+                        levelofbullet=4;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    public void receivebomb(){
+        for(GameImageInterface bomb : EndlessModeGameView.BOMB_IMAGE){
+            if(bomb instanceof Bomb){
+                if (bomb.getX()>this.getX()
+                        &&bomb.getY()>this.getY()
+                        &&bomb.getX()<this.getX()+this.myShipImage.getWidth()
+                        &&bomb.getY()<this.getY()+this.myShipImage.getHeight()){
+                    for(GameImageInterface enemyship : EndlessModeGameView.GAME_IMAGES){
+                        if(enemyship instanceof EnemyShip){
+                            ((EnemyShip) enemyship).removeEnmeyShip();
+                        }
+                    }
+                    ((Bomb) bomb).removebomb();
+                    break;
+                }
+            }
+        }
+    }
+
     public void removePlayership(){
         myShipImages=booms;
         isDestroyed= true;
+        Intent intent=new Intent(context,End.class);
+        context.startActivity(intent);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.overwatch.warofship.StoryMode;
+package com.overwatch.warofship.EndlessMode;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -50,10 +50,14 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private Bitmap myShip;
     private Bitmap enemy;
     private Bitmap enemyBoss;
-    private Bitmap bullet;
+    private Bitmap initialbullet;
+    private Bitmap secondbullet;
+    private Bitmap thirdbullet;
+    private Bitmap fourthbullet;
     private Bitmap enemyBullet;
     private Bitmap boom;
     private Bitmap preparation;
+    private Bitmap prop;
 
 
 
@@ -68,6 +72,7 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
     public ArrayList<GameImageInterface> gameImages = new ArrayList();
     public ArrayList<Bullet> PLAYER_BULLET_IMAGES = new ArrayList();
     public ArrayList<EnemyBullet> ENEMY_BULLET_IMAGES = new ArrayList();
+    public static ArrayList<Prop> PROP_IMAGES = new ArrayList<>();
 
 
     public int modenumber;
@@ -125,9 +130,13 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
         myShip= BitmapFactory.decodeResource(getResources(),R.mipmap.playership);
         enemy= BitmapFactory.decodeResource(getResources(),R.mipmap.enemyship);
         enemyBoss=BitmapFactory.decodeResource(getResources(),R.mipmap.enemybossship);
-        bullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        initialbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        secondbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
+        thirdbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
+        fourthbullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
         boom=BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
 
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
@@ -159,6 +168,7 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
             }
 
 
+
             //// Add enemy ship randomly.
             //if condition means that :
             //every 15 time --> add an basic enemy ship
@@ -168,6 +178,10 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
             }
             if (count%150==0){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
+            }
+
+            if(count%150==0){
+                PROP_IMAGE.add(new Prop(prop));
             }
 
 
@@ -193,14 +207,13 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
                     ENEMY_BULLET_IMAGES.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image,this));
                 }
 
-                //?!
-
 
                 //// Destroy ships
                 // Destroy when --> crash with ship
                 // Destroy when --> beat by bullet
                 if (image instanceof MyShip){
                     ((MyShip) image).checkIsBeat();
+                    ((MyShip) image).receiveprop();
                 } else if (image instanceof EnemyShip){
                     ((EnemyShip) image).CheckIsBeat();
                 } else if (image instanceof EnemyBossShip){
@@ -229,6 +242,14 @@ public class Story2LevGV extends SurfaceView implements View.OnTouchListener,Gam
                     Log.i("REMOVE","Removed the enemy bullet!");
                 }else{
                     preparationCanvas.drawBitmap(bullet.getBitmap(),bullet.getX(),bullet.getY(),p);
+                }
+            }
+
+            for(Prop prop : PROP_IMAGE){
+                if(prop.ifOutOfScreen()){
+                    Log.i("REMOVE","Removed the prop!");
+                }else{
+                    preparationCanvas.drawBitmap(prop.getBitmap(),prop.getX(),prop.getY(),p);
                 }
             }
 
