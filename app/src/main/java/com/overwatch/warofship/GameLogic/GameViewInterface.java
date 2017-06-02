@@ -19,9 +19,11 @@ public interface GameViewInterface {
     int getScreenWidth();
     int getScreenHeight();
     int getSCORE();
+    int getBossnumber();
     int getStrengthenTime();
     void setStrengthenTime(int strengthenTime);
     void setSCORE(int SCORE);
+    void setBossnumber(int b);
     ArrayList<GameImageInterface> getGameImages();
     ArrayList<Bullet> getPlayerBulletImages();
     ArrayList<EnemyBullet> getEnemyBulletImages();

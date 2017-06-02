@@ -7,6 +7,9 @@ import com.overwatch.warofship.GameLogic.GameViewInterface;
 public class EnemyBullet implements GameImageInterface {
 
     private Bitmap myBulletImage;
+    private Bitmap superBulletImage;
+    private EnemyBossShip bossShip;
+
     private GameViewInterface currentGameview;
 
     private float x;
@@ -14,9 +17,12 @@ public class EnemyBullet implements GameImageInterface {
 
     private boolean hit;
 
-    public EnemyBullet(Bitmap myBulletImage, EnemyBossShip bossShip , GameViewInterface currentGameview) {
+    public EnemyBullet(Bitmap myBulletImage,Bitmap superBulletImage, EnemyBossShip bossShip , GameViewInterface currentGameview) {
 
         this.myBulletImage = myBulletImage;
+        this.superBulletImage = superBulletImage;
+        this.bossShip=bossShip;
+
 
         this.currentGameview = currentGameview;
 
@@ -28,7 +34,19 @@ public class EnemyBullet implements GameImageInterface {
 
     @Override
     public Bitmap getBitmap() {
-        y+=15;
+
+        if(bossShip.getHP()==1){
+            x=bossShip.getX()+20;
+            y=bossShip.getY()+10+bossShip.getHeight();
+            myBulletImage=superBulletImage;
+        }
+        else {
+
+            y+=15;
+        }
+
+
+
         return myBulletImage;
     }
 

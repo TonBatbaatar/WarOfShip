@@ -140,13 +140,17 @@ public  class MyShip implements GameImageInterface {
         if (!this.isDestroyed){
             //check if player ship crash with enemy ship
             for (GameImageInterface image : currentGameView.getGameImages()){
-                if(image instanceof EnemyShip){
-                    if (image.getX()>this.getX()
-                            &&image.getY()>this.getY()
-                            &&image.getX()<this.getX()+this.myShipImage.getWidth()
-                            &&image.getY()<this.getY()+this.myShipImage.getHeight()){
+                if(image instanceof EnemyShip||image instanceof Barrier||image instanceof EnemyBossShip){
+                    if((this.getX()>image.getX()&&this.getX()<image.getX()+width&&this.getY()>image.getY()&&this.getY()<image.getY()+height)
+                            ||(image.getX()>this.getX()&&image.getX()<this.x+width&&image.getY()>this.y&&image.getY()<this.y+height)){
+                        if(image instanceof EnemyShip){
+                            ((EnemyShip) image).removeEnmeyShip();
+                        }
 
-                        ((EnemyShip) image).removeEnmeyShip();
+
+
+
+
                         this.removePlayership();
                         return true;
                     }
@@ -155,12 +159,10 @@ public  class MyShip implements GameImageInterface {
             }
 
             //check if player ship beat by enemy bullet
-            for(GameImageInterface enemybullet :currentGameView.getPlayerBulletImages()){
+            for(GameImageInterface enemybullet :currentGameView.getEnemyBulletImages()){
                 if(enemybullet instanceof EnemyBullet){
-                    if(enemybullet.getX()>this.getX()
-                            &&enemybullet.getY()>this.getY()
-                            &&enemybullet.getX()<this.getX()+this.myShipImage.getWidth()
-                            &&enemybullet.getY()<this.getY()+this.myShipImage.getHeight()){
+                    if((this.getX()>enemybullet.getX()&&this.getX()<enemybullet.getX()+width&&this.getY()>enemybullet.getY()&&this.getY()<enemybullet.getY()+height)
+                            ||(enemybullet.getX()>this.getX()&&enemybullet.getX()<this.x+width&&enemybullet.getY()>this.y&&enemybullet.getY()<this.y+height)){
 
                         ((EnemyBullet)enemybullet).removeEnemyBullet();
                         this.removePlayership();
@@ -177,10 +179,8 @@ public  class MyShip implements GameImageInterface {
     public void receiveprop(){
         for(GameImageInterface prop : currentGameView.getPropImages()){
             if(prop instanceof Prop){
-                if (prop.getX()>this.getX()
-                        &&prop.getY()>this.getY()
-                        &&prop.getX()<this.getX()+this.myShipImage.getWidth()
-                        &&prop.getY()<this.getY()+this.myShipImage.getHeight()){
+                if((this.getX()>prop.getX()&&this.getX()<prop.getX()+width&&this.getY()>prop.getY()&&this.getY()<prop.getY()+height)
+                        ||(prop.getX()>this.getX()&&prop.getX()<this.x+width&&prop.getY()>this.y&&prop.getY()<this.y+height)){
                     ((Prop) prop).removeprop();
                     currentGameView.setStrengthenTime(1);
 
@@ -197,10 +197,8 @@ public  class MyShip implements GameImageInterface {
     public void receivebomb(){
         for(GameImageInterface bomb : currentGameView.getBombImages()){
             if(bomb instanceof Bomb){
-                if (bomb.getX()>this.getX()
-                        &&bomb.getY()>this.getY()
-                        &&bomb.getX()<this.getX()+this.myShipImage.getWidth()
-                        &&bomb.getY()<this.getY()+this.myShipImage.getHeight()){
+                if((this.getX()>bomb.getX()&&this.getX()<bomb.getX()+width&&this.getY()>bomb.getY()&&this.getY()<bomb.getY()+height)
+                        ||(bomb.getX()>this.getX()&&bomb.getX()<this.x+width&&bomb.getY()>this.y&&bomb.getY()<this.y+height)){
                     for(GameImageInterface enemyship : currentGameView.getGameImages()){
                         if(enemyship instanceof EnemyShip){
                             ((EnemyShip) enemyship).removeEnmeyShip();

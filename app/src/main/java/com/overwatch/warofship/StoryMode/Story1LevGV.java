@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.overwatch.warofship.GameImage.Barrier;
 import com.overwatch.warofship.GameImage.Bomb;
 import com.overwatch.warofship.GameImage.Prop;
 import com.overwatch.warofship.GameImage.Sound;
@@ -348,10 +349,12 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private Bitmap thirdBullet;
     private Bitmap fourthBullet;
     private Bitmap enemyBullet;
+    private Bitmap superBullet;
     private Bitmap boom;
     private Bitmap preparation;
     private Bitmap prop;
     private Bitmap bomb;
+    private Bitmap stone;
 
     /**
      * variable declaration:
@@ -379,7 +382,7 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
     private ArrayList<Bomb> bombImages;
     public int strengthenTime;
     public static int bossnumber;
-    public int modenumber = 3;
+    public int modenumber = 1;
 
     /**
      * constructor of EndlessModeGameView
@@ -449,9 +452,11 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
         thirdBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
         fourthBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
-        prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
-        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet4);
+        superBullet= BitmapFactory.decodeResource(getResources(),R.mipmap.superbullet);
+        prop=BitmapFactory.decodeResource(getResources(),R.mipmap.weaponup);
+        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.skill);
         boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        stone= BitmapFactory.decodeResource(getResources(),R.mipmap.stone);
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
         gameImages.add(new MyShip(myShip,boom,context,this));
@@ -487,6 +492,9 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
             if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
+            if(count%100==0){
+                gameImages.add(new Barrier(stone,this));
+            }
             if (bossnumber%150==0&&bossnumber<=600){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
             }
@@ -503,8 +511,14 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
              * draw to preparation canvas
              */
             for (GameImageInterface image : (List<GameImageInterface>)gameImages.clone()){
+                if(image instanceof EnemyShip){
+                    preparationCanvas.drawBitmap(((EnemyShip) image).StoryModeGetBitmap(modenumber),image.getX(),image.getY(),p);
+                }
+                else {
+                    preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);// draw code
+                }
 
-                preparationCanvas.drawBitmap(image.getBitmap(),image.getX(),image.getY(),p);// draw code
+
 
                 /**
                  * Add bullet
@@ -516,7 +530,7 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
                     new Sound(Sound.view,sound_shot).start();
                     mysound.play(sound_shot,1,1,1,0,1);
                 } else if (image instanceof EnemyBossShip && count%25==0){
-                    enemyBulletImages.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image, this));
+                    enemyBulletImages.add(new EnemyBullet(enemyBullet,superBullet,(EnemyBossShip)image, this));
                 }
 
                 /**
@@ -671,6 +685,12 @@ public class Story1LevGV extends SurfaceView implements View.OnTouchListener,Gam
     }
     public int getSCORE() {
         return SCORE;
+    }
+    public int getBossnumber(){
+        return bossnumber;
+    }
+    public void setBossnumber(int b){
+        bossnumber=b;
     }
 
     @Override

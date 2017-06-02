@@ -44,7 +44,7 @@ public class EnemyBossShip implements GameImageInterface {
      * @param currentGameView
      *          current game view
      */
-    public EnemyBossShip(Bitmap enemyBossShipImage, Bitmap boomImage, int maxHp, GameViewInterface currentGameView){
+    public EnemyBossShip(Bitmap enemyBossShipImage,Bitmap boomImage, int maxHp, GameViewInterface currentGameView){
         this.enemyBossShipImage=enemyBossShipImage;
         this.enemyBossShipWithHP=Bitmap.createBitmap(enemyBossShipImage.getWidth(),enemyBossShipImage.getHeight()+30,
                 Bitmap.Config.ARGB_8888);
@@ -156,6 +156,8 @@ public class EnemyBossShip implements GameImageInterface {
                         &&selectedBullet.getY()<this.getY()+this.enemyBossShipImage.getHeight()){
 
                     currentGameview.getPlayerBulletImages().remove(selectedBullet);
+                    currentGameview.setBossnumber(currentGameview.getBossnumber()-150);
+
 
                     HP--;
                     if(HP==0){
@@ -177,6 +179,7 @@ public class EnemyBossShip implements GameImageInterface {
     public void removeEBossShip(){
         enemyship=booms;
         isDestroyed= true;
+
         currentGameview.setSCORE(currentGameview.getSCORE() + 150);
     }
 
@@ -218,6 +221,9 @@ public class EnemyBossShip implements GameImageInterface {
     }
     public float getHeight() {
         return height;
+    }
+    public int getHP(){
+        return HP;
     }
 
 }

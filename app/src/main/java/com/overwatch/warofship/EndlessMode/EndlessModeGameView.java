@@ -15,6 +15,7 @@ import android.view.SurfaceView;
 import android.view.View;
 
 import com.overwatch.warofship.GameImage.BackGround;
+import com.overwatch.warofship.GameImage.Barrier;
 import com.overwatch.warofship.GameImage.Bomb;
 import com.overwatch.warofship.GameImage.Bullet;
 import com.overwatch.warofship.GameImage.EnemyBossShip;
@@ -54,10 +55,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     private Bitmap thirdBullet;
     private Bitmap fourthBullet;
     private Bitmap enemyBullet;
+    private Bitmap superBullet;
     private Bitmap boom;
     private Bitmap preparation;
     private Bitmap prop;
     private Bitmap bomb;
+    private Bitmap stone;
 
     /**
      * variable declaration:
@@ -155,9 +158,11 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
         thirdBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet3);
         fourthBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.bullet4);
         enemyBullet= BitmapFactory.decodeResource(getResources(), R.mipmap.boosbullet);
-        prop=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet);
-        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.bullet4);
+        superBullet=BitmapFactory.decodeResource(getResources(),R.mipmap.superbullet);
+        prop=BitmapFactory.decodeResource(getResources(),R.mipmap.weaponup);
+        bomb=BitmapFactory.decodeResource(getResources(),R.mipmap.skill);
         boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        stone=BitmapFactory.decodeResource(getResources(),R.mipmap.stone);
 
         gameImages.add(new BackGround(backGround,this));//add bitmap to list
         gameImages.add(new MyShip(myShip,boom,context,this));
@@ -193,6 +198,9 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
             if (count%15==0){
                 gameImages.add(new EnemyShip(enemy,boom,this));//every five times we add an enemy ship
             }
+            if(count%100==0){
+                gameImages.add(new Barrier(stone,this));
+            }
             if (bossnumber%150==0&&bossnumber<=600){
                 gameImages.add(new EnemyBossShip(enemyBoss,boom,5,this));//every 150 times we add an enemy ship
             }
@@ -221,8 +229,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
                     playerBulletImages.add(new Bullet(initialBullet,(MyShip)image,secondBullet,thirdBullet,fourthBullet));
                     new Sound(Sound.view,sound_shot).start();
                     mysound.play(sound_shot,1,1,1,0,1);
-                } else if (image instanceof EnemyBossShip && count%25==0){
-                    enemyBulletImages.add(new EnemyBullet(enemyBullet,(EnemyBossShip)image, this));
+                } else if (image instanceof EnemyBossShip ){
+                    if(count%25==0){
+                        enemyBulletImages.add(new EnemyBullet(enemyBullet,superBullet,(EnemyBossShip)image, this));
+                    }
+
+
                 }
 
                 /**
@@ -377,6 +389,12 @@ public class EndlessModeGameView extends SurfaceView implements View.OnTouchList
     }
     public int getSCORE() {
         return SCORE;
+    }
+    public int getBossnumber(){
+        return bossnumber;
+    }
+    public void setBossnumber(int b){
+        bossnumber=b;
     }
     public void setSCORE(int SCORE) {
         this.SCORE = SCORE;
