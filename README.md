@@ -23,7 +23,7 @@ To build and run WarOfShip, you need:
 ### Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/WarOfShip.git
+   git clone https://github.com/TonBatbaatar/WarOfShip.git
    ```
 2. Open the project in Android Studio.
 3. Sync Gradle and build the project.
