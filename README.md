@@ -1,46 +1,41 @@
-# War of Ship
+# WarOfShip
 
-**War of Ship** is a simple Java-based game developed as part of the **COMP2005J Object-Oriented Programming** module. This project demonstrates the application of object-oriented programming principles through the implementation of a classic battleship-style game.
+**WarOfShip** is an action-packed Android mobile game where you take command of a battleship cruising through dangerous waters. Your mission: dodge enemy attacks and destroy enemy ships to survive as long as possible.
 
-## 📌 Project Purpose
+## 📱 Platform
+- Android (Mobile)
 
-This project was developed for academic purposes to explore key OOP concepts such as:
-
-- Encapsulation  
-- Inheritance  
-- Polymorphism  
-- Class design and interaction  
-
-## 🎮 Game Overview
-
-"War of Ship" is a turn-based game where players place ships on a grid and take turns trying to hit each other's ships. The game logic handles ship placement, hit detection, and win conditions.
+## 🎮 Game Features
+- ⚓ Real-time naval combat gameplay
+- 💣 Control your ship to dodge enemy fire
+- 🔫 Shoot at enemy ships while avoiding their attacks
+- 🌊 Endless ocean setting with increasing difficulty
+- 🏆 High score tracking
 
 ## 🚀 Getting Started
 
 ### Prerequisites
+To build and run WarOfShip, you need:
+- Android Studio (Arctic Fox or newer)
+- Android SDK version 30 or higher
+- Java 8 or Kotlin support
 
-- Java Development Kit (JDK) 8 or higher
-- A Java IDE (e.g., IntelliJ IDEA, Eclipse) or command-line terminal
-
-### How to Run
-
-1. Clone the repository:
+### Installation
+1. Clone this repository:
    ```bash
-   git clone https://github.com/TonBatbaatar/warofship.git
-2. Compile the source files
-3. Run the game
-   java Main
+   git clone https://github.com/yourusername/WarOfShip.git
+   ```
+2. Open the project in Android Studio.
+3. Sync Gradle and build the project.
+4. Run the app on an emulator or physical device.
 
-## 🛠️ Features
-
-- Grid-based ship placement
-- Simple text-based user interface
-- Turn-based attack mechanism
-- Game-over detection and restart option
+## 🛠️ Tech Stack
+- Android SDK
+- Java / Kotlin
+- XML for UI layout
 
 ## 📚 Module Info
 
-Module: COMP2005J Object-Oriented Programming
 Institution: University College Dublin / Beijing University of Technology
 Assignment: Educational purpose only
 
